@@ -13,45 +13,60 @@ function monthObject (month, year) {
   this.dayArray = dayArray;
 }
 
-
-
 Handlebars.registerHelper("calendar", function (obj, options) {
   let string = "<tr>";
   let totalTally = 0;
   let modifiedDayArray = obj.dayArray.map(function (currentValue, index) {
-      if(currentValue.tasks.length === 0){
-        return {class:"free", value: index + 1 + "st"}
-      }
-      else{
-        return {class:"checked", value: index + 1 + "st"}
-      }
+
+          if(currentValue.tasks.length === 0){
+            return {class:"free", value: index + 1 + "st"}
+          }
+          else{
+            return {class:"checked", value: index + 1 + "st"}
+          }
   })
 
 
-    for(i=0; i<obj.startIndex; i++){
-        string += options.fn({class: 'class="blank"'})
-        totalTally++;
-    }
+makeBlankCells(obj.startIndex);
+makeDayCells();
+let remaining = 42-totalTally;
+makeBlankCells(remaining);
 
-    for(i=0; i<modifiedDayArray.length; i++){
-          if(totalTally%7 === 0){
-          string += "</tr><tr>";
-          }
-        string += options.fn(modifiedDayArray[i]);
-        totalTally++;
-    }
+return string + "</tr>"
 
-    console.log(totalTally);
+function makeBlankCells(numberOfBlanks){
+  if(totalTally%7 === 0){
+    string += "</tr><tr>";
+  }
 
+  for(i=0; i<numberOfBlanks; i++){
+    string += options.fn({class: 'class="blank"'})
+    totalTally++;
+  }
+}
 
-  return string;
+function makeDayCells(){
+  for(i=0; i<modifiedDayArray.length; i++){
+        if(totalTally%7 === 0){
+        string += "</tr><tr>";
+        }
+      string += options.fn(modifiedDayArray[i]);
+      totalTally++;
+  }
+}
 })
 
-var s = "{{#calendar this}}<td {{{class}}} > {{value}}</td>{{/calendar}}";
 
-var fun = Handlebars.compile(s);
+function appendCalendar(){
 
-var context = new monthObject(08, 2018);
+    var string = "{{#calendar this}}<td {{{class}}} > {{value}}</td>{{/calendar}}";
 
-console.log(fun(context));
-//console.log(context)
+    var compiledFunction = Handlebars.compile(string);
+
+    var context = new monthObject(08, 2018);
+    console.log(x = compiledFunction(context));
+
+}
+
+appendCalendar();
+//not supposed to be here

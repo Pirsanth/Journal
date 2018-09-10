@@ -35,7 +35,7 @@ makeBlankCells(remaining);
 return string + "</tr>"
 
 function makeBlankCells(numberOfBlanks){
-  if(totalTally%7 === 0){
+  if(totalTally%7 === 0 && totalTally !== 0){
     string += "</tr><tr>";
   }
 
@@ -58,15 +58,24 @@ function makeDayCells(){
 
 
 function appendCalendar(){
+     let element = document.querySelector('[data="calendar"]')
+
 
     var string = "{{#calendar this}}<td {{{class}}} > {{value}}</td>{{/calendar}}";
 
     var compiledFunction = Handlebars.compile(string);
 
     var context = new monthObject(08, 2018);
-    console.log(x = compiledFunction(context));
 
+
+    element.innerHTML = compiledFunction(context)
+
+/*    x = document.createElement("li");
+    x.appendChild(document.createTextNode("NEIGH"));
+    element.appendChild(x)
+
+    console.log(element.innerHTML)
+*/
 }
 
 appendCalendar();
-//not supposed to be here

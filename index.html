@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Journal</title>
+    <link rel="stylesheet" href="./normalize.css">
+    <link rel="stylesheet" href="./cover.css">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+<div class="banner">
+  <div class="left">L</div>
+  <div class="month">
+    January 2018
+  </div>
+  <div class="right">R</div>
+</div>
+
+  <div class="cover slide" data="task-form">
+    <form class="" action="/" method="post">
+
+      <div class="task-name">
+      <label for="taskName">Task Name:</label>
+      <input type="text" name="taskName" value="" id="taskName">
+      </div>
+
+      <div class="date">
+        <div class="">
+          Date:
+        </div>
+        <div class="">
+          1st of January
+        </div>
+        <div class="" data-task-form="change-button">
+          Change
+        </div>
+      </div>
+
+      <div class="date-picker" data-task-form="calendar-container">
+        <table>
+          <thead>
+            <tr>
+              <th>MON</th>
+              <th>TUE</th>
+              <th>WED</th>
+              <th>THU</th>
+              <th>FRI</th>
+              <th>SAT</th>
+              <th>SUN</th>
+            </tr>
+          </thead>
+          <tbody data-task-form="calendar">
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="time">
+      <label for="">Starting Time:</label>
+      <input type="number" name="" value="">:<input type="number" name="" value="">
+      <label for="">End time:</label>
+      <input type="number" name="" value="">:<input type="number" name="" value="">
+      </div>
+    </form>
+
+    <div class="buttons-container">
+      <div class="add" data-task-form = "add-task">
+        Add new Task
+      </div>
+      <div class="cancel" data-task-form = "cancel-task">
+          Cancel
+      </div>
+    </div>
+
+  </div>
+
+
+<div class="calendar">
+      <table>
+        <thead>
+          <tr>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+            <th>SUN</th>
+          </tr>
+        </thead>
+        <tbody data-base="calendar">
+
+        </tbody>
+      </table>
+</div>
+<div class="add-button" data-base="new-task">
+  Add a new task
+</div>
+<div class="tasklist">
+  <ul>
+      <li>
+        <div class="time"><div>9:30</div><div>22:00</div></div>
+        <div class="name">Do Laundry neighneighneighneigh neigh   neighneigh</div>
+        <div class="edit"><div class="">Edit</div>
+                          <div class="">Remove</div>
+        </div>
+      </li>
+  </ul>
+</div>
+</body>
+<script src="./external/handlebars-v4.0.11.js" charset="utf-8"></script>
+<script src="./calendar.js" charset="utf-8"></script>
+<script src="./main.js" charset="utf-8"></script>
+<script src="./button.js" charset="utf-8"></script>
+</html>

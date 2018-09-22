@@ -1,0 +1,71 @@
+.cover{
+  position: absolute;
+  top: 5%;
+  height: 95%;
+  width: 100%;
+  font-size: 50px;
+  transform: scaleY(0);
+  transform-origin: top;
+  background: white;
+}
+
+.slide{
+  transform: scaleY(1.0);
+  transition-property: transform;
+  transition-duration: 2s;
+  transition-timing-function: ease-in-out;
+}
+
+.cover label {
+  width: 100%;
+}
+.cover form {
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+}
+.cover .buttons-container{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 20%;
+}
+.cover .task-name{
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cover .task-name input{
+  width: 100%;
+}
+.cover .date{
+  height: 20%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cover .date div {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cover .date-picker {
+  height: 0%;
+  transform: scaleY(0);
+}
+.cover .expand{
+  height: 40%;
+  transform: scaleY(1);
+}
+.cover .time {
+  display: flex;
+  flex-wrap: wrap;
+  height: 20%;
+}
+.cover .time input{
+  width: 40%;
+}

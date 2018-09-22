@@ -20,14 +20,7 @@ body{
   height: 5%;
   align-items: center;
 }
-.cover{
-  display: none;
-  background: green;
-  position: absolute;
-  top: 5%;
-  height: 95%;
-  width: 100%;
-}
+
 .banner .left{
   width: 20%;
 }
@@ -39,7 +32,7 @@ body{
   width: 20%;
   text-align: right;
 }
-.calendar{
+.calendar {
   display: flex;
   width: 100%;
   height: 50%;
@@ -49,6 +42,7 @@ table{
     table-layout: fixed;
     width: 100%;
     height: 100%;
+    border-collapse: collapse;
 }
 th{
   font-size: 30px;
@@ -57,19 +51,44 @@ td{
     border: 1px blue solid;
     font-size: 50px;
 }
-.blank {
+.calendar .clicked{
+    border: 5px purple solid;
+}
+.calendar .blank {
   background: lightgrey;
 }
-.add-container{
+.add-button{
   width: 100%;
   height: 5%;
   font-size: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 .tasklist{
   width: 100%;
   border: 1px red solid;
   height: 40%;
+  font-size: 60px;
+}
+.tasklist > ul{
+  list-style-type: none;
+  padding: 0;
+}
+.tasklist> ul > li {
+  display: flex;
+  border: green 1px solid;
+  width: 100%;
+  align-items: center;
+}
+.tasklist .time{
+  width: 20%;
+}
+.tasklist .name{
+  margin: 0px 15px;
+  padding: 0px   15px;
+  border: 1px solid blue;
+}
+.tasklist .edit{
+  width: 20%;
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Journal</title>
     <link rel="stylesheet" href="./normalize.css">
-    <link rel="stylesheet" href="./cover.css">
+    <link rel="stylesheet" href="./task-form.css">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -16,7 +16,8 @@
   <div class="right">R</div>
 </div>
 
-  <div class="cover slide" data="task-form">
+  <div class="task-form" data="task-form">
+
     <form class="" action="/" method="post">
 
       <div class="task-name">
@@ -96,7 +97,7 @@
 <div class="add-button" data-base="new-task">
   Add a new task
 </div>
-<div class="tasklist">
+<div class="tasklist" data-base="task-list">
   <ul>
       <li>
         <div class="time"><div>9:30</div><div>22:00</div></div>
@@ -109,7 +110,7 @@
 </div>
 </body>
 <script src="./external/handlebars-v4.0.11.js" charset="utf-8"></script>
-<script src="./calendar.js" charset="utf-8"></script>
-<script src="./main.js" charset="utf-8"></script>
-<script src="./button.js" charset="utf-8"></script>
+<script src="./registeringHelpers.js" charset="utf-8"></script>
+<script src="./base.js" charset="utf-8"></script>
+<script src="./task-form.js" charset="utf-8"></script>
 </html>

@@ -16,7 +16,7 @@
   <div class="right">R</div>
 </div>
 
-  <div class="task-form" data="task-form">
+  <div class="task-form slide" data="task-form">
 
     <form class="" action="/" method="post">
 
@@ -29,9 +29,7 @@
         <div class="">
           Date:
         </div>
-        <div class="">
-          1st of January
-        </div>
+        <input name="taskDate" data-task-form="task-date" disabled>
         <div class="" data-task-form="change-button">
           Change
         </div>
@@ -58,9 +56,16 @@
 
       <div class="time">
       <label for="">Starting Time:</label>
-      <input type="number" name="" value="">:<input type="number" name="" value="">
+
+      <div class="">
+      <input type="number" name="startTimeA" value=""> : <input type="number" name="startTimeB" value="">
+      </div>
+
       <label for="">End time:</label>
-      <input type="number" name="" value="">:<input type="number" name="" value="">
+      <div class="">
+      <input type="number" name="endTimeA" value=""> : <input type="number" name="endTimeB" value="">
+      </div>
+
       </div>
     </form>
 

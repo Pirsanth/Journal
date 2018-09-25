@@ -53,19 +53,34 @@
   justify-content: center;
   align-items: center;
 }
+.task-form .date input {
+    text-align: center;
+}
 .task-form .date-picker {
   height: 0%;
-  transform: scaleY(0);
+  transition-property: height;
+  transition-duration: 0.4s;
+  overflow: hidden;
 }
 .task-form .expand{
   height: 40%;
-  transform: scaleY(1);
 }
 .task-form .time {
   display: flex;
   flex-wrap: wrap;
   height: 20%;
 }
+.task-form .time div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 .task-form .time input{
   width: 40%;
+}
+.task-form .time input {
+  text-align: center;
 }

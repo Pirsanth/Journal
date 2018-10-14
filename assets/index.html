@@ -16,7 +16,7 @@
   <div class="right">R</div>
 </div>
 
-  <div class="task-form slide" data="task-form">
+  <div class="task-form" data="task-form">
 
     <form class="" action="/" method="post">
 
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="date-picker" data-task-form="calendar-container">
+      <div class="date-picker" data-task-form="date-picker">
         <table>
           <thead>
             <tr>
@@ -48,8 +48,8 @@
               <th>SUN</th>
             </tr>
           </thead>
-          <tbody data-task-form="calendar">
-
+          <tbody>
+          {{#task-form-calendar this}}<td {{{class}}} {{{data}}} > {{value}}</td>{{/task-form-calendar}}
           </tbody>
         </table>
       </div>
@@ -94,8 +94,8 @@
             <th>SUN</th>
           </tr>
         </thead>
-        <tbody data-base="calendar">
-
+        <tbody>
+        {{#base-calendar this}}<td {{{class}}} {{{data}}} > {{value}}</td>{{/base-calendar}}
         </tbody>
       </table>
 </div>
@@ -114,8 +114,6 @@
   </ul>
 </div>
 </body>
-<script src="./external/handlebars-v4.0.11.js" charset="utf-8"></script>
-<script src="./registeringHelpers.js" charset="utf-8"></script>
 <script src="./base.js" charset="utf-8"></script>
 <script src="./task-form.js" charset="utf-8"></script>
 </html>

@@ -1,13 +1,21 @@
 const makeHTMLFromModel = require("../views/createHTMLFromModel.js");
 
-module.exports = function (res) {
+module.exports = function (user, res) {
     let date = new Date()
     let month = date.getMonth();
     let year = date.getFullYear();
-    var model = require("../model/createNewDataModel.js")(month, year);
-//    console.log(model)
 
-    makeHTMLFromModel(model, (err, result) => {
+require("../model/mongoMonthObjectCollection.js").findModel("user2", month, year, function (err, model) {
+    if(err){
+      console.log(err);
+      return;
+    }
+
+    if(model === null){
+        model = require("../model/createNewDataModel.js")(month, year);
+    }
+
+      makeHTMLFromModel(model, (err, result) => {
         if(err){
           console.log(err);
           res.writeHead(500, {"Content-Type": "application/json"});
@@ -18,5 +26,8 @@ module.exports = function (res) {
 
         res.writeHead(200, {"Content-Type": "text/html"});
         res.end(result);
-    });
+
+      });
+
+});
 }

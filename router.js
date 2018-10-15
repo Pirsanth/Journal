@@ -4,32 +4,36 @@ const handlebars = require("handlebars");
 
 const cssFile = /^\/user\/((styles|task-form|normalize)\.css)$/;
 const jsFile = /^\/user\/((base|task-form)\.js)$/
-const currrentMonth = /^\/user\/current$/
+const currrentMonth = /^\/(user)\/current$/
 
 module.exports.requestHandler = function (req, res) {
         let url = new URL(req.url, "http://localhost:8080");
         let path = url.pathname;
-
-        if(path.match(jsFile)|| path.match(cssFile)){
-            let fileRequested = path.match(jsFile)? path.match(jsFile)[1]: path.match(cssFile)[1];
-            require("./controller/serveStaticFile.js")(fileRequested, res);
-        }
-        /*if(cssFile.test(path) || jsFile.test(path)){
-          require("./controller/serveStaticFile.js")(path, res);
-        }
-        */
-        else if(currrentMonth.test(path)){
+      if(req.method === "GET"){
+          if(path.match(jsFile)|| path.match(cssFile)){
+              let fileRequested = path.match(jsFile)? path.match(jsFile)[1]: path.match(cssFile)[1];
+              require("./controller/serveStaticFile.js")(fileRequested, res);
+          }
+          else if(path.match(currrentMonth)){
+            let user = path.match(currrentMonth)[1];
+            require("./controller/serveCurrentMonth.js")(user, res);
+          }
+          /*
+          else if(currrentMonth.test(path)){
           require("./controller/serveCurrentMonth.js")(res);
-        }
-        else if (path === "/favicon.ico" ){
-          res.writeHead(200, {"Content-Type": "text/html"});
-          res.end();
-        }
+          }
+          */
+          else if (path === "/favicon.ico" ){
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.end();
+          }
+      }
+
 
 }
 
 
-
+// GET, POST, DELETE, PUT
 /*
 fun();
 

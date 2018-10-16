@@ -3,8 +3,12 @@ const fs = require("fs");
 const handlebars = require("handlebars");
 
 const cssFile = /^\/user\/((styles|task-form|normalize)\.css)$/;
-const jsFile = /^\/user\/((base|task-form)\.js)$/
-const currrentMonth = /^\/(user)\/current$/
+const jsFile = /^\/user\/((base|task-form|main)\.js)$/
+const currrentMonth = /^\/(\w+)\/current$/
+
+//\w means a-z, A-Z, 0-9, including the _ (underscore) character.
+//@ and !, etc. does not work
+// the + is for 1 or more
 
 module.exports.requestHandler = function (req, res) {
         let url = new URL(req.url, "http://localhost:8080");
@@ -18,11 +22,6 @@ module.exports.requestHandler = function (req, res) {
             let user = path.match(currrentMonth)[1];
             require("./controller/serveCurrentMonth.js")(user, res);
           }
-          /*
-          else if(currrentMonth.test(path)){
-          require("./controller/serveCurrentMonth.js")(res);
-          }
-          */
           else if (path === "/favicon.ico" ){
             res.writeHead(200, {"Content-Type": "text/html"});
             res.end();

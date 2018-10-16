@@ -1,5 +1,5 @@
 
-module.exports = function (month, year) {
+module.exports = function (month, year, fn) {
     return new monthObject(month, year);
 }
 

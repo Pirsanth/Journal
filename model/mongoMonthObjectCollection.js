@@ -12,7 +12,6 @@ module.exports.findModel = function (user, month, year, fn) {
                       fn(err);
                     }
                     fn(null, obj)
-                    console.log("running")
               })});
 };
 

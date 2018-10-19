@@ -30,7 +30,7 @@ module.exports.requestHandler = function (req, res) {
 
 
 }
-
+//IN ES6 JUST WRITE user in obj
 
 // GET, POST, DELETE, PUT
 //http://localhost:8080/user/current

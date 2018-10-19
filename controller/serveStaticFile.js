@@ -1,6 +1,7 @@
 const fs = require("fs");
-const cssFile = /\.css/;
-const jsFile = /\.js/;
+const cssFile = /^\.css$/;
+const jsFile = /^\.js$/;
+const sendError = require("./helpers.js").handleError;
 
 module.exports = function(path, res) {
 
@@ -12,10 +13,8 @@ module.exports = function(path, res) {
 
   //when readable error on pipe the writable is not closed automatically
   readStream.on("error", function (err) {
-    console.log(err)
-    res.writeHead(500, {"Content-Type": "application/json"});
-    let obj = {error: 500, message: "Internal server error processing request"}
-    res.end(JSON.stringify(obj));
+    console.log(err);
+    sendError(res, 500, "Internal server error processing file request");
   });
 
 }

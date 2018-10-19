@@ -35,5 +35,3 @@ module.exports.saveModel = function (model) {
         });
     });
 }
-
-//console.log(obj)

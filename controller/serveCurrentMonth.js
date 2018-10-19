@@ -13,9 +13,8 @@ database.findModel(user, month, year, function (err, model) {
       console.log(err);
       return;
     }
-
     if(model === null){
-        model = require("../model/createNewDataModel.js")(month, year);
+        model = require("../model/createNewDataModel.js")(user, month, year);
         madeNewModel = true;
     }
 

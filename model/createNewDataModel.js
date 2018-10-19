@@ -1,10 +1,10 @@
 
-module.exports = function (month, year, fn) {
-    return new monthObject(month, year);
+module.exports = function (user, month, year) {
+    return new monthObject(user, month, year);
 }
 
-function monthObject (month, year) {
-  this.user = "user";
+function monthObject (user, month, year) {
+  this.user = user;
   this.month = month;
   this.year = year;
 

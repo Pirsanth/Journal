@@ -3,7 +3,7 @@ const fs = require("fs");
 const handlebars = require("handlebars");
 
 const cssFile = /^\/(\w+)\/((styles|task-form|normalize)\.css)$/;
-const jsFile = /^\/(\w+)\/((base|task-form|main)\.js)$/
+const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main)\.js)$/
 const currrentMonth = /^\/(\w+)\/current$/
 
 //\w means a-z, A-Z, 0-9, including the _ (underscore) character.
@@ -18,7 +18,7 @@ module.exports.requestHandler = function (req, res) {
             let fileRequested = path.match(jsFile)? path.match(jsFile)[2]: path.match(cssFile)[2];
             require("./controller/serveStaticFile.js")(fileRequested, res);
           }
-          else if(path.match(currrentMonth)){
+          else if(currrentMonth.test(path)){
             let user = path.match(currrentMonth)[1];
             require("./controller/serveCurrentMonth.js")(user, res);
           }

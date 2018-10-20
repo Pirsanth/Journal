@@ -8,7 +8,7 @@ module.exports.findModel = function (user, month, year, fn) {
             fn(err)
             return;
           }
-              coll.findOne({user: user, month: month, year: year},
+              coll.findOne({user: user, month: month, year: year}, {projection: {_id:0, startIndex:0}},
                 function(err, obj) {
                     if(err){
                       fn(err);

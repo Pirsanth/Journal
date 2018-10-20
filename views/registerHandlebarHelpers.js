@@ -1,5 +1,7 @@
 const Handlebars = require("handlebars");
 
+//For the task-list helper include startTime, endTime, taskName
+
 module.exports = function () {
 
   Handlebars.registerHelper("base-calendar", function (obj, options) {
@@ -80,6 +82,4 @@ module.exports = function () {
   }
   })
 
-//For the task-list helper include startTime, endTime, taskName
-
-}
+};

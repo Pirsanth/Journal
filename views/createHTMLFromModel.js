@@ -2,7 +2,6 @@ const handlebars = require("handlebars");
 //simply requires a function and calls it
 require("./registerHandlebarHelpers.js")();
 const fs = require("fs");
-//let html = require("../assets/index.html");
 
 module.exports = function (model, cb) {
     //this reads it asynchronously but buffers the entire file

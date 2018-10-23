@@ -16,20 +16,20 @@
   <div class="right">R</div>
 </div>
 
-  <div class="task-form" data="task-form">
+  <div class="task-form slide" data="task-form">
 
     <form class="">
 
       <div class="task-name">
       <label for="taskName">Task Name:</label>
-      <input type="text" name="taskName" value="" id="taskName">
+      <input type="text" name="taskName" value="Clean laundry" id="taskName">
       </div>
 
       <div class="date">
         <div class="">
           Date:
         </div>
-        <input name="taskDate" data-task-form="task-date" disabled>
+        <input name="taskDate" data-task-form="task-date" readonly>
         <div class="" data-task-form="change-button">
           Change
         </div>
@@ -49,7 +49,7 @@
             </tr>
           </thead>
           <tbody>
-          {{#task-form-calendar this}}<td {{{class}}} {{{data}}} > {{value}}</td>{{/task-form-calendar}}
+          {{#task-form-calendar this}}<td{{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
           </tbody>
         </table>
       </div>
@@ -58,15 +58,16 @@
       <label for="">Starting Time:</label>
 
       <div class="">
-      <input type="number" name="startTimeA" value=""> : <input type="number" name="startTimeB" value="">
+      <input type="number" name="startTimeA" value="9"> : <input type="number" name="startTimeB" value="30">
       </div>
 
       <label for="">End time:</label>
       <div class="">
-      <input type="number" name="endTimeA" value=""> : <input type="number" name="endTimeB" value="">
+      <input type="number" name="endTimeA" value="10"> : <input type="number" name="endTimeB" value="00">
+      </div>
       </div>
 
-      </div>
+      <input type="submit" name="Send form" value="">
     </form>
 
     <div class="buttons-container">
@@ -95,7 +96,7 @@
           </tr>
         </thead>
         <tbody>
-        {{#base-calendar this}}<td {{{class}}} {{{data}}} > {{value}}</td>{{/base-calendar}}
+        {{#base-calendar this}}<td{{{class}}} {{{data}}}>{{value}}</td>{{/base-calendar}}
         </tbody>
       </table>
 </div>
@@ -116,5 +117,6 @@
 </body>
 <script src="./base.js" charset="utf-8"></script>
 <script src="./task-form.js" charset="utf-8"></script>
+<script src="./ajaxCommunication.js" charset="utf-8"></script>
 <script src="./main.js" charset="utf-8"></script>
 </html>

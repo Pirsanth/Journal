@@ -4,11 +4,13 @@
   "description": "A fullstack journal web app with mongodb for the database, node for the server and just html, css and javascript for the frontend",
   "private": true,
   "dependencies": {
-    "nodemon": "^1.17.3",
-    "mongodb": "^3.0.0",
-    "handlebars": "^4.0.0"
+    "handlebars": "^4.0.12",
+    "mongodb": "^3.0.0"
   },
   "scripts": {
     "dev": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.5"
   }
 }

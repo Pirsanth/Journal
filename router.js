@@ -3,7 +3,7 @@ const fs = require("fs");
 const handlebars = require("handlebars");
 
 const cssFile = /^\/(\w+)\/((styles|task-form|normalize)\.css)$/;
-const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main)\.js)$/;
+const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main|handlebars-v4\.0\.11)\.js)$/;
 const getMonthHTML = /^\/(\w+)\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).html$/;
 
 const getMonthObject = /^\/(\w+)\/monthObject\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).json$/;
@@ -33,7 +33,7 @@ module.exports.requestHandler = function (req, res) {
           else if(getMonthObject.test(path)){
             let match = path.match(getMonthObject);
             let [, user, , month, year] = match;
-            
+
             require("./controller/getMonthObject.js")(user, month, year, res);
           }
           else if(getDayTaskArray.test(path)){

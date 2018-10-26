@@ -29,7 +29,7 @@
         <div class="">
           Date:
         </div>
-        <input name="taskDate" data-task-form="task-date" readonly>
+        <input name="taskDate" data-task-form="task-date" readonly value="11st">
         <div class="" data-task-form="change-button">
           Change
         </div>
@@ -49,7 +49,7 @@
             </tr>
           </thead>
           <tbody>
-          {{#task-form-calendar this}}<td{{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
+          {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
           </tbody>
         </table>
       </div>
@@ -58,15 +58,17 @@
       <label for="">Starting Time:</label>
 
       <div class="">
-      <input type="number" name="startTimeA" value="9"> : <input type="number" name="startTimeB" value="30">
+      <input type="number" name="startTimeHours" value="9"> : <input type="number" name="startTimeMinutes" value="30">
       </div>
 
       <label for="">End time:</label>
       <div class="">
-      <input type="number" name="endTimeA" value="10"> : <input type="number" name="endTimeB" value="00">
+      <input type="number" name="endTimeHours" value="10"> : <input type="number" name="endTimeMinutes" value="00">
       </div>
       </div>
-
+      <input type="text" name="user" value={{user}} hidden>
+      <input type="text" name="month" value={{month}} hidden>
+      <input type="text" name="year" value={{year}} hidden>
       <input type="submit" name="Send form" value="">
     </form>
 
@@ -96,7 +98,7 @@
           </tr>
         </thead>
         <tbody>
-        {{#base-calendar this}}<td{{{class}}} {{{data}}}>{{value}}</td>{{/base-calendar}}
+        {{#base-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/base-calendar}}
         </tbody>
       </table>
 </div>

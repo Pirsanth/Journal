@@ -2,13 +2,16 @@ const makeHTMLFromModel = require("../views/createHTMLFromModel.js");
 const database = require("../model/mongoMonthObjectCollection.js");
 const sendError = require("./helpers.js").handleError;
 
-module.exports = function (user, res) {
-    let date = new Date()
-    let month = date.getMonth();
-    let year = date.getFullYear();
-    let madeNewModel = false;
+module.exports = function (user, month, year, res) {
+/*    let date = new Date()
+let month = date.getMonth();
+let year = date.getFullYear();
+*/
+//so now month and year are strings
+let madeNewModel = false;
 
-database.findModel(user, month, year, function (err, model) {
+database.internalFindModel(user, month, year, function (err, model) {
+
     if(err){
       console.log(err);
       sendError(res, 500, "Internal server error processing page request");
@@ -30,11 +33,12 @@ database.findModel(user, month, year, function (err, model) {
         res.end(result);
 
         if(madeNewModel){
-          database.saveModel(model, function (err) {
+          database.saveNewModel(model, function (err, resultObject) {
             if(err){
               console.log(`Problem saving model of user named ${user} for ${month}-${year}`);
               return;
             }
+            console.log(`New model for user: ${user} saved for month-year: ${month}-${year}`);
           });
         }
       });

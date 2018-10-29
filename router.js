@@ -3,7 +3,7 @@ const fs = require("fs");
 const handlebars = require("handlebars");
 
 const cssFile = /^\/(\w+)\/((styles|task-form|normalize)\.css)$/;
-const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main|handlebars-v4\.0\.11)\.js)$/;
+const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main|viewAndModel|handlebars-v4\.0\.11)\.js)$/;
 const getMonthHTML = /^\/(\w+)\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).html$/;
 
 const getMonthObject = /^\/(\w+)\/monthObject\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).json$/;

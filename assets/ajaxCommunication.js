@@ -28,12 +28,12 @@
       }
       xhr.send(queryString);
   };
-  AjaxCommunication.prototype.getModel = function () {
+  AjaxCommunication.prototype.getModel = function (fn) {
       let xhr = new XMLHttpRequest();
       xhr.open("GET", this.getModelURL);
       xhr.onload = function () {
         if(this.status === 200){
-          console.log(this.responseText);
+          fn(this.responseText);
         }
       }
       xhr.send();

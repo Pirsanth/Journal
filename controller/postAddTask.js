@@ -21,8 +21,8 @@ module.exports = function (req, res) {
           endMinutesAfterOffset = getMinutesAfterOffset(endTimeMinutes, offset)
           dayIndex = getDayIndex(taskDate);
 
-      let startTimeUTC = new Date(Date.UTC(year, month, dayIndex + 1, startTimeHours, startMinutesAfterOffset));
-      let endTimeUTC = new Date(Date.UTC(year, month, dayIndex + 1, endTimeHours, endMinutesAfterOffset));
+      let startDateServer = new Date(Date.UTC(year, month, dayIndex + 1, startTimeHours, startMinutesAfterOffset));
+      let endDateServer = new Date(Date.UTC(year, month, dayIndex + 1, endTimeHours, endMinutesAfterOffset));
 
       database.internalFindModel(user, month, year, function (err, model) {
           if(err){
@@ -36,7 +36,7 @@ module.exports = function (req, res) {
           //do not need an else because there are return statements after sending errors
 
           //I do not use a return value because model is an object and it will be passed and modified by reference
-          addTaskToModel(model, dayIndex, startTimeUTC, endTimeUTC, taskName);
+          addTaskToModel(model, dayIndex, startDateServer, endDateServer, taskName);
 
           database.updateDayArray(user, month, year, dayIndex, model.dayArray[dayIndex].tasks, function (err, resultObject) {
               if(err){
@@ -77,21 +77,20 @@ function getDayIndex(taskDate) {
   let dateFromZeroIndex = actualDate - 1;
   return dateFromZeroIndex;
 }
-function addTaskToModel(model, dayIndex, startTimeUTC, endTimeUTC, taskName) {
-    let obj = {startTimeUTC, endTimeUTC, taskName},
+function addTaskToModel(model, dayIndex, startDateServer, endDateServer, taskName) {
+    let obj = {startDateServer, endDateServer, taskName},
         taskArray = model.dayArray[dayIndex].tasks;
-        console.log(obj)
+
         if(taskArray.length === 0){
           taskArray.push(obj);
         }
-
         else{
               for(let i=0; i<taskArray.length; i++){
-                if(taskArray[i].startTimeUTC < obj.startTimeUTC){
+                if(taskArray[i].startDateServer < obj.startDateServer){
                   taskArray.splice(i+1, 0, obj);
                   break;
                 }
-                else if(taskArray[i].startTimeUTC = obj.startTimeUTC){
+                else if(taskArray[i].startDateServer.getTime() === obj.startDateServer.getTime()){
                   taskArray.splice(i, 0, obj);
                   break;
                 }

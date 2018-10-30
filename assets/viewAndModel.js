@@ -11,7 +11,6 @@
 
     ViewAndModel.prototype.setModel = function (model) {
         this.model = model;
-        window.z = model;
     };
     ViewAndModel.prototype.makeTaskListFromDayIndex = function (dayIndex) {
       let tasksArray = this.model.data.dayArray[dayIndex].tasks;
@@ -27,12 +26,16 @@
       }
 
     }
-    ViewAndModel.prototype.addTaskToInternalModel = function () {
-
+    ViewAndModel.prototype.addTaskToInternalModel = function (dayIndex, startDateClient, endDateClient, taskName) {
+        addTaskToModel(this.model, dayIndex, startDateClient, endDateClient, taskName);
     };
     ViewAndModel.prototype.initializeHandlebars = function () {
       Handlebars.registerHelper("currentTimeString", function (dateObj) {
-        return `${dateObj.getHours()}:${dateObj.getMinutes()}`
+        let hours = dateObj.getHours();
+        let minutes = dateObj.getMinutes();
+        
+        minutes = (minutes<10 && minutes>=0)? `0${minutes}`: minutes;
+        return `${hours}:${minutes}`
       });
 
       HANDLEBARS_COMPILED_FN = Handlebars.compile(TASK_LIST_HANDLEBARS_STRING);
@@ -55,7 +58,33 @@
         return true;
       }
     }
+    function addTaskToModel(model, dayIndex, startDateClient, endDateClient, taskName) {
+        let obj = {startDateClient, endDateClient, taskName},
+            taskArray = model.dayArray[dayIndex].tasks;
 
+            if(!isLocalDatePresent(taskArray)){
+              addLocalDateToObjectsInArray(taskArray);
+            }
+
+            if(taskArray.length === 0){
+              taskArray.push(obj);
+            }
+            else{
+                  for(let i=0; i<taskArray.length; i++){
+                    if(taskArray[i].startDateClient < obj.startDateClient){
+                      taskArray.splice(i+1, 0, obj);
+                      break;
+                    }
+                    else if(taskArray[i].startDateClient.getTime() === obj.startDateClient.getTime()){
+                      taskArray.splice(i, 0, obj);
+                      break;
+                    }
+                    else if(i === taskArray.length -1){
+                      taskArray.push(obj);
+                    }
+                  }
+            }
+    }
 
     Application.ViewAndModel = ViewAndModel;
     window.Application = Application;

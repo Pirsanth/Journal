@@ -39,23 +39,10 @@
   TaskForm.prototype.addFormSubmitHandler = function (fn) {
       this.form.addEventListener("submit", (event) =>{
           event.preventDefault();
-
-          let formData = new FormData(this.form),
-              queryString = "";
-
-          for(let i of formData){
-             let key = i[0],
-                 value = encodeURIComponent(i[1]).replace(/%20/g, "+");
-
-                 queryString += `${key}=${value}`;
-              if(key !== "year"){
-                 queryString += "&";
-              }
-          }
-        fn(queryString);
+          let formData = new FormData(this.form);
+        fn(makeQueryString(formData), makeTaskDataObject(formData));
     });
     }
-
 
   TaskForm.prototype.toggleVisibility = function () {
       this.container.classList.toggle("slide");
@@ -69,7 +56,42 @@
       }
       return obj
   }
+  function makeQueryString(formData) {
+      let queryString = "";
 
+      for(let i of formData){
+         let key = i[0],
+             value = encodeURIComponent(i[1]).replace(/%20/g, "+");
+
+             queryString += `${key}=${value}`;
+          if(key !== "year"){
+             queryString += "&";
+          }
+      }
+      return queryString;
+  }
+  function makeTaskDataObject (formData) {
+    let data = {};
+    for(let i of formData){
+      data[i[0]] = i[1];
+    }
+
+    let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, month, year, taskDate, taskName} = data;
+    let dayIndex = getDayIndex(taskDate);
+
+    return {
+      startDateClient: new Date(year, month, dayIndex+1, startTimeHours, startTimeMinutes),
+      endDateClient: new Date(year, month, dayIndex+1, endTimeHours, endTimeMinutes),
+      dayIndex,
+      taskName
+    }
+  }
+  function getDayIndex(taskDate) {
+    let endPosition = taskDate.indexOf("s")
+    let actualDate = taskDate.substring(0, endPosition);
+    let dateFromZeroIndex = actualDate - 1;
+    return dateFromZeroIndex;
+  }
   Application.TaskForm = TaskForm;
   window.Application = Application;
 

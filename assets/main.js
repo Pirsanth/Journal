@@ -13,9 +13,9 @@
     let viewAndModel = new ViewAndModel();
         viewAndModel.initializeHandlebars();
 
-    ajaxCommunication.getModel(function (model) {
-          model = JSON.parse(model);
-          viewAndModel.setModel(model);
+    ajaxCommunication.getModel(function (responseText) {
+          let responseJSON = JSON.parse(responseText);
+          viewAndModel.setModel(responseJSON.data);
           base.makeTaskListUpdateOnCalendarClick(function (dayIndex) {
               let domString = viewAndModel.makeTaskListFromDayIndex(dayIndex);
               base.apppendToTaskList(domString);
@@ -28,12 +28,14 @@
     });
     taskForm.addChangeDateHandler();
     taskForm.addTaskFormClickableHandler();
-    taskForm.addFormSubmitHandler(function (queryString) {
+    taskForm.addFormSubmitHandler(function (queryString, taskDataObject) {
         queryString = ajaxCommunication.addTimezonOffsetToQueryString(queryString);
         ajaxCommunication.sendPOST(queryString, function (response) {
-          console.log(`Success this is the response: ${response}`);
+          console.log(`Server successfully saved task ${taskDataObject.taskName}`);
         });
+        viewAndModel.addTaskToInternalModel(taskDataObject);
         taskForm.toggleVisibility();
+
     });
 
 

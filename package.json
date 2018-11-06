@@ -4,13 +4,17 @@
   "description": "A fullstack journal web app with mongodb for the database, node for the server and just html, css and javascript for the frontend",
   "private": true,
   "dependencies": {
+    "gulp-babel": "^8.0.0",
     "handlebars": "^4.0.12",
-    "mongodb": "^3.0.0"
+    "mongodb": "^3.0.0",
+    "save-dev": "^2.0.0"
   },
   "scripts": {
     "dev": "nodemon index.js"
   },
   "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "gulp": "^3.9.1",
     "nodemon": "^1.18.5"
   }
 }

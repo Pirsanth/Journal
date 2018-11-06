@@ -11,29 +11,31 @@
 
     ViewAndModel.prototype.setModel = function (model) {
         this.model = model;
+        window.z = model;
     };
     ViewAndModel.prototype.makeTaskListFromDayIndex = function (dayIndex) {
-      let tasksArray = this.model.data.dayArray[dayIndex].tasks;
+      let tasksArray = this.model.dayArray[dayIndex].tasks;
 
       if(tasksArray.length !== 0){
-        if(!isLocalDatePresent(tasksArray)){
-          addLocalDateToObjectsInArray(tasksArray);
-        }
-        return HANDLEBARS_COMPILED_FN(tasksArray);
+
+          if(!isLocalDatePresent(tasksArray)){
+            addLocalDateToObjectsInArray(tasksArray);
+          }
+          return HANDLEBARS_COMPILED_FN(tasksArray);
       }
       else{
         return "<li>No tasks added yet</li>"
       }
 
     }
-    ViewAndModel.prototype.addTaskToInternalModel = function (dayIndex, startDateClient, endDateClient, taskName) {
-        addTaskToModel(this.model, dayIndex, startDateClient, endDateClient, taskName);
+    ViewAndModel.prototype.addTaskToInternalModel = function (taskDataObject) {
+        addTaskToModelThenSort(this.model, taskDataObject);
     };
     ViewAndModel.prototype.initializeHandlebars = function () {
       Handlebars.registerHelper("currentTimeString", function (dateObj) {
         let hours = dateObj.getHours();
         let minutes = dateObj.getMinutes();
-        
+
         minutes = (minutes<10 && minutes>=0)? `0${minutes}`: minutes;
         return `${hours}:${minutes}`
       });
@@ -58,20 +60,36 @@
         return true;
       }
     }
-    function addTaskToModel(model, dayIndex, startDateClient, endDateClient, taskName) {
+    function addTaskToModelThenSort(model, {dayIndex, startDateClient, endDateClient, taskName}) {
         let obj = {startDateClient, endDateClient, taskName},
-            taskArray = model.dayArray[dayIndex].tasks;
+            tasksArray = model.dayArray[dayIndex].tasks;
 
-            if(!isLocalDatePresent(taskArray)){
-              addLocalDateToObjectsInArray(taskArray);
+            if(tasksArray.length !==0){
+              if(!isLocalDatePresent(tasksArray)){
+                addLocalDateToObjectsInArray(tasksArray);
+              }
+              tasksArray.push(obj);
+              tasksArray.sort(function (a, b) {
+                  return a.startDateClient.getTime() - b.startDateClient.getTime();
+              });
             }
-
+            else {
+              tasksArray.push(obj);
+            }
+/*
             if(taskArray.length === 0){
               taskArray.push(obj);
             }
             else{
+              if(!isLocalDatePresent(taskArray)){
+                addLocalDateToObjectsInArray(taskArray);
+              }
                   for(let i=0; i<taskArray.length; i++){
-                    if(taskArray[i].startDateClient < obj.startDateClient){
+                    if(i===0 && obj.startDateClient < taskArray[0].startDateClient){
+                      taskArray.ushift(obj);
+                      break;
+                    }
+                    else if(taskArray[i].startDateClient < obj.startDateClient){
                       taskArray.splice(i+1, 0, obj);
                       break;
                     }
@@ -81,9 +99,11 @@
                     }
                     else if(i === taskArray.length -1){
                       taskArray.push(obj);
+                      break;
                     }
                   }
-            }
+                }
+                */
     }
 
     Application.ViewAndModel = ViewAndModel;

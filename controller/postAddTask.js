@@ -36,7 +36,7 @@ module.exports = function (req, res) {
           //do not need an else because there are return statements after sending errors
 
           //I do not use a return value because model is an object and it will be passed and modified by reference
-          addTaskToModel(model, dayIndex, startDateServer, endDateServer, taskName);
+          addTaskToModelThenSort(model, dayIndex, startDateServer, endDateServer, taskName);
 
           database.updateDayArray(user, month, year, dayIndex, model.dayArray[dayIndex].tasks, function (err, resultObject) {
               if(err){
@@ -77,15 +77,22 @@ function getDayIndex(taskDate) {
   let dateFromZeroIndex = actualDate - 1;
   return dateFromZeroIndex;
 }
-function addTaskToModel(model, dayIndex, startDateServer, endDateServer, taskName) {
+function addTaskToModelThenSort(model, dayIndex, startDateServer, endDateServer, taskName) {
     let obj = {startDateServer, endDateServer, taskName},
-        taskArray = model.dayArray[dayIndex].tasks;
+        tasksArray = model.dayArray[dayIndex].tasks;
 
+        tasksArray.push(obj)
+        if(tasksArray.length > 1){
+          tasksArray.sort(function (a, b) {
+              return a.startDateServer.getTime() - b.startDateServer.getTime();
+          });
+      }
+/*
         if(taskArray.length === 0){
           taskArray.push(obj);
         }
         else{
-              for(let i=0; i<taskArray.length; i++){
+              for(let i=0; i<tasksArray.length; i++){
                 if(taskArray[i].startDateServer < obj.startDateServer){
                   taskArray.splice(i+1, 0, obj);
                   break;
@@ -96,7 +103,9 @@ function addTaskToModel(model, dayIndex, startDateServer, endDateServer, taskNam
                 }
                 else if(i === taskArray.length -1){
                   taskArray.push(obj);
+                  break;
                 }
               }
         }
+  */
 }

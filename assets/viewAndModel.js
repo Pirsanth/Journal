@@ -11,7 +11,6 @@
 
     ViewAndModel.prototype.setModel = function (model) {
         this.model = model;
-        window.z = model;
     };
     ViewAndModel.prototype.makeTaskListFromDayIndex = function (dayIndex) {
       let tasksArray = this.model.dayArray[dayIndex].tasks;

@@ -1,24 +1,18 @@
 const Handlebars = require("handlebars");
 
 //For the task-list helper include startTime, endTime, taskName
+//{class: 'class="free"', data: 'data-base-calendar = "clickable"', value: index + 1 + "st"}
+//for day cells
+//this.numberOfDays this.startIndex
 
 module.exports = function () {
 
-  Handlebars.registerHelper("base-calendar", function (obj, options) {
+  Handlebars.registerHelper("base-calendar", function ({startIndex, numberOfDays}, options) {
     let string = "<tr>";
     let totalTally = 0;
-    let modifiedDayArray = obj.dayArray.map(function (currentValue, index) {
-
-            if(currentValue.tasks.length === 0){
-              return {class: 'class="free"', data: 'data-base-calendar = "clickable"', value: index + 1 + "st"}
-            }
-            else{
-              return {class: 'class="checked"', data: 'data-base-calendar = "clickable"', value: index + 1 + "st"}
-            }
-    })
 
   //This is a summary of the logic
-  makeBlankCells(obj.startIndex);
+  makeBlankCells(startIndex);
   makeDayCells();
   let remaining = 42-totalTally;
   makeBlankCells(remaining);
@@ -36,25 +30,22 @@ module.exports = function () {
   }
 
   function makeDayCells(){
-    for(i=0; i<modifiedDayArray.length; i++){
+    for(i=0; i<numberOfDays; i++){
         if(totalTally%7 === 0 && totalTally !== 0){
           string += "</tr><tr>";
         }
-        string += options.fn(modifiedDayArray[i]);
+        string += options.fn({class: 'class="free"', data: 'data-base-calendar = "clickable"', value: `${i+1}st`});
         totalTally++;
     }
   }
 });
-
-  Handlebars.registerHelper("task-form-calendar", function (obj, options) {
+//{data: 'data-task-form-calendar = "clickable"', value: index + 1 + "st"}
+  Handlebars.registerHelper("task-form-calendar", function ({startIndex, numberOfDays}, options) {
     let string = "<tr>";
     let totalTally = 0;
-    let modifiedDayArray = obj.dayArray.map(function (currentValue, index) {
-              return {data: 'data-task-form-calendar = "clickable"', value: index + 1 + "st"}
-    })
 
   //This is a summary of the logic
-  makeBlankCells(obj.startIndex);
+  makeBlankCells(startIndex);
   makeDayCells();
   let remaining = 42-totalTally;
   makeBlankCells(remaining);
@@ -72,11 +63,11 @@ module.exports = function () {
   }
 
   function makeDayCells(){
-    for(i=0; i<modifiedDayArray.length; i++){
+    for(i=0; i<numberOfDays; i++){
           if(totalTally%7 === 0 && totalTally !== 0){
           string += "</tr><tr>";
           }
-        string += options.fn(modifiedDayArray[i]);
+        string += options.fn({data: 'data-task-form-calendar = "clickable"', value: `${i+1}st`});
         totalTally++;
     }
   }

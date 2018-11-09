@@ -14,7 +14,6 @@ let context = createHandlebarsContextObject(user, month, year)
         }
         res.writeHead(200, {"Content-Type": "text/html"});
         res.end(result);
-        console.log("got here")
     })
 
 }

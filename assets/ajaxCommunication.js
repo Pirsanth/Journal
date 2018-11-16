@@ -3,8 +3,8 @@
 
   let Application = window.Application || {};
 
-  const POST_URL = "http://localhost:8080/addTask";
-  const BASE_URL = "http://localhost:8080";
+  const POST_URL = "http://localhost:3000/addTask";
+  const BASE_URL = "http://localhost:3000";
 
   function AjaxCommunication({user, month, year}) {
       this.user = user;

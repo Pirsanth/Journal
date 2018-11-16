@@ -6,7 +6,8 @@
   const TASK_FORM_SELECTOR = '[data="task-form"]';
   const TASK_FORM_ADD_TASK_BUTTON = '[data-task-form = "add-task"]';
   const TASK_FORM_CANCEL_TASK_BUTTON = '[data-task-form = "cancel-task"]';
-  const TASK_FORM_CHANGE_DATE_BUTTON = '[data-task-form="change-button"]';
+  const TASK_FORM_CHANGE_DATE_BUTTON1 = '[data-task-form="change-button1"]';
+  const TASK_FORM_CHANGE_DATE_BUTTON2 = '[data-task-form="change-button2"]';
   const TASK_FORM_CALENDAR_CLICKABLE = '[data-task-form-calendar="clickable"]';
   const FORM_CONTROLS_COLLECTION = document.forms[0].elements;
   const TASK_FORM_CALENDAR_CONTAINER = '[data-task-form="date-picker"]';
@@ -50,7 +51,7 @@
   TaskForm.prototype.getUserData = function () {
       let obj = {};
 
-      for(let i=6; i<9; i++){
+      for(let i=7; i<10; i++){
         obj[FORM_CONTROLS_COLLECTION[i].name] = FORM_CONTROLS_COLLECTION[i].value;
         //this is fine because the the output of the name property is a string
       }

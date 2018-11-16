@@ -1,7 +1,7 @@
 *{
   padding: 0;
-  box-sizing: border-box;
   margin: 0;
+  box-sizing: border-box;
 }
 html{
     height: 100%;
@@ -86,7 +86,7 @@ td{
 }
 .tasklist .name{
   margin: 0px 15px;
-  padding: 0px   15px;
+  padding: 0px 15px;
   border: 1px solid blue;
 }
 .tasklist .edit{

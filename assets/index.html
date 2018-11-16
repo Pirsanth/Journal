@@ -16,7 +16,7 @@
   <div class="right">R</div>
 </div>
 
-  <div class="task-form" data="task-form">
+  <div class="task-form-container" data="task-form">
 
     <form class="">
 
@@ -25,61 +25,104 @@
       <input type="text" name="taskName" value="Clean laundry" id="taskName">
       </div>
 
-      <div class="date">
-        <div class="">
-          Date:
-        </div>
-        <input name="taskDate" data-task-form="task-date" readonly value="11st">
-        <div class="" data-task-form="change-button">
-          Change
-        </div>
-      </div>
 
-      <div class="date-picker" data-task-form="date-picker">
-        <table>
-          <thead>
-            <tr>
-              <th>MON</th>
-              <th>TUE</th>
-              <th>WED</th>
-              <th>THU</th>
-              <th>FRI</th>
-              <th>SAT</th>
-              <th>SUN</th>
-            </tr>
-          </thead>
-          <tbody>
-          {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
-          </tbody>
-        </table>
-      </div>
+
+        <div class="title">Start</div>
+
+        <div class="date">
+          <div class="">
+            Date:
+          </div>
+          <div class="">
+            <input name="taskDate" data-task-form="task-date" readonly value="11st">
+            <div class="" data-task-form="change-button">
+              Change
+            </div>
+          </div>
+        </div>
+
+        <div class="date-picker" data-task-form="date-picker">
+          <table>
+            <thead>
+              <tr>
+                <th>MON</th>
+                <th>TUE</th>
+                <th>WED</th>
+                <th>THU</th>
+                <th>FRI</th>
+                <th>SAT</th>
+                <th>SUN</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
+            </tbody>
+          </table>
+        </div>
 
       <div class="time">
-      <label for="">Starting Time:</label>
-
-      <div class="">
-      <input type="number" name="startTimeHours" value="9"> : <input type="number" name="startTimeMinutes" value="30">
+        <label for="">Time:</label>
+        <input type="number" name="startTimeHours" value="9" maxlength="2"> : <input type="number" name="startTimeMinutes" value="30" maxlength="2">
       </div>
 
-      <label for="">End time:</label>
-      <div class="">
-      <input type="number" name="endTimeHours" value="10"> : <input type="number" name="endTimeMinutes" value="00">
-      </div>
-      </div>
+
+
+        <div class="title">End of Task</div>
+        <div class="date">
+          <div class="">
+            Date:
+          </div>
+          <div class="">
+            <input name="taskDate" data-task-form="task-date" readonly value="11st">
+            <div class="" data-task-form="change-button">
+              Change
+            </div>
+          </div>
+        </div>
+
+        <div class="date-picker" data-task-form="date-picker">
+          <table>
+            <thead>
+              <tr>
+                <th>MON</th>
+                <th>TUE</th>
+                <th>WED</th>
+                <th>THU</th>
+                <th>FRI</th>
+                <th>SAT</th>
+                <th>SUN</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
+            </tbody>
+          </table>
+        </div>
+
+  <div class="time">
+        <div class="">
+          Time:
+        </div>
+        <div class="">
+        <input type="number" name="endTimeHours" value="10" maxlength="2"> : <input type="number" name="endTimeMinutes" value="00" maxlength="2">
+        </div>
+  </div>
+
+
       <input type="text" name="user" value={{user}} hidden>
       <input type="text" name="month" value={{month}} hidden>
       <input type="text" name="year" value={{year}} hidden>
-      <input type="submit" name="Send form" value="">
+
+  <div class="button-container">
+  <div class="">
+    Submit
+  </div>
+  <div class="">
+    Cancel
+  </div>
+  </div>
     </form>
 
-    <div class="buttons-container">
-      <div class="add" data-task-form = "add-task">
-        Add new Task
-      </div>
-      <div class="cancel" data-task-form = "cancel-task">
-          Cancel
-      </div>
-    </div>
 
   </div>
 

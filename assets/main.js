@@ -35,8 +35,5 @@
         });
         viewAndModel.addTaskToInternalModel(taskDataObject);
         taskForm.toggleVisibility();
-
     });
-
-
 })(window)

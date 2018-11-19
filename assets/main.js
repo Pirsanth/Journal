@@ -26,6 +26,7 @@
     base.addNewTaskHandler(function () {
       taskForm.toggleVisibility();
     });
+    base.addMainMenuHandler();
     taskForm.addChangeDateHandler();
     taskForm.addTaskFormClickableHandler();
     taskForm.addFormSubmitHandler(function (queryString, taskDataObject) {
@@ -36,4 +37,8 @@
         viewAndModel.addTaskToInternalModel(taskDataObject);
         taskForm.toggleVisibility();
     });
+
+    document.getElementById("check").addEventListener("click", function (e) {
+      alert("Clicked");
+    })
 })(window)

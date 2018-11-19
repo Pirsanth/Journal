@@ -2,130 +2,138 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <title>Journal</title>
     <link rel="stylesheet" href="./normalize.css">
-    <link rel="stylesheet" href="./task-form.css">
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./task-form.css">
   </head>
   <body>
+    <div class="main-menu-container" data-main-menu="container">
+      <nav>
+        <ul>
+          <li>Home</li>
+          <li id="check">Usage statistics</li>
+          <li>Future tasks</li>
+          <li>Logout</li>
+        </ul>
+      </nav>
+    </div>
+    <div class="task-form-container" data="task-form">
+      <form class="">
+        <div class="month">
+          January 2018
+        </div>
+        <div class="task-name">
+        <label for="taskName">Task Name:</label>
+        <input type="text" name="taskName" value="Clean laundry" id="taskName">
+        </div>
+
+          <div class="title">Start</div>
+          <div class="date">
+            <div class="">
+              Date:
+            </div>
+            <div class="">
+              <input name="taskDate" data-task-form="task-date" readonly value="11st">
+              <div class="change-button" data-task-form="change-button1">
+                Change
+              </div>
+            </div>
+          </div>
+
+          <div class="date-picker" data-task-form="date-picker">
+            <table>
+              <thead>
+                <tr>
+                  <th>MON</th>
+                  <th>TUE</th>
+                  <th>WED</th>
+                  <th>THU</th>
+                  <th>FRI</th>
+                  <th>SAT</th>
+                  <th>SUN</th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
+              </tbody>
+            </table>
+          </div>
+
+        <div class="time">
+          <div class="">Time:</div>
+          <input type="number" name="startTimeHours" value="9" maxlength="2"> : <input type="number" name="startTimeMinutes" value="30" maxlength="2">
+        </div>
+
+
+
+          <div class="title">End of Task</div>
+          <div class="date">
+            <div class="">
+              Date:
+            </div>
+            <div class="">
+              <input name="taskDate" data-task-form="task-date" readonly value="11st">
+              <div class="change-button" data-task-form="change-button">
+                Change
+              </div>
+            </div>
+          </div>
+
+          <div class="date-picker" data-task-form="date-picker">
+            <table>
+              <thead>
+                <tr>
+                  <th>MON</th>
+                  <th>TUE</th>
+                  <th>WED</th>
+                  <th>THU</th>
+                  <th>FRI</th>
+                  <th>SAT</th>
+                  <th>SUN</th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
+              </tbody>
+            </table>
+          </div>
+
+    <div class="time">
+          <div class="">
+            Time:
+          </div>
+
+          <input type="number" name="endTimeHours" value="10" maxlength="2"> : <input type="number" name="endTimeMinutes" value="00" maxlength="2">
+
+    </div>
+
+
+        <input type="text" name="user" value={{user}} hidden>
+        <input type="text" name="month" value={{month}} hidden>
+        <input type="text" name="year" value={{year}} hidden>
+
+    <div class="button-container">
+    <div class="">
+      Submit
+    </div>
+    <div class="">
+      Cancel
+    </div>
+    </div>
+      </form>
+    </div>
+
+<div class="body-container1">
 <div class="banner">
-  <div class="left">L</div>
+  <div class="left" data-base="main-menu-button">></div>
   <div class="month">
     January 2018
   </div>
   <div class="right">R</div>
+
 </div>
-
-  <div class="task-form-container" data="task-form">
-
-    <form class="">
-
-      <div class="task-name">
-      <label for="taskName">Task Name:</label>
-      <input type="text" name="taskName" value="Clean laundry" id="taskName">
-      </div>
-
-
-
-        <div class="title">Start</div>
-
-        <div class="date">
-          <div class="">
-            Date:
-          </div>
-          <div class="">
-            <input name="taskDate" data-task-form="task-date" readonly value="11st">
-            <div class="" data-task-form="change-button">
-              Change
-            </div>
-          </div>
-        </div>
-
-        <div class="date-picker" data-task-form="date-picker">
-          <table>
-            <thead>
-              <tr>
-                <th>MON</th>
-                <th>TUE</th>
-                <th>WED</th>
-                <th>THU</th>
-                <th>FRI</th>
-                <th>SAT</th>
-                <th>SUN</th>
-              </tr>
-            </thead>
-            <tbody>
-            {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
-            </tbody>
-          </table>
-        </div>
-
-      <div class="time">
-        <label for="">Time:</label>
-        <input type="number" name="startTimeHours" value="9" maxlength="2"> : <input type="number" name="startTimeMinutes" value="30" maxlength="2">
-      </div>
-
-
-
-        <div class="title">End of Task</div>
-        <div class="date">
-          <div class="">
-            Date:
-          </div>
-          <div class="">
-            <input name="taskDate" data-task-form="task-date" readonly value="11st">
-            <div class="" data-task-form="change-button">
-              Change
-            </div>
-          </div>
-        </div>
-
-        <div class="date-picker" data-task-form="date-picker">
-          <table>
-            <thead>
-              <tr>
-                <th>MON</th>
-                <th>TUE</th>
-                <th>WED</th>
-                <th>THU</th>
-                <th>FRI</th>
-                <th>SAT</th>
-                <th>SUN</th>
-              </tr>
-            </thead>
-            <tbody>
-            {{#task-form-calendar this}}<td {{{class}}} {{{data}}}>{{value}}</td>{{/task-form-calendar}}
-            </tbody>
-          </table>
-        </div>
-
-  <div class="time">
-        <div class="">
-          Time:
-        </div>
-        <div class="">
-        <input type="number" name="endTimeHours" value="10" maxlength="2"> : <input type="number" name="endTimeMinutes" value="00" maxlength="2">
-        </div>
-  </div>
-
-
-      <input type="text" name="user" value={{user}} hidden>
-      <input type="text" name="month" value={{month}} hidden>
-      <input type="text" name="year" value={{year}} hidden>
-
-  <div class="button-container">
-  <div class="">
-    Submit
-  </div>
-  <div class="">
-    Cancel
-  </div>
-  </div>
-    </form>
-
-
-  </div>
-
 
 <div class="calendar">
       <table>
@@ -145,6 +153,9 @@
         </tbody>
       </table>
 </div>
+</div>
+
+<div class="body-container2">
 <div class="add-button" data-base="new-task">
   Add a new task
 </div>
@@ -152,13 +163,29 @@
   <ul data-base="task-list">
       <li>
         <div class="time"><div>9:30</div><div>22:00</div></div>
-        <div class="name">Sample task</div>
+        <div class="name">Sample task Sample task Sample task Sample task Sample task Sample task Sample taskdasasas</div>
         <div class="edit"><div class="">Edit</div>
-                          <div class="">Remove</div>
+                          <div class="">Delete</div>
+        </div>
+      </li>
+      <li>
+        <div class="time"><div>9:30</div><div>22:00</div></div>
+        <div class="name">Sample task Sample task Sample task Sample task Sample task Sample task Sample task</div>
+        <div class="edit"><div class="">Edit</div>
+                          <div class="">Delete</div>
+        </div>
+      </li>
+      <li>
+        <div class="time"><div>9:30</div><div>22:00</div></div>
+        <div class="name">Sample task Sample task Sample task Sample task Sample task Sample task Sample task</div>
+        <div class="edit"><div class="">Edit</div>
+                          <div class="">Delete</div>
         </div>
       </li>
   </ul>
 </div>
+</div>
+
 </body>
 <script src="./base.js" charset="utf-8"></script>
 <script src="./handlebars-v4.0.11.js" charset="utf-8"></script>

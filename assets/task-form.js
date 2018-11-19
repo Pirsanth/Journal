@@ -7,7 +7,6 @@
   const TASK_FORM_ADD_TASK_BUTTON = '[data-task-form = "add-task"]';
   const TASK_FORM_CANCEL_TASK_BUTTON = '[data-task-form = "cancel-task"]';
   const TASK_FORM_CHANGE_DATE_BUTTON1 = '[data-task-form="change-button1"]';
-  const TASK_FORM_CHANGE_DATE_BUTTON2 = '[data-task-form="change-button2"]';
   const TASK_FORM_CALENDAR_CLICKABLE = '[data-task-form-calendar="clickable"]';
   const FORM_CONTROLS_COLLECTION = document.forms[0].elements;
   const TASK_FORM_CALENDAR_CONTAINER = '[data-task-form="date-picker"]';
@@ -16,7 +15,7 @@
     //container refers to the entire div that slides down whereas form refers to the form element
     this.container = document.querySelector(TASK_FORM_SELECTOR);
     this.form_calendar = document.querySelector(TASK_FORM_CALENDAR_CONTAINER);
-    this.change_button = document.querySelector(TASK_FORM_CHANGE_DATE_BUTTON);
+    this.change_button = document.querySelector(TASK_FORM_CHANGE_DATE_BUTTON1);
     this.clickable_node_list = document.querySelectorAll(TASK_FORM_CALENDAR_CLICKABLE);
     this.form = document.forms[0];
   }

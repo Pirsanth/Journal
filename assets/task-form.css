@@ -1,9 +1,12 @@
 .task-form-container{
   position: absolute;
-  top: 5%;
-  height: 95%;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: 100%;
   width: 100%;
-  font-size: 50px;
+  font-size: 18px;
   transform: scaleY(0);
   transform-origin: top;
   background: white;
@@ -11,7 +14,9 @@
 .task-form-container form {
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .slide{
   transform: scaleY(1.0);
@@ -23,11 +28,27 @@ form > div {
   display: flex;
   height: 10%;
 }
+form table {
+  font-size: 20px;
+  border-collapse: collapse;
+  height: 100%;
+}
+form table th{
+  font-size: 17px;
+}
+form table td {
+  border: 1px black solid;
+}
+form > .month{
+  height: 5%;
+  justify-content: center;
+  align-items: center;
+}
 form input{
   display: block;
 }
 form label{
-  display: block;
+  margin: 5px 0px;
 }
 form input{
   border: 1px solid black;
@@ -37,7 +58,6 @@ form input{
 form .task-name{
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 form > .task-name input{
   width: 80%;
@@ -45,19 +65,32 @@ form > .task-name input{
 }
 form .title{
   align-items: center;
-  font-weight: bold;
+  font-weight: bold;;
+  height: 5%;
 }
 form .date{
   height: 7%;
   align-items: flex-start;
   justify-content: space-between;
 }
-form .date div{
-  display: flex;
-  justify-content: space-between;
-}
 form .date div:first-child{
-  width: 300px;
+  width: 30%;
+}
+form .date > div:last-child{
+  width: 70%;
+  justify-content: space-between;
+  display: flex;
+}
+form .date div .change-button{
+  border: 1px black solid;
+  display: flex;
+  justify-content: center;
+  margin-right: 15px;
+  width: 50%;
+  background: red;
+}
+.change_button{
+  width: auto;
 }
 form .date-picker {
   height: 0%;
@@ -65,16 +98,16 @@ form .date-picker {
   transition-duration: 1s;
   transition-timing-function: ease-in-out;
   overflow: hidden;
-  margin: 3.5%;
 }
 form .expand{
-  height: 30%;
+  height: 40%;
 }
 form .time {
   align-items: flex-start;
 }
-form .time label{
-  width: 300px;
+
+form .time div:first-child{
+  width: 30%;
 }
 form .button-container{
   display: flex;
@@ -89,6 +122,62 @@ form .button-container div{
   height: 100%;
   width: 40%;
 }
-form .time div:first-child{
-  width: 30%;
+
+@media screen and (min-width: 375px) and (max-width: 760px){
+  .tasklist{
+    font-size: 25px;
+  }
+}
+@media screen and (min-width: 761px){
+    body{
+      flex-direction: row;
+      padding: 40px 20px;
+    }
+    .body-container1{
+      height:100%;
+      width: 55%;
+    }
+    .body-container2{
+      height:100%;
+      width: 45%;
+    }
+    .body-container1 th{
+      font-size: 20px;
+    }
+    .body-container1 td{
+      font-size: 30px;
+    }
+    .add-button{
+      font-size: 30px;
+      order: 1;
+    }
+    .tasklist{
+      font-size: 30px;
+    }
+    .tasklist ul li{
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .tasklist .time{
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      height: 25%;
+    }
+    .tasklist .name{
+      width: 100%;
+    }
+    .tasklist .edit{
+      width: 100%;
+      height: auto;
+      display: flex;
+      height: 25%;
+    }
+}
+@media screen and (min-width: 1000px){
+    body{
+      width: 1000px;
+      margin: 0 auto;
+    }
+
 }

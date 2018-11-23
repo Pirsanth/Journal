@@ -3,26 +3,22 @@
   //test to see whether the scope of the prototype function is shared
   let Application = window.Application || {};
 
-const BASE_NEW_TASK_BUTTON_SELECTOR = '[data-base="new-task"]';
-const BASE_CALENDAR_DATE_CLICKABLE_SELECTOR = '[data-base-calendar = "clickable"]';
-const TASK_FORM_SELECTOR = '[data="task-form"]';
-const BASE_TASK_LIST_SELECTOR = '[data-base="task-list"]';
-const MAIN_MENU_BUTTON_SELECTOR = '[data-base="main-menu-button"]';
-const MAIN_MENU_CONTAINER_SELECTOR = '[data-main-menu="container"]';
-
-let lastElementClicked = null;
-let active_day_index = null;
-let task_list_update_callback = null;
+const NEW_TASK_BUTTON_SELECTOR = '[data-base-new-task-button]';
+const TASK_LIST_SELECTOR = '[data-base-task-list]';
+const MAIN_MENU_BUTTON_SELECTOR = '[data-base-main-menu-button]';
+const MAIN_MENU_CONTAINER_SELECTOR = '[data-main-menu-container]';
+const CALENDAR_CONTAINER_SELECTOR = '[data-base-calendar]'
 
 function Base() {
-    this.new_task_button = document.querySelector(BASE_NEW_TASK_BUTTON_SELECTOR);
-    this.clickable_node_list = document.querySelectorAll(BASE_CALENDAR_DATE_CLICKABLE_SELECTOR);
-    this.taskList = document.querySelector(BASE_TASK_LIST_SELECTOR);
+    this.new_task_button = document.querySelector(NEW_TASK_BUTTON_SELECTOR);
+    this.taskList = document.querySelector(TASK_LIST_SELECTOR);
     this.mainMenu = document.querySelector(MAIN_MENU_CONTAINER_SELECTOR);
     this.mainMenuButton = document.querySelector(MAIN_MENU_BUTTON_SELECTOR);
-    //did not see the point in creating a new module to include just the
-    //toggleVisibility method for the main menu
-    //(for consistency with the naming of taskForm.toggleVisibility)
+    this.calendarContainer = document.querySelector(CALENDAR_CONTAINER_SELECTOR);
+    /*did not see the point in creating a new module to include just the
+      toggleVisibility method for the main menu
+      (for consistency with the naming of taskForm.toggleVisibility)
+    */
 }
 
 Base.prototype.addNewTaskHandler = function (fn) {
@@ -32,21 +28,28 @@ Base.prototype.addNewTaskHandler = function (fn) {
 }
 
 Base.prototype.addCalendarClickEffect = function () {
-    let clickable_node_list = this.clickable_node_list
+  let lastElementClicked = null;
 
-        for(let i = 0; i< clickable_node_list.length; i++){
-          clickable_node_list[i].addEventListener("click", toggleClickedClass);
+  this.calendarContainer.addEventListener("click", (event) => {
+        const element = event.target;
+        if(element.tagName === "TD" && element.dataset.clickable !== undefined){
+          if(lastElementClicked){
+            lastElementClicked.classList.remove("clicked");
+          }
+          element.classList.add("clicked");
+          lastElementClicked = element;
         }
+  });
 }
 Base.prototype.makeTaskListUpdateOnCalendarClick = function (fn) {
-    let nodeList = this.clickable_node_list
-    task_list_update_callback = fn;
-
-    nodeList.forEach(function (element) {
-      element.addEventListener("click",  taskListUpdateListener);
-    });
+  this.calendarContainer.addEventListener("click", (event) => {
+        const element = event.target;
+        if(element.tagName === "TD" && element.dataset.clickable !== undefined){
+            fn(getDayIndex(element.textContent));
+        }
+  });
 }
-Base.prototype.apppendToTaskList = function (domString) {
+Base.prototype.appendToTaskList = function (domString) {
   this.taskList.innerHTML = domString;
 };
 Base.prototype.addMainMenuHandler =  function () {
@@ -54,17 +57,24 @@ Base.prototype.addMainMenuHandler =  function () {
           this.mainMenu.classList.toggle("stretch");
     })
 }
+Base.prototype.addEditAndDeleteButtonHandler  = function () {
+    this.taskList.addEventListener("click", function (event) {
+          if(event.target.dataset.type === "edit"){
+            console.log("edit")
+          }
+          else if(event.target.dataset.type === "delete"){
+            console.log("delete")
+          }
+    })
+}
+Base.prototype.setDataAttributeOfTaskList = function (dayIndex){
+    this.taskList.dataset.dayIndex = dayIndex;
+}
 /*using a arrow function because it would be cleaner than bind.
 When the code in main.js is run and the addMainMenuHandler function is passed from the prototype
 this will be implicitly bound to be base (within addMainMenuHandler) and the arrow function remembers the this value
 at the time of its creation (base in this case)*/
-function toggleClickedClass(event) {
-  if(lastElementClicked){
-    lastElementClicked.classList.remove("clicked");
-  }
-  event.target.classList.add("clicked");
-  lastElementClicked = event.target;
-}
+
 function taskListUpdateListener(event) {
   let dayIndex = getDayIndex(event.target.textContent);
   active_day_index = dayIndex;

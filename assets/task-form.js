@@ -3,44 +3,72 @@
 
   let Application = window.Application || {};
 
-  const TASK_FORM_SELECTOR = '[data="task-form"]';
-  const TASK_FORM_ADD_TASK_BUTTON = '[data-task-form = "add-task"]';
-  const TASK_FORM_CANCEL_TASK_BUTTON = '[data-task-form = "cancel-task"]';
-  const TASK_FORM_CHANGE_DATE_BUTTON1 = '[data-task-form="change-button1"]';
-  const TASK_FORM_CALENDAR_CLICKABLE = '[data-task-form-calendar="clickable"]';
+  //List of selectors used here
+  const TASK_FORM_SELECTOR = '[data-task-form]';
   const FORM_CONTROLS_COLLECTION = document.forms[0].elements;
-  const TASK_FORM_CALENDAR_CONTAINER = '[data-task-form="date-picker"]';
+  const TASK_FORM_CHANGE_DATE_BUTTONS = '[data-task-form-change-button]';
+  const TASK_FORM_CALENDAR_CONTAINERS = '[data-task-form-calendar-container]';
+  const DATE_INPUT = '[data-task-form-date]';
+  const SUBMIT_BUTTON = '[data-task-form-submit-button]'
 
   function TaskForm () {
     //container refers to the entire div that slides down whereas form refers to the form element
     this.container = document.querySelector(TASK_FORM_SELECTOR);
-    this.form_calendar = document.querySelector(TASK_FORM_CALENDAR_CONTAINER);
-    this.change_button = document.querySelector(TASK_FORM_CHANGE_DATE_BUTTON1);
-    this.clickable_node_list = document.querySelectorAll(TASK_FORM_CALENDAR_CLICKABLE);
+    this.changeButtonNodeList = document.querySelectorAll(TASK_FORM_CHANGE_DATE_BUTTONS);
+    this.calendarContainerNodeList = document.querySelectorAll(TASK_FORM_CALENDAR_CONTAINERS);
+    this.dateInputNodeList =  document.querySelectorAll(DATE_INPUT);
     this.form = document.forms[0];
+    this.submitButton = document.querySelector(SUBMIT_BUTTON);
   }
 
-  TaskForm.prototype.addChangeDateHandler = function () {
-    this.change_button.addEventListener("click", (event) => {
-          this.form_calendar.classList.toggle("expand");
-    });
+  TaskForm.prototype.addChangeDateButtonHandler = function () {
+    this.changeButtonNodeList.forEach(function (element) {
+          element.addEventListener("click", (event) => {
+                  //removing a class that does not exist does not throw an Error
+                  this.calendarContainerNodeList.forEach(function (element) {
+                    element.classList.remove("expand");
+                  });
+
+                  let index = event.target.dataset.containerIndex;
+                  this.calendarContainerNodeList[index].classList.add("expand");
+          });
+    }, this);
   }
-
-  TaskForm.prototype.addTaskFormClickableHandler = function () {
-      let clickableNodeList = this.clickable_node_list;
-
-      for(let i=0; i<clickableNodeList.length; i++){
-            clickableNodeList[i].addEventListener("click", (event) => {
-            FORM_CONTROLS_COLLECTION[1].value = event.target.textContent;
-            this.form_calendar.classList.toggle("expand");
+  TaskForm.prototype.addCalendarClickHandler = function () {
+      this.calendarContainerNodeList.forEach(function (element) {
+            element.addEventListener("click", (event) => {
+                  if(event.target.tagName === "TD" && event.target.dataset.clickable !== undefined){
+                      let index = element.dataset.containerIndex;
+                      this.calendarContainerNodeList[index].classList.remove("expand");
+                      this.dateInputNodeList[index].value = event.target.textContent;
+                  }
             });
-      }
+
+      }, this);
+  }
+  TaskForm.prototype.addSubmitButtonHandler = function (POSTfunction, PUTfunction) {
+    this.submitButton.addEventListener("click", (event) => {
+            const method = event.target.dataset.method;
+            event.target.dataset.method = "";
+            if(method === "POST"){
+              let formData = new FormData(this.form);
+              let startDateString = formData.get("startDate");
+              POSTfunction(makeQueryString(formData), makeInternalTaskDataObject(formData), getDayIndex(startDateString));
+            }
+            else if(method === "PUT"){
+
+            }
+    })
+  }
+  TaskForm.prototype.setMethod = function (string) {
+      this.submitButton.dataset.method = string;
   }
   TaskForm.prototype.addFormSubmitHandler = function (fn) {
       this.form.addEventListener("submit", (event) =>{
           event.preventDefault();
           let formData = new FormData(this.form);
-        fn(makeQueryString(formData), makeTaskDataObject(formData));
+          let startDateString = formData.get("startDate");
+        fn(makeQueryString(formData), makeInternalTaskDataObject(formData), getDayIndex(startDateString));
     });
     }
 
@@ -70,19 +98,19 @@
       }
       return queryString;
   }
-  function makeTaskDataObject (formData) {
+  function makeInternalTaskDataObject (formData) {
     let data = {};
     for(let i of formData){
       data[i[0]] = i[1];
     }
 
-    let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, month, year, taskDate, taskName} = data;
-    let dayIndex = getDayIndex(taskDate);
+    let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, month, year, endDate, startDate, taskName} = data;
+    let startIndex = getDayIndex(startDate);
+    let endIndex = getDayIndex(endDate);
 
     return {
-      startDateClient: new Date(year, month, dayIndex+1, startTimeHours, startTimeMinutes),
-      endDateClient: new Date(year, month, dayIndex+1, endTimeHours, endTimeMinutes),
-      dayIndex,
+      startDateClient: new Date(year, month, startIndex+1, startTimeHours, startTimeMinutes),
+      endDateClient: new Date(year, month, endIndex+1, endTimeHours, endTimeMinutes),
       taskName
     }
   }
@@ -92,6 +120,7 @@
     let dateFromZeroIndex = actualDate - 1;
     return dateFromZeroIndex;
   }
+
   Application.TaskForm = TaskForm;
   window.Application = Application;
 

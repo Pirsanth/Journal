@@ -1,31 +1,37 @@
 (function (window) {
     let Application = window.Application || {};
 
-    const TASK_LIST_HANDLEBARS_STRING = '{{#each this}}<li><div class="time"><div>{{currentTimeString startDateClient}}</div><div>{{currentTimeString endDateClient}}</div></div><div class="name">{{taskName}}</div><div class="edit"><div class="">Edit</div><div class="">Remove</div></div></li>{{/each}}';
+    const TASK_LIST_HANDLEBARS_STRING = '{{#each this}}<li><div class="time"><div>{{currentTimeString startDateClient}}</div><div>{{currentTimeString endDateClient}}</div></div><div class="name">{{taskName}}</div><div class="edit"><div class="" data-type="edit" data-array-index={{@index}}>Edit</div><div class="" data-type="delete" data-array-index={{@index}}>Remove</div></div></li>{{/each}}';
     const ISO_STRING_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
     let HANDLEBARS_COMPILED_FN = null;
 
-    function ViewAndModel() {
-        this.model = null;
+    function ViewAndModel({user, month, year}) {
+        let lastDate = new Date(year, month+1, 0);
+        let numberOfDays = lastDate.getDate();
+        const arr = [];
+
+        /*this is to avoid a sparse array because an array that has empty elements behaves oddly
+        eg. different than when compared to explicitly setting a value of undefined at the specified index */
+
+        for(let i=0; i<numberOfDays; i++){
+            arr.push({tasks: []});
+        }
+        this.model = arr;
+        window.z = arr;
     }
 
     ViewAndModel.prototype.setModel = function (model) {
         this.model = model;
     };
     ViewAndModel.prototype.makeTaskListFromDayIndex = function (dayIndex) {
-      let tasksArray = this.model.dayArray[dayIndex].tasks;
+      let tasksArray = this.model[dayIndex].tasks;
 
       if(tasksArray.length !== 0){
-
-          if(!isLocalDatePresent(tasksArray)){
-            addLocalDateToObjectsInArray(tasksArray);
-          }
           return HANDLEBARS_COMPILED_FN(tasksArray);
       }
       else{
         return "<li>No tasks added yet</li>"
       }
-
     }
     ViewAndModel.prototype.addTaskToInternalModel = function (taskDataObject) {
         addTaskToModelThenSort(this.model, taskDataObject);
@@ -41,6 +47,18 @@
 
       HANDLEBARS_COMPILED_FN = Handlebars.compile(TASK_LIST_HANDLEBARS_STRING);
     }
+    ViewAndModel.prototype.sortModelAtIndex = function (dayIndex) {
+        let tasksArray = this.model[dayIndex].tasks;
+        if(tasksArray.length === 1){return;}
+
+        tasksArray.sort(function (a, b) {
+            return a.startDateClient.getTime() - b.startDateClient.getTime();
+        });
+
+    }
+    ViewAndModel.prototype.pushTaskToModel = function (index, taskDataObject) {
+        this.model[index].tasks.push(taskDataObject);
+    };
     function parseISOStringToDate (ISOstring) {
         let [,year, month, day, hour, minutes] = ISOstring.match(ISO_STRING_REGEX);
         return new Date(Date.UTC(year, month, day, hour, minutes));
@@ -59,9 +77,12 @@
         return true;
       }
     }
+
+  /*
     function addTaskToModelThenSort(model, {dayIndex, startDateClient, endDateClient, taskName}) {
         let obj = {startDateClient, endDateClient, taskName},
-            tasksArray = model.dayArray[dayIndex].tasks;
+            //decided to forgo the 2-D array for an internal tasks object containing an array of tasks, seemes much clearer
+            tasksArray = model[dayIndex].tasks;
 
             if(tasksArray.length !==0){
               if(!isLocalDatePresent(tasksArray)){
@@ -75,35 +96,8 @@
             else {
               tasksArray.push(obj);
             }
-/*
-            if(taskArray.length === 0){
-              taskArray.push(obj);
-            }
-            else{
-              if(!isLocalDatePresent(taskArray)){
-                addLocalDateToObjectsInArray(taskArray);
-              }
-                  for(let i=0; i<taskArray.length; i++){
-                    if(i===0 && obj.startDateClient < taskArray[0].startDateClient){
-                      taskArray.ushift(obj);
-                      break;
-                    }
-                    else if(taskArray[i].startDateClient < obj.startDateClient){
-                      taskArray.splice(i+1, 0, obj);
-                      break;
-                    }
-                    else if(taskArray[i].startDateClient.getTime() === obj.startDateClient.getTime()){
-                      taskArray.splice(i, 0, obj);
-                      break;
-                    }
-                    else if(i === taskArray.length -1){
-                      taskArray.push(obj);
-                      break;
-                    }
-                  }
-                }
-                */
     }
+    */
 
     Application.ViewAndModel = ViewAndModel;
     window.Application = Application;

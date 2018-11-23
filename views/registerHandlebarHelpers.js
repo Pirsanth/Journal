@@ -34,7 +34,7 @@ module.exports = function () {
         if(totalTally%7 === 0 && totalTally !== 0){
           string += "</tr><tr>";
         }
-        string += options.fn({class: 'class="free"', data: 'data-base-calendar = "clickable"', value: `${i+1}st`});
+        string += options.fn({data: 'data-clickable', value: `${i+1}st`});
         totalTally++;
     }
   }
@@ -67,7 +67,7 @@ module.exports = function () {
           if(totalTally%7 === 0 && totalTally !== 0){
           string += "</tr><tr>";
           }
-        string += options.fn({data: 'data-task-form-calendar = "clickable"', value: `${i+1}st`});
+        string += options.fn({data: 'data-clickable', value: `${i+1}st`});
         totalTally++;
     }
   }

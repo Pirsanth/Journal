@@ -21,9 +21,6 @@
         window.z = arr;
     }
 
-    ViewAndModel.prototype.setModel = function (model) {
-        this.model = model;
-    };
     ViewAndModel.prototype.makeTaskListFromDayIndex = function (dayIndex) {
       let tasksArray = this.model[dayIndex].tasks;
 
@@ -34,9 +31,6 @@
         return "<li>No tasks added yet</li>"
       }
     }
-    ViewAndModel.prototype.addTaskToInternalModel = function (taskDataObject) {
-        addTaskToModelThenSort(this.model, taskDataObject);
-    };
     ViewAndModel.prototype.initializeHandlebars = function () {
       Handlebars.registerHelper("currentTimeString", function (dateObj) {
         let hours = dateObj.getHours();
@@ -60,6 +54,15 @@
     ViewAndModel.prototype.pushTaskToModel = function (index, taskDataObject) {
         this.model[index].tasks.push(taskDataObject);
     };
+    ViewAndModel.prototype.parseAndAddToModel = function (arrayOfTasksInMonth) {
+        arrayOfTasksInMonth.forEach(function (obj) {
+          obj.startDateClient = parseISOStringToDate(obj.startUTCDate);
+          obj.endDateClient = parseISOStringToDate(obj.endUTCDate);
+          let index = obj.startDateClient.getDate() - 1;
+          //no need to sort because it has already been sorted by the server
+          this.pushTaskToModel(index, obj);
+        }, this);
+    };
     function parseISOStringToDate (ISOstring) {
         let [,year, month, day, hour, minutes] = ISOstring.match(ISO_STRING_REGEX);
         return new Date(Date.UTC(year, month, day, hour, minutes));
@@ -70,35 +73,6 @@
             obj.endDateClient = parseISOStringToDate(obj.endDateServer);
         });
     }
-    function isLocalDatePresent(tasksArray) {
-      if(tasksArray[0].startDateClient === undefined){
-          return false;
-      }
-      else {
-        return true;
-      }
-    }
-
-  /*
-    function addTaskToModelThenSort(model, {dayIndex, startDateClient, endDateClient, taskName}) {
-        let obj = {startDateClient, endDateClient, taskName},
-            //decided to forgo the 2-D array for an internal tasks object containing an array of tasks, seemes much clearer
-            tasksArray = model[dayIndex].tasks;
-
-            if(tasksArray.length !==0){
-              if(!isLocalDatePresent(tasksArray)){
-                addLocalDateToObjectsInArray(tasksArray);
-              }
-              tasksArray.push(obj);
-              tasksArray.sort(function (a, b) {
-                  return a.startDateClient.getTime() - b.startDateClient.getTime();
-              });
-            }
-            else {
-              tasksArray.push(obj);
-            }
-    }
-    */
 
     Application.ViewAndModel = ViewAndModel;
     window.Application = Application;

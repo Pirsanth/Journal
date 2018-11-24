@@ -14,8 +14,13 @@
         viewAndModel.initializeHandlebars();
 
     ajaxCommunication.getModel(function (responseText) {
-          let responseJSON = JSON.parse(responseText);
-      //    viewAndModel.setModel(responseJSON.data);
+        //put into a try catch block later
+        //the dates have already been sorted on the server so we can just push it onto the index of the array one after the other
+
+          let arrayOfTasksInMonth = JSON.parse(responseText);
+          viewAndModel.parseAndAddToModel(arrayOfTasksInMonth);
+
+
           //make the taskList update thereafter
         //  viewAndModel.makeTaskListFromDayIndex(0)
     });

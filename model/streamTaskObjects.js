@@ -1,5 +1,5 @@
 const sharedDB = require("./sharedDbInstance.js");
-const sendError = require("./helpers.js").handleError;
+const sendError = require("../controller/helpers.js").handleError;
 
 module.exports = function (startBound, endBound, user, res) {
     sharedDB.getSharedDBInstance(function (db) {

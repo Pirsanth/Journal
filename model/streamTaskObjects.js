@@ -9,7 +9,7 @@ module.exports = function (startBound, endBound, user, res) {
             return;
           }
             //exclude user when sending data to reduce size
-            let cursor = collection.find({startUTCDate: {$gte: startBound}, endUTCDate: {$lte: endBound}, user}, {projection:{"user": 0}});
+            let cursor = collection.find({startUTCDate: {$gte: startBound}, endUTCDate: {$lte: endBound}, user}, {projection:{"user": 0}, sort:[["startUTCDate", 1]]});
 
             cursor.count(function (err, count) {
               if(err){

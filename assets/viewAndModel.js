@@ -6,6 +6,7 @@
     let HANDLEBARS_COMPILED_FN = null;
 
     function ViewAndModel({user, month, year}) {
+        month = +month;
         let lastDate = new Date(year, month+1, 0);
         let numberOfDays = lastDate.getDate();
         const arr = [];

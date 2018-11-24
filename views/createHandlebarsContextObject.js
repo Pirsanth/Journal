@@ -4,6 +4,7 @@ module.exports = function (user, month, year) {
 }
 
 function contextObject (user, month, year) {
+  month = +month;
   this.user = user
   this.month = month;
   this.year = year;

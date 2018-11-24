@@ -12,5 +12,5 @@ gulp.task("frontend",["startServer"], function (cb) {
 })
 
 gulp.task("startServer", function () {
-  return  nodemon({"ignore": "assets/*"});
+  return  nodemon({"ignore": "assets/*", nodeArgs: ["--inspect"]});
 })

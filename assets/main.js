@@ -15,7 +15,7 @@
 
     ajaxCommunication.getModel(function (responseText) {
           let responseJSON = JSON.parse(responseText);
-          viewAndModel.setModel(responseJSON.data);
+      //    viewAndModel.setModel(responseJSON.data);
           //make the taskList update thereafter
         //  viewAndModel.makeTaskListFromDayIndex(0)
     });

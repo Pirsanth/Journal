@@ -3,16 +3,20 @@
 
   let Application = window.Application || {};
 
-  const POST_URL = "http://localhost:3000/addTask";
-  const BASE_URL = "http://localhost:3000";
+  let POST_URL;
+  let GET_MODEL_URL;
+  const hrefRegex = /(^[\w:]+\/\/[\w:]+)\//;
 
   function AjaxCommunication({user, month, year}) {
       this.user = user;
       this.month = month;
       this.year = year;
 
-      let baseGetModelURL = `${BASE_URL}/${user}/tasksInMonth/${month}-${year}.json?`;
-      this.getModelURL = this.addTimezonOffsetToQueryString(baseGetModelURL);
+      let [,hrefExcludingPath] = window.location.href.match(hrefRegex);
+
+      let getModelURLWithoutQueryString = `${hrefExcludingPath}/${user}/tasksInMonth/${month}-${year}.json?`;
+      GET_MODEL_URL = this.addTimezonOffsetToQueryString(getModelURLWithoutQueryString);
+      POST_URL = `${hrefExcludingPath}/addTask`;
   }
   AjaxCommunication.prototype.addTimezonOffsetToQueryString = function (queryString) {
       let date = new Date(),
@@ -32,7 +36,7 @@
   };
   AjaxCommunication.prototype.getModel = function (fn) {
       let xhr = new XMLHttpRequest();
-      xhr.open("GET", this.getModelURL);
+      xhr.open("GET", GET_MODEL_URL);
       xhr.onload = function () {
         console.log("loaded");
         console.log(this.responseText);

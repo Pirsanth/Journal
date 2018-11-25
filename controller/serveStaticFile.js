@@ -1,7 +1,7 @@
 const fs = require("fs");
 const cssFile = /^\.css$/;
 const jsFile = /^\.js$/;
-const sendError = require("./helpers.js").handleError;
+const {sendError} = require("./helpers.js");
 
 module.exports = function(path, res) {
 

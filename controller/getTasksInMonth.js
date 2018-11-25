@@ -1,5 +1,5 @@
 const streamTaskObjects = require("../model/streamTaskObjects.js");
-const sendError = require("./helpers.js").handleError;
+const {sendError} = require("./helpers.js");
 
 module.exports = function (user, month, year, offset, res) {
       month = +month; //explicitly converting the string to a number is needed otherwise the month+1 expression is interpreted as string concatenation

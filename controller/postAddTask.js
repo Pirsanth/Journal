@@ -1,4 +1,4 @@
-const sendError = require("./helpers.js").handleError;
+const {sendError, consumeReadStream} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
 const insertTaskIntoDatabase = require("../model/insertTaskObject.js");
 
@@ -34,7 +34,7 @@ module.exports = function (req, res) {
             return;
           }
           res.writeHead(200, {"Content-Type": "application/json"});
-          let out = {error: null, data: "task successfully saved"};
+          let out = {error: null, data: "Task successfully saved"};
           res.end(JSON.stringify(out));
       });
 
@@ -42,20 +42,6 @@ module.exports = function (req, res) {
 
 }
 
-function consumeReadStream(stream, fn) {
-  let queryString = "";
-
-  stream.on("data", function (chunk) {
-    queryString += chunk;
-  });
-  stream.on("error", function (err) {
-    console.log(err);
-    fn(err);
-  })
-  stream.on("end", function () {
-    fn(null, queryString);
-  });
-}
 function getMinutesAfterOffset(minutes, offset) {
     return parseInt(minutes) + parseInt(offset);
 }

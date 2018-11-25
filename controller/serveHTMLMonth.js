@@ -1,5 +1,5 @@
 const createHTMLFromContext = require("../views/createHTMLFromContext.js");
-const sendError = require("./helpers.js").handleError;
+const {sendError} = require("./helpers.js");
 const createHandlebarsContextObject = require("../views/createHandlebarsContextObject.js")
 
 module.exports = function (user, month, year, res) {

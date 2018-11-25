@@ -84,6 +84,10 @@
       }
       return obj
   }
+  TaskForm.prototype.prefillFormWithObject = function ({taskName, startDateClient, endDateClient}) {
+      
+  }
+
   function makeQueryString(formData) {
       let queryString = "";
 

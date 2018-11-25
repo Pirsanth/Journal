@@ -57,13 +57,21 @@ Base.prototype.addMainMenuHandler =  function () {
           this.mainMenu.classList.toggle("stretch");
     })
 }
-Base.prototype.addEditAndDeleteButtonHandler  = function () {
+Base.prototype.addEditAndDeleteButtonHandler  = function (EditButtonFn, DeleteButtonFn) {
     this.taskList.addEventListener("click", function (event) {
-          if(event.target.dataset.type === "edit"){
-            console.log("edit")
+          const clickedButton = event.target;
+
+          if(clickedButton.dataset.type === "edit"){
+            const dayIndex = this.dataset.dayIndex;
+            const taskIndex = clickedButton.dataset.arrayIndex;
+
+            EditButtonFn(dayIndex, taskIndex);
           }
-          else if(event.target.dataset.type === "delete"){
-            console.log("delete")
+          else if(clickedButton.dataset.type === "delete"){
+            const dayIndex = this.dataset.dayIndex;
+            const taskIndex = clickedButton.dataset.arrayIndex;
+
+            DeleteButtonFn(dayIndex, taskIndex);
           }
     })
 }
@@ -86,6 +94,7 @@ function getDayIndex(taskDate) {
   let dateFromZeroIndex = actualDate - 1;
   return dateFromZeroIndex;
 }
+
 
   Application.Base = Base;
   window.Application = Application;

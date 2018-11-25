@@ -56,23 +56,23 @@
     };
     ViewAndModel.prototype.parseAndAddToModel = function (arrayOfTasksInMonth) {
         arrayOfTasksInMonth.forEach(function (obj) {
-          obj.startDateClient = parseISOStringToDate(obj.startUTCDate);
-          obj.endDateClient = parseISOStringToDate(obj.endUTCDate);
-          let index = obj.startDateClient.getDate() - 1;
+
+          let objectToInsert = {startDateClient: parseISOStringToDate(obj.startUTCDate),
+                                endDateClient: parseISOStringToDate(obj.endUTCDate),
+                                taskName: obj.taskName}
+          let index = objectToInsert.startDateClient.getDate() - 1;
           //no need to sort because it has already been sorted by the server
-          this.pushTaskToModel(index, obj);
+          this.pushTaskToModel(index, objectToInsert);
         }, this);
     };
+    ViewAndModel.prototype.removeTaskFromModelAndReturn = function (dayIndex, taskIndex) {
+        return this.model[dayIndex].tasks.splice(taskIndex, 1);
+    }
     function parseISOStringToDate (ISOstring) {
         let [,year, month, day, hour, minutes] = ISOstring.match(ISO_STRING_REGEX);
-        return new Date(Date.UTC(year, month, day, hour, minutes));
+        return new Date(Date.UTC(year, month -1, day, hour, minutes));
     };
-    function addLocalDateToObjectsInArray(tasksArray) {
-        tasksArray.forEach(function (obj) {
-            obj.startDateClient = parseISOStringToDate(obj.startDateServer);
-            obj.endDateClient = parseISOStringToDate(obj.endDateServer);
-        });
-    }
+
 
     Application.ViewAndModel = ViewAndModel;
     window.Application = Application;

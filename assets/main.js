@@ -19,24 +19,37 @@
 
           let arrayOfTasksInMonth = JSON.parse(responseText);
           viewAndModel.parseAndAddToModel(arrayOfTasksInMonth);
+          //only after we processed the tasks from the server can the task list be shown
+          base.makeTaskListUpdateOnCalendarClick(function (dayIndex) {
+              let domString = viewAndModel.makeTaskListFromDayIndex(dayIndex);
+              base.setDataAttributeOfTaskList(dayIndex);
+              base.appendToTaskList(domString);
+          });
 
-
-          //make the taskList update thereafter
         //  viewAndModel.makeTaskListFromDayIndex(0)
     });
     base.addCalendarClickEffect();
-    //move the below to within getModel
-    base.makeTaskListUpdateOnCalendarClick(function (dayIndex) {
-        let domString = viewAndModel.makeTaskListFromDayIndex(dayIndex);
-        base.setDataAttributeOfTaskList(dayIndex);
-        base.appendToTaskList(domString);
-    });
+
     base.addNewTaskHandler(function () {
       taskForm.toggleVisibility();
       taskForm.setMethod("POST");
     });
     base.addMainMenuHandler();
-    base.addEditAndDeleteButtonHandler();
+    base.addEditAndDeleteButtonHandler(
+      function EditButton(dayIndex, taskIndex) {
+        const [removedTaskObj] = viewAndModel.removeTaskFromModelAndReturn(dayIndex, taskIndex);
+        taskForm.prefillFormWithObject(removedTaskObj);
+    },
+      function DeleteButton(dayIndex, taskIndex) {
+        const [removedTaskObj] = viewAndModel.removeTaskFromModelAndReturn(dayIndex, taskIndex);
+        //the below is a reference copy so we do not need to save the returned, modified object in another variable
+        ajaxCommunication.addUserToInternalTaskObject(removedTaskObj);
+        ajaxCommunication.sendDELETE(removedTaskObj);
+
+        //we have to remake the taskList instead of just using removeChild on the li because of the arrayIndex property
+        let domString = viewAndModel.makeTaskListFromDayIndex(dayIndex);
+        base.appendToTaskList(domString);
+    });
     taskForm.addChangeDateButtonHandler();
     taskForm.addCalendarClickHandler();
     //using named anonymous functions on both main.js and taskform.js for greater clarity
@@ -45,9 +58,7 @@
           queryString += "&";
           queryString = ajaxCommunication.addTimezonOffsetToQueryString(queryString);
           console.log(queryString);
-          ajaxCommunication.sendPOST(queryString, function (response) {
-            console.log(`Server successfully saved task ${taskDataObject.taskName}`);
-          });
+          ajaxCommunication.sendPOST(queryString);
           viewAndModel.pushTaskToModel(index, taskDataObject);
           viewAndModel.sortModelAtIndex(index);
           taskForm.toggleVisibility();

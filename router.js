@@ -15,7 +15,7 @@ const getDayTaskArray =  /^\/(\w+)\/dayTaskList\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0
 // the + is for 1 or more
 const postAddTask = /^\/addTask$/;
 const deleteRemoveTask = /^\/removeTask$/;
-
+const putEditTask = /^\/editTask$/;
 
 module.exports.requestHandler = function (req, res) {
         let path = req.url;
@@ -60,7 +60,11 @@ module.exports.requestHandler = function (req, res) {
         }
       }
 
-
+      else if(req.method === "PUT"){
+        if(putEditTask.test(path)){
+          require("./controller/putEditTask.js")(req, res);
+        }
+      }
 }
 //IN ES6 JUST WRITE user in obj
 

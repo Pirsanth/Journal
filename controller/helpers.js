@@ -1,3 +1,5 @@
+const ISO_STRING_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
+
 
 module.exports.sendError = function (res, code, message) {
     res.writeHead(code, {"Content-Type": "application/json"});
@@ -19,3 +21,8 @@ module.exports.consumeReadStream = function (stream, fn) {
       fn(null, data);
     });
 }
+
+module.exports.parseISOStringToDate = function (ISOstring) {
+    let [,year, month, day, hour, minutes] = ISOstring.match(ISO_STRING_REGEX);
+    return new Date(Date.UTC(year, month -1, day, hour, minutes));
+};

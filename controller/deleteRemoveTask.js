@@ -1,6 +1,5 @@
-const {sendError, consumeReadStream} = require("./helpers.js");
-const ISO_STRING_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
-const findAndReturnDeletedObject = require("../model/deleteTaskObject.js");
+const {sendError, consumeReadStream, parseISOStringToDate} = require("./helpers.js");
+const findAndReturnDeletedObject = require("../model/deleteAndReturnTaskObject.js");
 
 
 module.exports = function (req, res) {
@@ -21,6 +20,7 @@ let queryObject = {startUTCDate: parseISOStringToDate(obj.startDateClient),
                      endUTCDate: parseISOStringToDate(obj.endDateClient),
                      taskName: obj.taskName,
                      user: obj.user};
+
     findAndReturnDeletedObject(queryObject, function (err, resultObject) {
           if(err){
             sendError(res, 500, "There was an error thrown while attempting delete in database");
@@ -39,8 +39,3 @@ let queryObject = {startUTCDate: parseISOStringToDate(obj.startDateClient),
   });
 
 }
-
-function parseISOStringToDate (ISOstring) {
-    let [,year, month, day, hour, minutes] = ISOstring.match(ISO_STRING_REGEX);
-    return new Date(Date.UTC(year, month -1, day, hour, minutes));
-};

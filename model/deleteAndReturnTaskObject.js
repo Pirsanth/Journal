@@ -7,7 +7,7 @@ module.exports = function (queryObject, fn) {
             if(err){
               fn(err);
               return;
-            }
+            } //I did not want to include a projection, for the ease of debugging
               collection.findOneAndDelete(queryObject, function (err, resultObject) {
                   if(err){
                     fn(err);

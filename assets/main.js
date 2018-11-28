@@ -25,20 +25,20 @@
               base.setDataAttributeOfTaskList(dayIndex);
               base.appendToTaskList(domString);
           });
-
-        //  viewAndModel.makeTaskListFromDayIndex(0)
     });
     base.addCalendarClickEffect();
-
-    base.addNewTaskHandler(function () {
+    base.addNewTaskHandler(function (taskDate) {
       taskForm.toggleVisibility();
-      taskForm.setMethod("POST");
+      taskForm.preFillDates(taskDate)
+      taskForm.setInternalState("POST");
     });
     base.addMainMenuHandler();
     base.addEditAndDeleteButtonHandler(
       function EditButton(dayIndex, taskIndex) {
-        const [removedTaskObj] = viewAndModel.removeTaskFromModelAndReturn(dayIndex, taskIndex);
-        taskForm.prefillFormWithObject(removedTaskObj);
+        const taskObject = viewAndModel.getTaskFromModel(dayIndex, taskIndex);
+        taskForm.prefillFormWithObject(taskObject);
+        taskForm.setInternalState("PUT", dayIndex, taskIndex);
+        taskForm.toggleVisibility();
     },
       function DeleteButton(dayIndex, taskIndex) {
         const [removedTaskObj] = viewAndModel.removeTaskFromModelAndReturn(dayIndex, taskIndex);
@@ -46,27 +46,61 @@
         ajaxCommunication.addUserToInternalTaskObject(removedTaskObj);
         ajaxCommunication.sendDELETE(removedTaskObj);
 
-        //we have to remake the taskList instead of just using removeChild on the li because of the arrayIndex property
+        //we have to remake the taskList instead of just using removeChild on the li because of the arrayIndex dataset property
         let domString = viewAndModel.makeTaskListFromDayIndex(dayIndex);
         base.appendToTaskList(domString);
     });
     taskForm.addChangeDateButtonHandler();
     taskForm.addCalendarClickHandler();
     //using named anonymous functions on both main.js and taskform.js for greater clarity
+    /*I repeated the code to clean up the form in both callbacks because I decided that it would be better to
+    eliminate the unseen side-effects of function calls rather than being a bit more DRY*/
     taskForm.addSubmitButtonHandler(
       function POSTfunction(queryString, taskDataObject, index) {
           queryString += "&";
           queryString = ajaxCommunication.addTimezonOffsetToQueryString(queryString);
-          console.log(queryString);
           ajaxCommunication.sendPOST(queryString);
           viewAndModel.pushTaskToModel(index, taskDataObject);
           viewAndModel.sortModelAtIndex(index);
           taskForm.toggleVisibility();
-      },
-      function PUTfunction() {
+          taskForm.clearInternalStateAndForm();
 
+          //we can't reuse index because we cannot assume that the task has been added on the same date as is selected in the base calendar
+          let baseDayIndex = base.getActiveDayIndex();
+          //user could've just hit add new task immediately. The empty string is implicitly coerced to false
+          if(baseDayIndex){
+            let domString = viewAndModel.makeTaskListFromDayIndex(baseDayIndex);
+            base.setDataAttributeOfTaskList(baseDayIndex);
+            base.appendToTaskList(domString);
+          }
+      },
+      function PUTfunction(newTaskObject, dayIndex, taskIndex) {
+          let [oldTaskObject] = viewAndModel.removeTaskFromModelAndReturn(dayIndex, taskIndex);
+          let indexOfNewTask = newTaskObject.startDateClient.getDate() -1;
+          viewAndModel.pushTaskToModel(indexOfNewTask, newTaskObject);
+          viewAndModel.sortModelAtIndex(indexOfNewTask);
+
+          ajaxCommunication.addUserToInternalTaskObject(oldTaskObject);
+          ajaxCommunication.addUserToInternalTaskObject(newTaskObject);
+          ajaxCommunication.sendPUT(oldTaskObject, newTaskObject);
+          taskForm.toggleVisibility();
+          taskForm.clearInternalStateAndForm();
+
+          /*the if statement will always be true in this case. Indeed I could just the dayIndex
+            because it would be equal to baseDayIndex. I have however decided to repeat myself
+            because I might want to abstract the below away in the future */
+          let baseDayIndex = base.getActiveDayIndex();
+          if(baseDayIndex){
+            let domString = viewAndModel.makeTaskListFromDayIndex(baseDayIndex);
+            base.setDataAttributeOfTaskList(baseDayIndex);
+            base.appendToTaskList(domString);
+          }
       }
     );
+    taskForm.addCancelButtonHandler(function () {
+      taskForm.toggleVisibility();
+      taskForm.clearInternalStateAndForm();
+    });
 
     document.getElementById("check").addEventListener("click", function (e) {
       alert("Clicked");

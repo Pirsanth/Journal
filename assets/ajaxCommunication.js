@@ -6,6 +6,7 @@
   let POST_TASK_URL;
   let GET_MODEL_URL;
   let DELETE_TASK_URL;
+  let PUT_TASK_URL;
   const hrefRegex = /(^[\w:]+\/\/[\w:]+)\//;
 
   function AjaxCommunication({user, month, year}) {
@@ -19,6 +20,7 @@
       GET_MODEL_URL = this.addTimezonOffsetToQueryString(getModelURLWithoutQueryString);
       POST_TASK_URL = `${hrefExcludingPath}/addTask`;
       DELETE_TASK_URL = `${hrefExcludingPath}/removeTask`;
+      PUT_TASK_URL = `${hrefExcludingPath}/editTask`;
   }
   AjaxCommunication.prototype.addTimezonOffsetToQueryString = function (queryString) {
       let date = new Date(),
@@ -78,8 +80,26 @@
 
       xhr.send(JSON.stringify(taskObj));
   }
+  AjaxCommunication.prototype.sendPUT = function (oldTaskObject, newTaskObject) {
+      let xhr = new XMLHttpRequest();
+      xhr.open("PUT", PUT_TASK_URL);
+      xhr.setRequestHeader("Content-Type", "application/json");
 
+      let outgoingJSON = {oldTaskObject, newTaskObject};
 
+      xhr.onload = function () {
+          let obj  = JSON.parse(this.responseText);
+          //accessing properties on objects that do not exist does not throw an error
+          if(!obj.error){
+              console.log(obj.data);
+          }
+          else{
+            console.log(`${obj.error} : ${obj.message}`);
+          }
+        }
+
+      xhr.send(JSON.stringify(outgoingJSON));
+  }
 
   Application.AjaxCommunication = AjaxCommunication;
   window.Application = Application;

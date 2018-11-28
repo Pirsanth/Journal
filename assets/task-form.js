@@ -5,11 +5,12 @@
 
   //List of selectors used here
   const TASK_FORM_SELECTOR = '[data-task-form]';
-  const FORM_CONTROLS_COLLECTION = document.forms[0].elements;
   const TASK_FORM_CHANGE_DATE_BUTTONS = '[data-task-form-change-button]';
   const TASK_FORM_CALENDAR_CONTAINERS = '[data-task-form-calendar-container]';
   const DATE_INPUT = '[data-task-form-date]';
-  const SUBMIT_BUTTON = '[data-task-form-submit-button]'
+  const SUBMIT_BUTTON = '[data-task-form-submit-button]';
+  const CANCEL_BUTTON = '[data-task-form-cancel-button]';
+
 
   function TaskForm () {
     //container refers to the entire div that slides down whereas form refers to the form element
@@ -19,6 +20,12 @@
     this.dateInputNodeList =  document.querySelectorAll(DATE_INPUT);
     this.form = document.forms[0];
     this.submitButton = document.querySelector(SUBMIT_BUTTON);
+    this.cancelButton = document.querySelector(CANCEL_BUTTON);
+
+    //using these variables to store the state of the form instead of a data- attributes because the DOM is slow
+    this.formMethod;
+    this.dayIndex;
+    this.taskIndex;
   }
 
   TaskForm.prototype.addChangeDateButtonHandler = function () {
@@ -48,30 +55,31 @@
   }
   TaskForm.prototype.addSubmitButtonHandler = function (POSTfunction, PUTfunction) {
     this.submitButton.addEventListener("click", (event) => {
-            const method = event.target.dataset.method;
-            event.target.dataset.method = "";
+
+            const method = this.formMethod;
+            this.formMethod = "";
+
             if(method === "POST"){
               let formData = new FormData(this.form);
               let startDateString = formData.get("startDate");
               POSTfunction(makeQueryString(formData), makeInternalTaskDataObject(formData), getDayIndex(startDateString));
             }
             else if(method === "PUT"){
-
+              let formData = new FormData(this.form);
+              PUTfunction(makeInternalTaskDataObject(formData) , this.dayIndex, this.taskIndex);
             }
     })
   }
-  TaskForm.prototype.setMethod = function (string) {
-      this.submitButton.dataset.method = string;
-  }
-  TaskForm.prototype.addFormSubmitHandler = function (fn) {
-      this.form.addEventListener("submit", (event) =>{
-          event.preventDefault();
-          let formData = new FormData(this.form);
-          let startDateString = formData.get("startDate");
-        fn(makeQueryString(formData), makeInternalTaskDataObject(formData), getDayIndex(startDateString));
+  TaskForm.prototype.addCancelButtonHandler = function (fn) {
+    this.cancelButton.addEventListener("click", (event) => {
+            fn();
     });
-    }
-
+  }
+  TaskForm.prototype.setInternalState = function (method, dayIndex = '', taskIndex = '') {
+    this.formMethod = method
+    this.dayIndex = dayIndex
+    this.taskIndex = taskIndex;
+  }
   TaskForm.prototype.toggleVisibility = function () {
       this.container.classList.toggle("slide");
   }
@@ -79,13 +87,33 @@
       let obj = {};
 
       for(let i=7; i<10; i++){
-        obj[FORM_CONTROLS_COLLECTION[i].name] = FORM_CONTROLS_COLLECTION[i].value;
+        obj[this.form.elements[i].name] = this.form.elements[i].value;
         //this is fine because the the output of the name property is a string
       }
       return obj
   }
   TaskForm.prototype.prefillFormWithObject = function ({taskName, startDateClient, endDateClient}) {
-      
+      let collection = this.form.elements;
+      collection["taskName"].value = taskName;
+      collection["startDate"].value = `${startDateClient.getDate()}st`;
+      collection["startTimeHours"].value = startDateClient.getHours();
+      collection["startTimeMinutes"].value = startDateClient.getMinutes();
+      collection["endDate"].value = `${endDateClient.getDate()}st`;
+      collection["endTimeHours"].value = endDateClient.getHours();
+      collection["endTimeMinutes"].value = endDateClient.getMinutes();
+  }
+
+  TaskForm.prototype.preFillDates = function (taskDate = '') {
+       let collection = this.form.elements;
+       collection["startDate"].value = taskDate;
+       collection["endDate"].value = taskDate;
+  }
+
+  TaskForm.prototype.clearInternalStateAndForm = function () {
+      this.formMethod = '';
+      this.dayIndex = '';
+      this.taskIndex = '';
+      this.form.reset();
   }
 
   function makeQueryString(formData) {

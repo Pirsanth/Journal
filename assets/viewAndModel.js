@@ -68,6 +68,9 @@
     ViewAndModel.prototype.removeTaskFromModelAndReturn = function (dayIndex, taskIndex) {
         return this.model[dayIndex].tasks.splice(taskIndex, 1);
     }
+    ViewAndModel.prototype.getTaskFromModel = function (dayIndex, taskIndex) {
+        return this.model[dayIndex].tasks[taskIndex];
+    }
     function parseISOStringToDate (ISOstring) {
         let [,year, month, day, hour, minutes] = ISOstring.match(ISO_STRING_REGEX);
         return new Date(Date.UTC(year, month -1, day, hour, minutes));

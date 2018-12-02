@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <title>Journal-ah Login</title>
+    <link rel="stylesheet" href="./login.css">
+  </head>
+  <body>
+
+    <div class="formContainer" data-form-container>
+      <div class="controls">
+        <div class="" data-button-mode-login>
+            Login
+        </div>
+        <div class="" data-button-mode-register>
+          Register
+        </div>
+      </div>
+      <form class="" action="processLogin" method="POST">
+        <div class="">
+          <label for="username">Username</label>
+          <input type="text" name="username" value="" id="username">
+        </div>
+        <div class="">
+          <label for="password">Password</label>
+          <input type="password" name="" value="">
+        </div>
+        <div class="hideRepeat" data-repeat-password-container>
+          <label for="password">Repeat Password</label>
+          <input type="password" name="" value="">
+        </div>
+        <div class="info" data-info-box>
+          Wrong username or password. Please try again
+        </div>
+
+        <input type="submit" class="submit" name="" value="Submit">
+
+      </form>
+    </div>
+
+<div class="displayContainer">
+    <div class="title">
+      Journal-ah
+    </div>
+
+      <div class="stats">
+        <ul>
+          <li class="name">Number of tasks saved: </li>
+          <li class="value">22</li>
+          <li class="name">Number of users: </li>
+          <li class="value">2</li>
+          <li class="name">Average task duration:</li>
+          <li class="value">30 mins</li>
+          <li class="name">Average tasks per user:</li>
+          <li class="value">11</li>
+        </ul>
+      </div>
+<div class="start-button" data-start-button>
+  Start
+</div>
+</div>
+<script src="./login.js" charset="utf-8"></script>
+  </body>
+</html>

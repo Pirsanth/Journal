@@ -1,12 +1,12 @@
-const createHTMLFromContext = require("../views/createHTMLFromContext.js");
+const createHomePageFromContext = require("../views/createHomePageFromContext.js");
 const {sendError} = require("./helpers.js");
-const createHandlebarsContextObject = require("../views/createHandlebarsContextObject.js")
+const createHomePageContextObject = require("../views/createHomePageContextObject.js")
 
 module.exports = function (user, month, year, res) {
 
-let context = createHandlebarsContextObject(user, month, year)
+let context = createHomePageContextObject(user, month, year)
 
-    createHTMLFromContext(context, function (err, result) {
+    createHomePageFromContext(context, function (err, result) {
         if(err){
           console.log(err);
           sendError(res, 500, "Internal server error reading HTML template");

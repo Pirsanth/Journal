@@ -4,7 +4,7 @@ const handlebars = require("handlebars");
 
 const cssFile = /^\/(\w+)\/((styles|task-form|normalize)\.css)$/;
 const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main|viewAndModel|handlebars-v4\.0\.11)\.js)$/;
-const getMonthHTML = /^\/(\w+)\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).html$/;
+const getHomePageHTML = /^\/(\w+)\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).html$/;
 
 const getTasksInMonth = /^\/(\w+)\/tasksInMonth\/([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3}).json\?offset=(-?\d{0,3})$/;
 //the day should be indexed from 0 because because in db dateArray starts from 0
@@ -16,6 +16,7 @@ const getDayTaskArray =  /^\/(\w+)\/dayTaskList\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0
 const postAddTask = /^\/addTask$/;
 const deleteRemoveTask = /^\/removeTask$/;
 const putEditTask = /^\/editTask$/;
+const loginPage = /^\/login\.html/;
 
 module.exports.requestHandler = function (req, res) {
         let path = req.url;
@@ -25,10 +26,10 @@ module.exports.requestHandler = function (req, res) {
             let fileRequested = path.match(jsFile)? path.match(jsFile)[2]: path.match(cssFile)[2];
             require("./controller/serveStaticFile.js")(fileRequested, res);
           }
-          else if(getMonthHTML.test(path)){
-            let match = path.match(getMonthHTML);
+          else if(getHomePageHTML.test(path)){
+            let match = path.match(getHomePageHTML);
             let [,user,,month,year] = match;
-            require("./controller/serveHTMLMonth.js")(user, month, year, res);
+            require("./controller/getHTMLHomePage.js")(user, month, year, res);
           }
           else if(getTasksInMonth.test(path)){
             //the url.pathname does not include the query STRING

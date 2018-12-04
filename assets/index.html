@@ -20,7 +20,7 @@
       </nav>
     </div>
 
-    <div class="task-form-container" data-task-form>
+    <div class="task-form-container slide" data-task-form>
       <form class="" action="">
         <div class="month">
           January 2018
@@ -109,9 +109,9 @@
           <input type="number" name="endTimeHours" value="" maxlength="2"> : <input type="number" name="endTimeMinutes" value="" maxlength="2">
     </div>
 
-        <input type="text" name="user" value={{user}} hidden>
-        <input type="text" name="month" value={{month}} hidden>
-        <input type="text" name="year" value={{year}} hidden>
+        <input type="hidden" name="user" value={{user}}>
+        <input type="hidden" name="month" value={{month}}>
+        <input type="hidden" name="year" value={{year}}>
     <div class="button-container">
     <div class="" data-task-form-submit-button>
       Submit
@@ -162,6 +162,20 @@
       <li>
         <div class="time"><div>9:30</div><div>22:00</div></div>
         <div class="name">Sample task Sample task Sample task Sample task Sample task Sample task Sample taskdasasas</div>
+        <div class="edit"><div class="">Edit</div>
+                          <div class="">Delete</div>
+        </div>
+      </li>
+      <li>
+        <div class="time"><div>9:30</div><div>22:00</div></div>
+        <div class="name">Sample task Sample task Sample task Sample task Sample task Sample task Sample task</div>
+        <div class="edit"><div class="">Edit</div>
+                          <div class="">Delete</div>
+        </div>
+      </li>
+      <li>
+        <div class="time"><div>9:30</div><div>22:00</div></div>
+        <div class="name">Sample task Sample task Sample task Sample task Sample task Sample task Sample task</div>
         <div class="edit"><div class="">Edit</div>
                           <div class="">Delete</div>
         </div>

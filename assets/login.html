@@ -16,6 +16,9 @@
         <div class="" data-button-mode-register>
           Register
         </div>
+        <div class="bar" data-mode-bar>
+
+        </div>
       </div>
       <form class="" action="processLogin" method="POST">
         <div class="">
@@ -24,16 +27,17 @@
         </div>
         <div class="">
           <label for="password">Password</label>
-          <input type="password" name="" value="">
+          <input type="password" name="password" value="" id="password">
         </div>
         <div class="hideRepeat" data-repeat-password-container>
-          <label for="password">Repeat Password</label>
-          <input type="password" name="" value="">
+          <label for="repeatPassword">Repeat Password</label>
+          <input type="password" name="repeatPassword" value="" id="repeatPassword">
         </div>
         <input type="hidden" name="offset" value="">
-        <div class="info" data-info-box>
-          Wrong username or password. Please try again
-        </div>
+
+          {{#if error}}
+          <div class="info" data-info-box>{{this}}</div>
+          {{/if}}
 
         <input type="submit" class="submit" name="" value="Submit">
 
@@ -48,13 +52,13 @@
       <div class="stats">
         <ul>
           <li class="name">Number of tasks saved: </li>
-          <li class="value">22</li>
+          <li class="value">{{numberOfTasks}}</li>
           <li class="name">Number of users: </li>
-          <li class="value">2</li>
+          <li class="value">{{numberOfUsers}}</li>
           <li class="name">Average task duration:</li>
-          <li class="value">30 mins</li>
+          <li class="value">{{taskDuration}}</li>
           <li class="name">Average tasks per user:</li>
-          <li class="value">11</li>
+          <li class="value">{{tasksPerUser}}</li>
         </ul>
       </div>
 <div class="start-button" data-start-button>

@@ -8,6 +8,7 @@ const LOGIN_MODE_BUTTON = '[data-button-mode-login]';
 const REGISTER_MODE_BUTTON = '[data-button-mode-register]';
 const REPEAT_PASSWORD_CONTAINER = '[data-repeat-password-container]';
 const INFO_BOX = '[data-info-box]';
+const MODE_BAR = '[data-mode-bar]';
 
 
 const formContainerElement = document.querySelector(FORM_CONTAINER);
@@ -18,7 +19,7 @@ const registerModeButton = document.querySelector(REGISTER_MODE_BUTTON);
 let infoBox = document.querySelector(INFO_BOX);
 const startButton = document.querySelector(START_BUTTON);
 const offsetHiddenElement = formElement["offset"];
-
+const modeBar = document.querySelector(MODE_BAR);
 
 (function addOffsetToHiddenInput() {
     let date = new Date();
@@ -35,11 +36,13 @@ registerModeButton.addEventListener("click", function (event) {
       }
       repeatPasswordContainer.classList.remove("hideRepeat");
       formElement.action = "processRegistration";
+      modeBar.classList.add("register");
 });
 
 loginModeButton.addEventListener("click", function (event) {
       repeatPasswordContainer.classList.add("hideRepeat");
       formElement.action = "processLogin";
+      modeBar.classList.remove("register");
 });
 
 function removeInfoBox() {

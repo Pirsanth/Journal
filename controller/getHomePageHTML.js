@@ -2,9 +2,9 @@ const createHomePageFromContext = require("../views/createHomePageFromContext.js
 const {sendError} = require("./helpers.js");
 const createHomePageContextObject = require("../views/createHomePageContextObject.js")
 
-module.exports = function (user, month, year, res) {
+module.exports = function (username, month, year, res) {
 
-let context = createHomePageContextObject(user, month, year)
+let context = createHomePageContextObject(username, month, year)
 
     createHomePageFromContext(context, function (err, result) {
         if(err){

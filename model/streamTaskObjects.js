@@ -1,15 +1,15 @@
 const sharedDB = require("./sharedDbInstance.js");
 const sendError = require("../controller/helpers.js").handleError;
 
-module.exports = function (startBound, endBound, user, res) {
+module.exports = function (startBound, endBound, username, res) {
     sharedDB.getSharedDBInstance(function (db) {
       db.collection("taskObjects", function (err, collection) {
           if(err){
             sendError(res, 503, "There was an error thrown while accessing database collection");
             return;
           }
-            //exclude user when sending data to reduce size
-            let cursor = collection.find({startUTCDate: {$gte: startBound}, endUTCDate: {$lte: endBound}, user}, {projection:{"user": 0}, sort:[["startUTCDate", 1]]});
+            //exclude username when sending data to reduce size
+            let cursor = collection.find({startUTCDate: {$gte: startBound, $lte: endBound}, username}, {projection:{"username": 0}, sort:[["startUTCDate", 1]]});
 
             cursor.count(function (err, count) {
               if(err){

@@ -11,15 +11,11 @@ module.exports = function (req, res) {
       }
       //wrap the JSON.parse in a try catch block
       let obj = JSON.parse(data);
-    /*  let queryObject = {startUTCDate: parseISOStringToDate(obj.startDateClient),
+
+      let queryObject = {startUTCDate: parseISOStringToDate(obj.startDateClient),
                          endUTCDate: parseISOStringToDate(obj.endDateClient),
                          taskName: obj.taskName,
-                         user: obj.user};
-*/
-let queryObject = {startUTCDate: parseISOStringToDate(obj.startDateClient),
-                     endUTCDate: parseISOStringToDate(obj.endDateClient),
-                     taskName: obj.taskName,
-                     user: obj.user};
+                         username: obj.username};
 
     findAndReturnDeletedObject(queryObject, function (err, resultObject) {
           if(err){

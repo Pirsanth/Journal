@@ -13,12 +13,12 @@ module.exports = function (req, res) {
          let oldTaskObject = {startUTCDate: parseISOStringToDate(data.oldTaskObject.startDateClient),
                               endUTCDate: parseISOStringToDate(data.oldTaskObject.endDateClient),
                               taskName: data.oldTaskObject.taskName,
-                              user: data.oldTaskObject.user};
+                              username: data.oldTaskObject.username};
 
         let newTaskObject = {startUTCDate: parseISOStringToDate(data.newTaskObject.startDateClient),
                              endUTCDate: parseISOStringToDate(data.newTaskObject.endDateClient),
                              taskName: data.newTaskObject.taskName,
-                             user: data.newTaskObject.user};
+                             username: data.newTaskObject.username};
 
 
          replaceAndReturnOldTaskObject(oldTaskObject, newTaskObject, function (err, resultObject) {

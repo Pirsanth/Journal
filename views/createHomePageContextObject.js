@@ -1,11 +1,11 @@
 
-module.exports = function (user, month, year) {
-    return new contextObject(user, month, year);
+module.exports = function (username, month, year) {
+    return new contextObject(username, month, year);
 }
 
-function contextObject (user, month, year) {
+function contextObject (username, month, year) {
   month = +month;
-  this.user = user
+  this.username = username
   this.month = month;
   this.year = year;
 

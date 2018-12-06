@@ -16,7 +16,7 @@ module.exports = function (req, res) {
       query.forEach(function (value, key) {
         data[key] = value;
       });
-      let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, offset, user, month, year, startDate, endDate, taskName} = data;
+      let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, offset, username, month, year, startDate, endDate, taskName} = data;
 
       let startMinutesAfterOffset = getMinutesAfterOffset(startTimeMinutes, offset),
           endMinutesAfterOffset = getMinutesAfterOffset(endTimeMinutes, offset),
@@ -26,7 +26,7 @@ module.exports = function (req, res) {
       let startUTCDate = new Date(Date.UTC(year, month, startIndex + 1, startTimeHours, startMinutesAfterOffset));
       let endUTCDate = new Date(Date.UTC(year, month, endIndex + 1, endTimeHours, endMinutesAfterOffset));
 
-      let taskObject = {user, startUTCDate, endUTCDate, taskName};
+      let taskObject = {username, startUTCDate, endUTCDate, taskName};
 
       insertTaskIntoDatabase(taskObject, function (err, resultObject) {
           if(err){

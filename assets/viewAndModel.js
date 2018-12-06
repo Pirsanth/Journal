@@ -5,7 +5,7 @@
     const ISO_STRING_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
     let HANDLEBARS_COMPILED_FN = null;
 
-    function ViewAndModel({user, month, year}) {
+    function ViewAndModel({username, month, year}) {
         month = +month;
         let lastDate = new Date(year, month+1, 0);
         let numberOfDays = lastDate.getDate();
@@ -18,6 +18,7 @@
             arr.push({tasks: []});
         }
         this.model = arr;
+        //for logging purposes
         window.z = arr;
     }
 

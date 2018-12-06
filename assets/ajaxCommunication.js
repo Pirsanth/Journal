@@ -9,14 +9,14 @@
   let PUT_TASK_URL;
   const hrefRegex = /(^[\w:]+\/\/[\w:]+)\//;
 
-  function AjaxCommunication({user, month, year}) {
-      this.user = user;
+  function AjaxCommunication({username, month, year}) {
+      this.username = username;
       this.month = month;
       this.year = year;
 
       let [,hrefExcludingPath] = window.location.href.match(hrefRegex);
 
-      let getModelURLWithoutQueryString = `${hrefExcludingPath}/${user}/tasksInMonth/${month}-${year}.json?`;
+      let getModelURLWithoutQueryString = `${hrefExcludingPath}/${username}/tasksInMonth/${month}-${year}.json?`;
       GET_MODEL_URL = this.addTimezonOffsetToQueryString(getModelURLWithoutQueryString);
       POST_TASK_URL = `${hrefExcludingPath}/addTask`;
       DELETE_TASK_URL = `${hrefExcludingPath}/removeTask`;
@@ -60,7 +60,7 @@
       xhr.send();
   };
   AjaxCommunication.prototype.addUserToInternalTaskObject = function (taskObj) {
-      taskObj["user"] = this.user;
+      taskObj["username"] = this.username;
   }
   AjaxCommunication.prototype.sendDELETE = function (taskObj) {
       let xhr = new XMLHttpRequest();

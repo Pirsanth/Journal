@@ -1,7 +1,7 @@
 const sharedDB = require("./sharedDbInstance.js");
 const sendError = require("../controller/helpers.js").handleError;
 
-module.exports = function (startBound, endBound, username, res) {
+module.exports = function (username, startBound, endBound, res) {
     sharedDB.getSharedDBInstance(function (db) {
       db.collection("taskObjects", function (err, collection) {
           if(err){
@@ -9,7 +9,9 @@ module.exports = function (startBound, endBound, username, res) {
             return;
           }
             //exclude username when sending data to reduce size
-            let cursor = collection.find({startUTCDate: {$gte: startBound, $lte: endBound}, username}, {projection:{"username": 0}, sort:[["startUTCDate", 1]]});
+            //made this a covered query (via excluding _id) to make it even more efficient
+            //the sort on startUTCDate uses the compound index because the field username before it uses an equality
+            let cursor = collection.find({username, startUTCDate: {$gte: startBound, $lte: endBound}}, {projection:{"_id": 0, "startUTCDate": 1, "endUTCDate": 1, "taskName": 1}, sort:[["startUTCDate", 1]]});
 
             cursor.count(function (err, count) {
               if(err){

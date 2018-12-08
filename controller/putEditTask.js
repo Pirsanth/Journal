@@ -10,16 +10,18 @@ module.exports = function (req, res) {
           //place in a try catch block
           data = JSON.parse(data);
 
-         let oldTaskObject = {startUTCDate: parseISOStringToDate(data.oldTaskObject.startDateClient),
+         let oldTaskObject = {username: data.oldTaskObject.username,
+                              startUTCDate: parseISOStringToDate(data.oldTaskObject.startDateClient),
                               endUTCDate: parseISOStringToDate(data.oldTaskObject.endDateClient),
-                              taskName: data.oldTaskObject.taskName,
-                              username: data.oldTaskObject.username};
+                              taskName: data.oldTaskObject.taskName
+                             };
 
-        let newTaskObject = {startUTCDate: parseISOStringToDate(data.newTaskObject.startDateClient),
+        let newTaskObject = {username: data.newTaskObject.username,
+                             startUTCDate: parseISOStringToDate(data.newTaskObject.startDateClient),
                              endUTCDate: parseISOStringToDate(data.newTaskObject.endDateClient),
-                             taskName: data.newTaskObject.taskName,
-                             username: data.newTaskObject.username};
-
+                             taskName: data.newTaskObject.taskName
+                             };
+                             
 
          replaceAndReturnOldTaskObject(oldTaskObject, newTaskObject, function (err, resultObject) {
            if(err){

@@ -8,5 +8,5 @@ module.exports = function (username, month, year, offset, res) {
       let endBound = new Date(Date.UTC(year, month+1, 0, 0, offset));
 
       //moved error handling to the model because we are already passing the response object into it
-      streamTaskObjects(startBound, endBound, username, res);
+      streamTaskObjects(username, startBound, endBound, res);
 }

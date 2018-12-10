@@ -6,24 +6,18 @@ const EventEmitter = require('events');
 let db = null;
 const eventEmitter = new EventEmitter();
 
-module.exports.initializeConnectionPool = function () {
+module.exports.initializeConnectionPool = function (fn) {
   MongoClient.connect(connectionString, function (err, connectedClient) {
     if(err){
-      console.log(err);
+      fn(err);
       return;
     }
     db = connectedClient.db();
-    eventEmitter.emit("databaseConnected", db);
+    fn(null);
   });
 
 }
 
 module.exports.getSharedDBInstance = function (fn) {
-      if(!db){
-        eventEmitter.once("databaseConnected", fn);
-        console.log("added to events")
-      }
-      else{
         fn(db);
-      }
 }

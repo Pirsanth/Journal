@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="./login.css">
   </head>
   <body>
-
+{{#if error}}
+    <div class="formContainer expand" data-form-container>
+{{else}}
     <div class="formContainer" data-form-container>
+{{/if}}
       <div class="controls">
         <div class="" data-button-mode-login>
             Login
@@ -36,7 +39,7 @@
         <input type="hidden" name="offset" value="">
 
           {{#if error}}
-          <div class="info" data-info-box>{{this}}</div>
+          <div class="info" data-info-box>{{error}}</div>
           {{/if}}
 
         <input type="submit" class="submit" name="" value="Submit">

@@ -133,12 +133,13 @@ form label {
 }
 .info{
   font-size: 25px;
-  color: red;
+  color: #FFCE00;
   padding: 20px;
-  border: 2px dashed black;
+  border: 2px dashed red;
   text-align: justify;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 @media screen and (min-width: 400px){

@@ -8,10 +8,12 @@ const offsetRegex = /offset=(-?\w+)/;
 
 module.exports  = function (req, res) {
     let cookiesString = req.headers.cookie;
+    cookiesString = (!cookiesString)?  "" : cookiesString;
 
     if(sessionIdRegex.test(cookiesString)){
         let [,sessionId] = cookiesString.match(sessionIdRegex);
 
+        //could not use validateSession because we need the object back not just a true/false boolean
         getActiveSessionObject(sessionId, function (err, resultObject) {
             /*The below checks if the resultObject is null. Even though the typeof operator on null
             results in a value of object and objects are always true, null is still on the falsy list
@@ -20,6 +22,7 @@ module.exports  = function (req, res) {
               createHomePageFromContext({}, function (err, page) {
                 if(err){
                   sendError(res, 500, "Internal server error reading HTML template");
+                  return;
                 }
                 /*Clearing the sessionId cookie because the the session is invalid*/
                 res.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "sessionId="});
@@ -42,7 +45,7 @@ module.exports  = function (req, res) {
               res.writeHead(302, {"Location": getRequest});
               res.end();
             }
-        })
+        });
     }
     else if(errorRegex.test(cookiesString)){
       let [,errorMessage] = cookiesString.match(errorRegex);

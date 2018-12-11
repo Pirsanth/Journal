@@ -57,11 +57,20 @@ module.exports = function (req, res) {
     });
 }
 
+/*formData.offset is of type string (changed for HTTP transmission) so since "0" is truthy, the below code to check the existance
+  of the offset field via if(!formData.offset) with formData.offset = "0" works in the case where the client's timezone is GMT*/
+
 function validateRegistrationForm(formData) {
-    if(formData.username.length < 10 && (formData.password === formData.repeatPassword) && formData.offset && formData.password){
-      return true;
+    //check existance of all fields first if it is undefined or an empty string it fails
+    if(!formData.username || !formData.password || !formData.repeatPassword || !formData.offset){
+      return false;
+    }
+    /*formData.password.length > 40 is necessary because JS compares strings character by character amd am attacker could just send an
+      arbitarily long password to block Node */
+    else if( (formData.username.length > 10) || (formData.password.length < 4) || (formData.password.length > 40) || (formData.password !== formData.repeatPassword) ){
+      return false;
     }
     else{
-      return false;
+      return true;
     }
 }

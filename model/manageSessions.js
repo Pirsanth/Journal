@@ -1,25 +1,7 @@
 const sharedDB = require("./sharedDbInstance.js");
 const crypto = require("crypto");
+const sessionIdRegex = /sessionId=([\w]+);?/;
 
-module.exports.getActiveSessionObject = function (sessionId, fn) {
-      sharedDB.getSharedDBInstance(function (db) {
-          db.collection("sessions", function (err, collection) {
-              if(err){
-                fn(err);
-                return;
-              }
-              collection.findOne({sessionId}, function (err, resultObject) {
-                if(err){
-                  fn(err);
-                  return;
-                }
-                  /*Did not want to use the double bang operator to return a boolean because
-                  we would need the returned object in controller if true*/
-                  fn(null, resultObject);
-              });
-          });
-      });
-}
 module.exports.createSessionAndReturnId = function (username, fn) {
       sharedDB.getSharedDBInstance(function (db) {
           db.collection("sessions", function (err, collection) {
@@ -47,31 +29,37 @@ module.exports.createSessionAndReturnId = function (username, fn) {
           });
       });
 }
-module.exports.validateSession = function (sessionId, username, fn) {
-      sharedDB.getSharedDBInstance(function (db) {
-          db.collection("sessions", function (err, collection) {
-              if(err){
-                fn(err);
-                return;
-              }
-              //remeember the index is on sessionId as it is more selective than username
-              collection.findOne({sessionId}, function (err, resultObject) {
-                if(err){
-                  fn(err);
-                  return;
-                }
-                /*In JS and Python the && operator returns the expression on the left if it is false. This is important in this case
-                  as accessing a property on a null object will yeield an error. Hence, if the object is null the expression on hte right of the && is never
-                  evaluated.*/
-                  //A schema would've been good
-                if(resultsObject !== null && resultsObject.username === username){
-                  fn(null, true);
-                }
-                else {
-                  fn(null, false);
-                }
 
+module.exports.validateSession = function (req, fn) {
+      let cookiesString = req.headers.cookie;
+
+      //test does not throw an error on "" and undefined
+      if(sessionIdRegex.test(cookiesString)){
+        //has to be a var otherwise it is block-scoepr
+        var [,sessionId] = cookiesString.match(sessionIdRegex);
+        //continues executing the rest of the code
+      }
+      else{
+        //if wo do not have a sessionid, returns
+        fn(null, false);
+        return;
+      }
+
+          sharedDB.getSharedDBInstance(function (db) {
+              db.collection("sessions", function (err, collection) {
+                  if(err){
+                    fn(err);
+                    return;
+                  }
+                  collection.findOne({sessionId}, function (err, resultObject) {
+                    if(err){
+                      fn(err);
+                      return;
+                    }
+                    //using the double bang operator to convert to boolean. Hence, if resultObject = null, !! will make it false
+                    //the && retruns null if resultObject is null and resultObject.username if the resulting pnject is truthy
+                      fn(null, !!resultObject, resultObject && resultObject.username);
+                  });
               });
           });
-      });
 }

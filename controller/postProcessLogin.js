@@ -1,4 +1,4 @@
-const {sendError, consumeReadStream} = require("./helpers.js");
+const {sendError, consumeReadStream, getHomePageURI} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
 const {validateUserCredentials} = require("../model/manageUsers.js");
 const {createSessionAndReturnId} = require("../model/manageSessions.js");
@@ -29,17 +29,13 @@ module.exports = function (req, res) {
             }
 
             if(isValid){
-                let clientTimestamp = (Date.now() - (parseInt(formData.offset)*60*1000));
-                let clientDate = new Date(clientTimestamp);
-                let getRequest = `${formData.username}/${clientDate.getUTCMonth()}-${clientDate.getUTCFullYear()}.html`;
-
                 createSessionAndReturnId(formData.username, function (err, sessionId) {
                   if(err){
                     sendError(res, 500, "Error thrown while creating session");
                     return;
                   }
 
-                  res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}`, `offset=${formData.offset}`], "Location": getRequest});
+                  res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}`, `offset=${formData.offset}`], "Location": getHomePageURI(formData.username, formData.offset)});
                   res.end();
                 });
           }

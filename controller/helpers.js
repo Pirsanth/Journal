@@ -26,3 +26,11 @@ module.exports.parseISOStringToDate = function (ISOstring) {
     let [,year, month, day, hour, minutes] = ISOstring.match(ISO_STRING_REGEX);
     return new Date(Date.UTC(year, month -1, day, hour, minutes));
 };
+
+/*In the below I am speeding up the time at Greenwich to match the time at the client, given the timezone offset of
+  the client in minutes. Hence, I use the getUTC methods to aquire the client's month and year.*/
+module.exports.getHomePageURI = function (username, offset) {
+  let clientTimestamp = (Date.now() - (parseInt(offset)*60*1000));
+  let clientDate = new Date(clientTimestamp);
+  return `${username}/${clientDate.getUTCMonth()}-${clientDate.getUTCFullYear()}.html`;
+}

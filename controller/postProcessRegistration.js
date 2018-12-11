@@ -36,11 +36,6 @@ module.exports = function (req, res) {
                 return;
               }
             }
-            /*In the below I am speeding up the time at Greenwich to match the time at the client, given the timezone offset of
-              the client in minutes. Hence, I use the getUTC methods to aquire the client's month and year.*/
-            let clientTimestamp = (Date.now() - (parseInt(formData.offset)*60*1000));
-            let clientDate = new Date(clientTimestamp);
-            let getRequest = `${formData.username}/${clientDate.getUTCMonth()}-${clientDate.getUTCFullYear()}.html`;
 
             createSessionAndReturnId(formData.username, function (err, sessionId) {
               if(err){
@@ -48,7 +43,7 @@ module.exports = function (req, res) {
                 return;
               }
 
-              res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}`, `offset=${formData.offset}`], "Location": getRequest});
+              res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}`, `offset=${formData.offset}`], "Location": getHomePageURI(formData.username, formData.offset)});
               res.end();
             });
 

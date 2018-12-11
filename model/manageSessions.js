@@ -47,3 +47,31 @@ module.exports.createSessionAndReturnId = function (username, fn) {
           });
       });
 }
+module.exports.validateSession = function (sessionId, username, fn) {
+      sharedDB.getSharedDBInstance(function (db) {
+          db.collection("sessions", function (err, collection) {
+              if(err){
+                fn(err);
+                return;
+              }
+              //remeember the index is on sessionId as it is more selective than username
+              collection.findOne({sessionId}, function (err, resultObject) {
+                if(err){
+                  fn(err);
+                  return;
+                }
+                /*In JS and Python the && operator returns the expression on the left if it is false. This is important in this case
+                  as accessing a property on a null object will yeield an error. Hence, if the object is null the expression on hte right of the && is never
+                  evaluated.*/
+                  //A schema would've been good
+                if(resultsObject !== null && resultsObject.username === username){
+                  fn(null, true);
+                }
+                else {
+                  fn(null, false);
+                }
+
+              });
+          });
+      });
+}

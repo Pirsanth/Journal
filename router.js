@@ -18,6 +18,7 @@ const deleteRemoveTask = /^\/removeTask$/;
 const putEditTask = /^\/editTask$/;
 const loginPageStaticFiles = /\/login.(js|css)/;
 const postProcessRegistration = /\/processRegistration/;
+const postProcessLogin = /\/processLogin/;
 
 module.exports.requestHandler = function (req, res) {
         let path = req.url;
@@ -57,6 +58,9 @@ module.exports.requestHandler = function (req, res) {
         }
         else if(postProcessRegistration.test(path)){
           require("./controller/postProcessRegistration.js")(req, res);
+        }
+        else if(postProcessLogin.test(path)){
+          require("./controller/postProcessLogin.js")(req, res);
         }
       }
 

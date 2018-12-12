@@ -34,7 +34,7 @@ module.exports.requestHandler = function (req, res) {
           else if(getHomePageHTML.test(path)){
             let match = path.match(getHomePageHTML);
             let [,username,,month,year] = match;
-            require("./controller/getHomePageHTML.js")(username, month, year, res);
+            require("./controller/getHomePageHTML.js")(req, username, month, year, res);
           }
           else if(getTasksInMonth.test(path)){
             //the url.pathname does not include the query STRING

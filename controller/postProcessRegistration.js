@@ -2,7 +2,6 @@ const {sendError, consumeReadStream, getHomePageURI} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
 const {addNewUser} = require("../model/manageUsers.js");
 const {createSessionAndReturnId} = require("../model/manageSessions.js");
-//put an index on username
 
 
 module.exports = function (req, res) {
@@ -10,8 +9,8 @@ module.exports = function (req, res) {
         if(err){
           sendError(res, 500, "There was an error thrown while reading the POST stream");
           return;
-
         }
+        
         let query = new Query(streamContents);
         let formData = {};
         query.forEach(function (value, key) {

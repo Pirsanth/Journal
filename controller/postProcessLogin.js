@@ -2,6 +2,12 @@ const {sendError, consumeReadStream, getHomePageURI} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
 const {validateUserCredentials} = require("../model/manageUsers.js");
 const {createSessionAndReturnId} = require("../model/manageSessions.js");
+/*I clear the sessionId cookie on invalid username/password and invalid form data to ensure that the error else if block in controller/getLoginPage is
+ run instead of the if(sessionIdRegex.test(cookiesString) && offsetRegex.test(cookiesString)) block. If you are logged in (with a valid sessionId cookie) accessing the
+ login page will redirect you to your home page. If you are logged in and send a post request to this URI (perhaps with Postman or Curl, it impossible if you follow the UI
+ and not try to be sneaky due to the redirection ath the login page as described above) with invalid form data or invalid username credentials you will be logged out. This applies to
+ controller/postProcessRegistration as well. I have allowed  a single set of valid user credentials to create multiple valid sessionIds at the same time because I want
+ a user to be able to log in with multiple devices at the same time.*/
 
 module.exports = function (req, res) {
   consumeReadStream(req, function (err, streamContents) {

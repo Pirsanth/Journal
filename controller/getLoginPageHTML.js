@@ -23,7 +23,7 @@ module.exports  = function (req, res) {
             else{
               /*the only way this could not be valid is if either the sessionId has expired/is made up by the client because
                 we tested the existance of the sessionId beforehand. We absoulutely need to clear the sessionId
-                cookie on teh client side*/
+                cookie on the client side*/
               createHomePageFromContext({error: "Session expired, please login again"}, function (err, page) {
                 if(err){
                   sendError(res, 500, "Internal server error reading HTML template");

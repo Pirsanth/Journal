@@ -12,6 +12,7 @@ module.exports = function (req, username, month, year, res) {
       }
 
       if(isValid){
+
         if(username === sessionUsername){
             let context = createHomePageContextObject(username, month, year)
 
@@ -30,6 +31,7 @@ module.exports = function (req, username, month, year, res) {
             return;
         }
       }
+
       else{
         /*not valid if either there is no sessionId cookie with the request or the id has expired (no document
           on the database). We clear cookie on the client side just incase it is the latter case */

@@ -17,7 +17,7 @@ module.exports = function (req, res) {
       });
 
       if(!validateLoginForm(formData)){
-        res.writeHead(302, {"Location": "login.html", "Set-Cookie": "errorMessage=Form sent to server was invalid"});
+        res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Form sent to server was invalid; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
         res.end();
         return;
       }
@@ -35,13 +35,13 @@ module.exports = function (req, res) {
                     return;
                   }
 
-                  res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}`, `offset=${formData.offset}`], "Location": getHomePageURI(formData.username, formData.offset)});
+                  res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}; Path=/; HttpOnly`, `offset=${formData.offset}; Path=/login.html; HttpOnly`], "Location": getHomePageURI(formData.username, formData.offset)});
                   res.end();
                 });
           }
 
           else {
-              res.writeHead(302, {"Location": "login.html", "Set-Cookie": "errorMessage=Username of password was incorrect"});
+              res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username of password was incorrect; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
               res.end();
           }
       });

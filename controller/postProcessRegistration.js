@@ -1,4 +1,4 @@
-const {sendError, consumeReadStream} = require("./helpers.js");
+const {sendError, consumeReadStream, getHomePageURI} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
 const {addNewUser} = require("../model/manageUsers.js");
 const {createSessionAndReturnId} = require("../model/manageSessions.js");
@@ -19,7 +19,7 @@ module.exports = function (req, res) {
         });
 
         if(!validateRegistrationForm(formData)){
-          res.writeHead(302, {"Location": "login.html", "Set-Cookie": "errorMessage=Form sent to server was invalid"});
+          res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Form sent to server was invalid; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
           res.end();
           return;
         }
@@ -27,7 +27,7 @@ module.exports = function (req, res) {
         addNewUser({"username": formData.username, "password": formData.password}, function (err, returnObj) {
             if(err){
               if(err.code === 11000){
-                res.writeHead(302, {"Location": "login.html", "Set-Cookie": "errorMessage=Username already in use please select another"});
+                res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username already in use please select another; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
                 res.end();
                 return;
               }
@@ -43,7 +43,7 @@ module.exports = function (req, res) {
                 return;
               }
 
-              res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}`, `offset=${formData.offset}`], "Location": getHomePageURI(formData.username, formData.offset)});
+              res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}; Path=/; HttpOnly`, `offset=${formData.offset}; Path=/login.html; HttpOnly`], "Location": getHomePageURI(formData.username, formData.offset)});
               res.end();
             });
 

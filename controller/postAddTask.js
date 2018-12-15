@@ -28,12 +28,10 @@ module.exports = function (req, res) {
                 let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, offset, username, month, year, startDate, endDate, taskName} = data;
 
                 let startMinutesAfterOffset = getMinutesAfterOffset(startTimeMinutes, offset),
-                endMinutesAfterOffset = getMinutesAfterOffset(endTimeMinutes, offset),
-                startIndex = getDayIndex(startDate),
-                endIndex = getDayIndex(endDate);
+                endMinutesAfterOffset = getMinutesAfterOffset(endTimeMinutes, offset);
 
-                let startUTCDate = new Date(Date.UTC(year, month, startIndex + 1, startTimeHours, startMinutesAfterOffset));
-                let endUTCDate = new Date(Date.UTC(year, month, endIndex + 1, endTimeHours, endMinutesAfterOffset));
+                let startUTCDate = new Date(Date.UTC(year, month, startDate, startTimeHours, startMinutesAfterOffset));
+                let endUTCDate = new Date(Date.UTC(year, month, endDate, endTimeHours, endMinutesAfterOffset));
 
                 let taskObject = {username, startUTCDate, endUTCDate, taskName};
 
@@ -71,12 +69,7 @@ module.exports = function (req, res) {
 function getMinutesAfterOffset(minutes, offset) {
     return parseInt(minutes) + parseInt(offset);
 }
-function getDayIndex(taskDate) {
-  let endPosition = taskDate.indexOf("s")
-  let actualDate = taskDate.substring(0, endPosition);
-  let dateFromZeroIndex = actualDate - 1;
-  return dateFromZeroIndex;
-}
+
 function validateAddTaskForm(data) {
   //if it can't find the named property within the data object, it will remain undefined;
   let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, offset, username, month, year, startDate, endDate, taskName} = data;

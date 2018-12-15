@@ -95,10 +95,10 @@
   TaskForm.prototype.prefillFormWithObject = function ({taskName, startDateClient, endDateClient}) {
       let collection = this.form.elements;
       collection["taskName"].value = taskName;
-      collection["startDate"].value = `${startDateClient.getDate()}st`;
+      collection["startDate"].value = startDateClient.getDate();
       collection["startTimeHours"].value = startDateClient.getHours();
       collection["startTimeMinutes"].value = startDateClient.getMinutes();
-      collection["endDate"].value = `${endDateClient.getDate()}st`;
+      collection["endDate"].value = endDateClient.getDate();
       collection["endTimeHours"].value = endDateClient.getHours();
       collection["endTimeMinutes"].value = endDateClient.getMinutes();
   }
@@ -146,11 +146,8 @@
       taskName
     }
   }
-  function getDayIndex(taskDate) {
-    let endPosition = taskDate.indexOf("s")
-    let actualDate = taskDate.substring(0, endPosition);
-    let dateFromZeroIndex = actualDate - 1;
-    return dateFromZeroIndex;
+  function getDayIndex(actualDate) {
+    return actualDate - 1;
   }
 
   Application.TaskForm = TaskForm;

@@ -93,13 +93,9 @@ Base.prototype.getActiveDayIndex = function () {
   }
 }
 
-function getDayIndex(taskDate) {
-  let endPosition = taskDate.indexOf("s")
-  let actualDate = taskDate.substring(0, endPosition);
-  let dateFromZeroIndex = actualDate - 1;
-  return dateFromZeroIndex;
+function getDayIndex(actualDate) {
+  return actualDate - 1;
 }
-
 
   Application.Base = Base;
   window.Application = Application;

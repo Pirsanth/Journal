@@ -16,7 +16,7 @@ module.exports = function () {
             makeDayCells();
             let remaining = 42-totalTally;
             makeBlankCells(remaining);
-            return string + "</tr>"
+            return string + "</tr>";
 
 
             function makeBlankCells(numberOfBlanks){
@@ -34,7 +34,7 @@ module.exports = function () {
                   if(totalTally%7 === 0 && totalTally !== 0){
                     string += "</tr><tr>";
                   }
-                  string += options.fn({data: 'data-clickable', value: `${i+1}st`});
+                  string += options.fn({data: 'data-clickable', value: `${i+1}`});
                   totalTally++;
               }
             }
@@ -67,7 +67,7 @@ module.exports = function () {
                   if(totalTally%7 === 0 && totalTally !== 0){
                   string += "</tr><tr>";
                   }
-                string += options.fn({data: 'data-clickable', value: `${i+1}st`});
+                string += options.fn({data: 'data-clickable', value: `${i+1}`});
                 totalTally++;
             }
           }

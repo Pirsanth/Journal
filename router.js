@@ -41,7 +41,7 @@ module.exports.requestHandler = function (req, res) {
             let match = path.match(getTasksInMonth);
             let [, username, month, year,offset] = match;
 
-            require("./controller/getTasksInMonth.js")(username, month, year, offset, res);
+            require("./controller/getTasksInMonth.js")(req, username, month, year, offset, res);
           }
           else if(getLoginPageHTML.test(path)){
             require("./controller/getLoginPageHTML.js")(req, res);

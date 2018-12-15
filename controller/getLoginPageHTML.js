@@ -1,5 +1,5 @@
 const {validateSession} = require("../model/manageSessions.js");
-const createHomePageFromContext = require("../views/createLoginPageFromContext.js");
+const createLoginPageFromContext = require("../views/createLoginPageFromContext.js");
 const {sendError, getHomePageURI} = require("./helpers.js");
 
 const errorRegex = /errorMessage=([\w\s]+);?/;
@@ -24,7 +24,7 @@ module.exports  = function (req, res) {
               /*the only way this could not be valid is if either the sessionId has expired/is made up by the client because
                 we tested the existance of the sessionId beforehand. We absoulutely need to clear the sessionId
                 cookie on the client side*/
-              createHomePageFromContext({error: "Session expired, please login again"}, function (err, page) {
+              createLoginPageFromContext({error: "Session expired, please login again"}, function (err, page) {
                 if(err){
                   sendError(res, 500, "Internal server error reading HTML template");
                   return;
@@ -38,7 +38,7 @@ module.exports  = function (req, res) {
     }
     else if(errorRegex.test(cookiesString)){
       let [,errorMessage] = cookiesString.match(errorRegex);
-      createHomePageFromContext({error: errorMessage}, function (err, page) {
+      createLoginPageFromContext({error: errorMessage}, function (err, page) {
         if(err){
           sendError(res, 500, "Internal server error reading HTML template");
         }
@@ -48,7 +48,7 @@ module.exports  = function (req, res) {
       });
     }
     else {
-      createHomePageFromContext({}, function (err, page) {
+      createLoginPageFromContext({}, function (err, page) {
         if(err){
           sendError(res, 500, "Internal server error reading HTML template");
         }

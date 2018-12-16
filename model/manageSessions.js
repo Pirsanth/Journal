@@ -40,7 +40,7 @@ module.exports.validateSession = function (req, fn) {
         //continues executing the rest of the code
       }
       else{
-        //if wo do not have a sessionid, returns
+        //if we do not have a sessionid, returns
         fn(null, false);
         return;
       }
@@ -62,4 +62,23 @@ module.exports.validateSession = function (req, fn) {
                   });
               });
           });
+}
+module.exports.findAndDeleteSession = function (sessionId, fn) {
+    sharedDB.getSharedDBInstance(function (db) {
+      db.collection("sessions", function (err, collection) {
+          if(err){
+            fn(err);
+            return;
+          }
+          collection.findOneAndDelete({sessionId}, function (err, resultObject) {
+            if(err){
+              fn(err);
+              return;
+            }
+            //using the double bang operator to convert to boolean. Hence, if resultObject = null, !! will make it false
+            //the && retruns null if resultObject is null and resultObject.username if the resulting pnject is truthy
+              fn(null, !!resultObject);
+          });
+      });
+    });
 }

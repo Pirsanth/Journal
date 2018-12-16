@@ -15,14 +15,14 @@
           <li>Home</li>
           <li><a href={{getPreviousMonthLink month year username}}>Previous month</a></li>
           <li> <a href={{getNextMonthLink month year username}}>Next month</a></li>
-          <li id="check">Usage statistics</li>
+          <li>Usage statistics</li>
           <li>Future tasks</li>
-          <li>Logout</li>
+          <li><a href="../logout">Logout</a></li>
         </ul>
       </nav>
     </div>
 
-    <div class="task-form-container slide" data-task-form>
+    <div class="task-form-container" data-task-form>
       <form class="" action="">
         <div class="month">
           {{monthString}}

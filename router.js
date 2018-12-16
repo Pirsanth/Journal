@@ -19,6 +19,7 @@ const putEditTask = /^\/editTask$/;
 const loginPageStaticFiles = /\/login.(js|css)/;
 const postProcessRegistration = /\/processRegistration/;
 const postProcessLogin = /\/processLogin/;
+const getProcessLogout = /\/logout/;
 
 module.exports.requestHandler = function (req, res) {
         let path = req.url;
@@ -45,6 +46,9 @@ module.exports.requestHandler = function (req, res) {
           }
           else if(getLoginPageHTML.test(path)){
             require("./controller/getLoginPageHTML.js")(req, res);
+          }
+          else if(getProcessLogout.test(path)){
+            require("./controller/getProcessLogout.js")(req, res);
           }
           else if (path === "/favicon.ico" ){
             res.writeHead(200, {"Content-Type": "text/html"});
@@ -76,7 +80,3 @@ module.exports.requestHandler = function (req, res) {
         }
       }
 }
-//IN ES6 JUST WRITE user in obj
-
-// GET, POST, DELETE, PUT
-//http://localhost:8080/username/current

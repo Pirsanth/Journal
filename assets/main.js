@@ -68,7 +68,9 @@
           //we can't reuse index because we cannot assume that the task has been added on the same date as is selected in the base calendar
           let baseDayIndex = base.getActiveDayIndex();
           //user could've just hit add new task immediately. The empty string is implicitly coerced to false
-          if(baseDayIndex){
+
+          //I made base.getActiveDayIndex() return -1 in the case of false and used ~ in the if statement so that baseDayIndex 0 (day 1) would be considered truthy
+          if(~baseDayIndex){
             let domString = viewAndModel.makeTaskListFromDayIndex(baseDayIndex);
             base.setDataAttributeOfTaskList(baseDayIndex);
             base.appendToTaskList(domString);
@@ -90,7 +92,7 @@
             because it would be equal to baseDayIndex. I have however decided to repeat myself
             because I might want to abstract the below away in the future */
           let baseDayIndex = base.getActiveDayIndex();
-          if(baseDayIndex){
+          if(~baseDayIndex){
             let domString = viewAndModel.makeTaskListFromDayIndex(baseDayIndex);
             base.setDataAttributeOfTaskList(baseDayIndex);
             base.appendToTaskList(domString);
@@ -102,7 +104,4 @@
       taskForm.clearInternalStateAndForm();
     });
 
-    document.getElementById("check").addEventListener("click", function (e) {
-      alert("Clicked");
-    })
 })(window)

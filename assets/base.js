@@ -89,7 +89,7 @@ Base.prototype.getActiveDayIndex = function () {
     return getDayIndex(this.lastElementClicked.textContent);
   }
   else {
-    return '';
+    return -1;
   }
 }
 

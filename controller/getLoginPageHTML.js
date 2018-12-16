@@ -1,6 +1,7 @@
 const {validateSession} = require("../model/manageSessions.js");
 const createLoginPageFromContext = require("../views/createLoginPageFromContext.js");
 const {sendError, getHomePageURI} = require("./helpers.js");
+const makeLoginPageStatistics = require("../model/makeLoginPageStatistics.js");
 
 const errorRegex = /errorMessage=([\w\s]+);?/;
 const sessionIdRegex = /sessionId=([\w]+);?/;
@@ -24,37 +25,63 @@ module.exports  = function (req, res) {
               /*the only way this could not be valid is if either the sessionId has expired/is made up by the client because
                 we tested the existance of the sessionId beforehand. We absoulutely need to clear the sessionId
                 cookie on the client side*/
-              createLoginPageFromContext({error: "Session expired, please login again"}, function (err, page) {
+
+              makeLoginPageStatistics(function (err, contextObject) {
                 if(err){
-                  sendError(res, 500, "Internal server error reading HTML template");
+                  sendError(res, 500, "Internal server error fetching login page statitics");
                   return;
                 }
+
+                contextObject.error = "Session expired, please login again";
+                createLoginPageFromContext(contextObject, function (err, page) {
+                  if(err){
+                    sendError(res, 500, "Internal server error reading HTML template");
+                    return;
+                  }
                   /*Clearing the sessionId cookie because the the session is invalid*/
-                res.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "sessionId=; Path=/; HttpOnly"});
-                res.end(page);
-              });
+                  res.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "sessionId=; Path=/; HttpOnly"});
+                  res.end(page);
+                });
+              })
             }
         });
     }
     else if(errorRegex.test(cookiesString)){
       let [,errorMessage] = cookiesString.match(errorRegex);
-      createLoginPageFromContext({error: errorMessage}, function (err, page) {
+      makeLoginPageStatistics(function (err, contextObject) {
         if(err){
-          sendError(res, 500, "Internal server error reading HTML template");
+          sendError(res, 500, "Internal server error fetching login page statitics");
+          return;
         }
-        /*Clearing the errorMessage cookie*/
-        res.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "errorMessage=; Path=/login.html; HttpOnly"});
-        res.end(page);
+
+        contextObject.error = errorMessage;
+        createLoginPageFromContext(contextObject, function (err, page) {
+          if(err){
+            sendError(res, 500, "Internal server error reading HTML template");
+            return;
+          }
+          /*Clearing the errorMessage cookie*/
+          res.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "errorMessage=; Path=/login.html; HttpOnly"});
+          res.end(page);
+        });
       });
     }
     else {
-      createLoginPageFromContext({}, function (err, page) {
+      makeLoginPageStatistics(function (err, contextObject) {
         if(err){
-          sendError(res, 500, "Internal server error reading HTML template");
+          sendError(res, 500, "Internal server error fetching login page statitics");
+          return;
         }
 
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end(page);
+        createLoginPageFromContext(contextObject, function (err, page) {
+          if(err){
+            sendError(res, 500, "Internal server error reading HTML template");
+            return;
+          }
+
+          res.writeHead(200, {"Content-Type": "text/html"});
+          res.end(page);
+        });
       });
     }
 

@@ -28,7 +28,6 @@ module.exports = function (req, username, month, year, res) {
         }
         else{
             sendError(res, 403, "You are not authorized to view this user's homepage");
-            return;
         }
       }
 

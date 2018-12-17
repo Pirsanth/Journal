@@ -73,9 +73,14 @@ function getMinutesAfterOffset(minutes, offset) {
 function validateAddTaskForm(data) {
   //if it can't find the named property within the data object, it will remain undefined;
   let {startTimeMinutes, startTimeHours, endTimeMinutes, endTimeHours, offset, username, month, year, startDate, endDate, taskName} = data;
+  let {isInteger} = Number;
 
     //I repeat checking for username (!username) because I wanted the validation function to be able to be used as a stand alone and not so tightly coupled with the application logic
     if(!startTimeMinutes || !startTimeHours || !endTimeMinutes || !endTimeHours || !offset || !username || !month || !year || !startDate || !endDate || !taskName){
+      return false;
+    }
+    else if (!isInteger(+startTimeMinutes) || !isInteger(+endTimeMinutes) || !isInteger(+startTimeHours) || !isInteger(+endTimeHours) ||
+    !isInteger(+startDate) || !isInteger(+endDate) || !isInteger(+month) || !isInteger(+year)) {
       return false;
     }
     else if(+startTimeMinutes>60 || +startTimeMinutes<0 || +endTimeMinutes>60 || +endTimeMinutes<0 ){
@@ -87,7 +92,7 @@ function validateAddTaskForm(data) {
     else if(+month>11 || +month<0 || +year<1900){
       return false;
     }
-    else if(startDate<0 || startDate>maximumPossibleDays(month, year) ||endDate<0 || endDate>maximumPossibleDays(month, year)){
+    else if(+startDate<0 || +startDate>maximumPossibleDays(month, year) || +endDate<0 || +endDate>maximumPossibleDays(month, year)){
       return  false;
     }
     else if(new Date(year, month, startDate, startTimeHours, startTimeMinutes) > new Date(year, month, endDate, endTimeHours, endTimeMinutes)){

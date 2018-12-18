@@ -61,7 +61,7 @@ body{
 }
 .expand{
   transform: scaleY(1);
-  transition-duration: 1s;
+  transition-duration: 400ms;
 }
 .controls {
   display: flex;

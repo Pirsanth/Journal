@@ -1,27 +1,25 @@
 .task-form-container{
   position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  height: 100%;
-  width: 100%;
-  font-size: 18px;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  font-size: 25px;
   transform: scaleY(0);
   transform-origin: top;
-  background: white;
+  background: #328CC1;
+  overflow-y: auto;
+  background: #1D2731;
 }
 .task-form-container form {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+    height: 100%;
+    overflow-y: auto;
+    background: #328CC1;
 }
 .slide{
   transform: scaleY(1.0);
   transition-property: transform;
-  transition-duration: 2s;
+  transition-duration: 400ms;
   transition-timing-function: ease-in-out;
 }
 form > div {
@@ -32,23 +30,27 @@ form table {
   font-size: 20px;
   border-collapse: collapse;
   height: 100%;
+  margin: 0 auto;
+  width: 98%;
+  background: #1D2731;
 }
 form table th{
   font-size: 17px;
 }
 form table td {
   border: 1px black solid;
+  text-align: center;
 }
 form > .month{
-  height: 5%;
   justify-content: center;
   align-items: center;
+  background: #0B3C5D;
 }
 form input{
   display: block;
 }
 form label{
-  margin: 5px 0px;
+  margin: 5px 10px;
 }
 form input{
   border: 1px solid black;
@@ -58,23 +60,29 @@ form input{
 form .task-name{
   display: flex;
   flex-direction: column;
+  height: 17%;
 }
 form > .task-name input{
   width: 80%;
   margin: 0 auto;
+  font-size: 85%;
+  padding: 5px;
 }
 form .title{
   align-items: center;
-  font-weight: bold;;
-  height: 5%;
+  font-weight: bold;
+  background: #0B3C5D;
+  height: 7%;
+  padding-left: 10px;
 }
 form .date{
-  height: 7%;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
+  height: 12%;
 }
 form .date div:first-child{
   width: 30%;
+  margin-left: 10px;
 }
 form .date > div:last-child{
   width: 70%;
@@ -83,11 +91,12 @@ form .date > div:last-child{
 }
 form .date div .change-button{
   border: 1px black solid;
+  border-radius: 10%;
   display: flex;
   justify-content: center;
   margin-right: 15px;
   width: 50%;
-  background: red;
+  background: #ff0000;
 }
 .change_button{
   width: auto;
@@ -100,10 +109,12 @@ form .date-picker {
   overflow: hidden;
 }
 form .expand{
-  height: 40%;
+  height: 50%;
+  margin-bottom: 20px;
 }
 form .time {
   align-items: flex-start;
+  margin-left: 10px;
 }
 
 form .time div:first-child{
@@ -113,16 +124,18 @@ form .button-container{
   display: flex;
   justify-content: space-around;
   align-items: center;
+  height: 15%;
 }
 form .button-container div{
-  border: 1px red solid;
+  border: 1px black solid;
   display: flex;
+  border-radius: 5%;
   align-items: center;
   justify-content: space-around;
-  height: 100%;
+  height: 67%;
   width: 40%;
+  background: #008000;
 }
-
 @media screen and (min-width: 375px) and (max-width: 760px){
   .tasklist{
     font-size: 25px;
@@ -131,7 +144,9 @@ form .button-container div{
 @media screen and (min-width: 761px){
     body{
       flex-direction: row;
-      padding: 40px 20px;
+      padding: 0px;
+      width: 700px;
+      max-height: 520px;
     }
     .body-container1{
       height:100%;
@@ -145,14 +160,17 @@ form .button-container div{
       font-size: 20px;
     }
     .body-container1 td{
-      font-size: 30px;
+      font-size: 25px;
     }
     .add-button{
       font-size: 30px;
       order: 1;
     }
     .tasklist{
-      font-size: 30px;
+      font-size: 25px;
+      border: 2px solid black;
+      border-bottom: none;
+      border-top: none;
     }
     .tasklist ul li{
       flex-direction: column;
@@ -173,11 +191,48 @@ form .button-container div{
       display: flex;
       height: 25%;
     }
-}
-@media screen and (min-width: 1000px){
-    body{
-      width: 1000px;
-      margin: 0 auto;
+    .task-form-container{
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
     }
-
+    .task-form-container form {
+      margin: 0 auto;
+      width: 70%;
+      border: 3px solid black;
+    }
+    form table {
+      font-size: 25px;
+      width: 90%;
+    }
+    form table th{
+      font-size: 20px;
+    }
+}
+@media screen and (min-width: 1200px){
+  .banner{
+    font-size: 35px;
+  }
+  .body-container1 th{
+    font-size: 25px;
+  }
+  .body-container1 td{
+    font-size: 30px;
+  }
+    body{
+      width: 1200px;
+      max-height: 720px;
+    }
+    .tasklist{
+      font-size: 28px;
+    }
+    .task-form-container form {
+      margin: 0 auto;
+      width: 70%;
+      font-size: 32px;
+    }
+    .add-button{
+      font-size: 35px;
+    }
 }

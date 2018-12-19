@@ -32,7 +32,8 @@
       taskForm.preFillDates(taskDate)
       taskForm.setInternalState("POST");
     });
-    base.addMainMenuHandler();
+    base.addMainMenuButtonHandler();
+    base.addHomeButtonHandler();
     base.addEditAndDeleteButtonHandler(
       function EditButton(dayIndex, taskIndex) {
         const taskObject = viewAndModel.getTaskFromModel(dayIndex, taskIndex);

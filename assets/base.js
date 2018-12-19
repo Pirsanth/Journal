@@ -8,6 +8,7 @@ const TASK_LIST_SELECTOR = '[data-base-task-list]';
 const MAIN_MENU_BUTTON_SELECTOR = '[data-base-main-menu-button]';
 const MAIN_MENU_CONTAINER_SELECTOR = '[data-main-menu-container]';
 const CALENDAR_CONTAINER_SELECTOR = '[data-base-calendar]'
+const HOME_BUTTON_SELECTOR = "[data-main-menu-home-button]"
 
 function Base() {
     this.new_task_button = document.querySelector(NEW_TASK_BUTTON_SELECTOR);
@@ -15,7 +16,9 @@ function Base() {
     this.mainMenu = document.querySelector(MAIN_MENU_CONTAINER_SELECTOR);
     this.mainMenuButton = document.querySelector(MAIN_MENU_BUTTON_SELECTOR);
     this.calendarContainer = document.querySelector(CALENDAR_CONTAINER_SELECTOR);
+    this.homeButton = document.querySelector(HOME_BUTTON_SELECTOR);
     this.lastElementClicked;
+
     /*did not see the point in creating a new module to include just the
       toggleVisibility method for the main menu
       (for consistency with the naming of taskForm.toggleVisibility)
@@ -52,9 +55,14 @@ Base.prototype.makeTaskListUpdateOnCalendarClick = function (fn) {
 Base.prototype.appendToTaskList = function (domString) {
   this.taskList.innerHTML = domString;
 };
-Base.prototype.addMainMenuHandler =  function () {
+Base.prototype.addMainMenuButtonHandler =  function () {
     this.mainMenuButton.addEventListener("click", (event) => {
-          this.mainMenu.classList.toggle("stretch");
+          this.mainMenu.classList.add("stretch");
+    })
+}
+Base.prototype.addHomeButtonHandler =  function () {
+    this.homeButton.addEventListener("click", (event) => {
+          this.mainMenu.classList.remove("stretch");
     })
 }
 

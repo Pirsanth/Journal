@@ -26,15 +26,15 @@
       <form class="" action="processLogin" method="POST">
         <div class="">
           <label for="username">Username</label>
-          <input type="text" name="username" value="" id="username">
+          <input type="text" name="username" value="" id="username" maxlength="10" required>
         </div>
         <div class="">
           <label for="password">Password</label>
-          <input type="password" name="password" value="" id="password">
+          <input type="password" name="password" value="" id="password" minlength="4" maxlength="40" required>
         </div>
         <div class="hideRepeat" data-repeat-password-container>
           <label for="repeatPassword">Repeat Password</label>
-          <input type="password" name="repeatPassword" value="" id="repeatPassword">
+          <input type="password" name="repeatPassword" value="" id="repeatPassword" minlength="4" maxlength="40" required disabled>
         </div>
         <input type="hidden" name="offset" value="">
 
@@ -68,6 +68,8 @@
   Start
 </div>
 </div>
-<script src="./login.js" charset="utf-8"></script>
+<script src="./login-buttonControls.js" charset="utf-8"></script>
+<script src="./login-form.js" charset="utf-8"></script>
+<script src="./login-main.js" charset="utf-8"></script>
   </body>
 </html>

@@ -53,6 +53,9 @@
     });
     taskForm.addChangeDateButtonHandler();
     taskForm.addCalendarClickHandler();
+    taskForm.showUserInputValidityOnBlur();
+    taskForm.showReadOnlyInputValidityOnClick();
+
     //using named anonymous functions on both main.js and taskform.js for greater clarity
     /*I repeated the code to clean up the form in both callbacks because I decided that it would be better to
     eliminate the unseen side-effects of function calls rather than being a bit more DRY*/
@@ -65,6 +68,7 @@
           viewAndModel.sortModelAtIndex(index);
           taskForm.toggleVisibility();
           taskForm.clearInternalStateAndForm();
+          taskForm.clearAllValidationMessages();
 
           //we can't reuse index because we cannot assume that the task has been added on the same date as is selected in the base calendar
           let baseDayIndex = base.getActiveDayIndex();
@@ -88,6 +92,7 @@
           ajaxCommunication.sendPUT(oldTaskObject, newTaskObject);
           taskForm.toggleVisibility();
           taskForm.clearInternalStateAndForm();
+          taskForm.clearAllValidationMessages();
 
           /*the if statement will always be true in this case. Indeed I could just the dayIndex
             because it would be equal to baseDayIndex. I have however decided to repeat myself
@@ -103,6 +108,7 @@
     taskForm.addCancelButtonHandler(function () {
       taskForm.toggleVisibility();
       taskForm.clearInternalStateAndForm();
+      taskForm.clearAllValidationMessages();
     });
 
 })(window)

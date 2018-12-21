@@ -44,6 +44,7 @@ body{
   justify-content: flex-start;
   background: #0B3C5D;
   border: 1px black solid;
+  padding-left: 20px;
 }
 .main-menu-container a {
   text-decoration: none;

@@ -4,7 +4,7 @@
   left: 10px;
   right: 10px;
   bottom: 10px;
-  font-size: 25px;
+  font-size: 20px;
   transform: scaleY(0);
   transform-origin: top;
   background: #328CC1;
@@ -25,6 +25,7 @@
 form > div {
   display: flex;
   height: 10%;
+  position: relative;
 }
 form table {
   font-size: 20px;
@@ -46,21 +47,46 @@ form > .month{
   align-items: center;
   background: #0B3C5D;
 }
+form label{
+  margin: 2px 10px;
+}
 form input{
   display: block;
-}
-form label{
-  margin: 5px 10px;
-}
-form input{
   border: 1px solid black;
   width: 25%;
   text-align: center;
 }
+form .success{
+  color: green
+}
+form .failure{
+  color: red;
+}
+form > div.showFailure .failure{
+  opacity: 1;
+}
+form > div.showFailure input{
+  border: 3px red solid;
+}
+form > div.showSuccess .success{
+  opacity: 1;
+}
+form > div.showSuccess input{
+  border: 1px green solid;
+}
+form .validion-message{
+  position: absolute;
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  font-size: 15px;
+}
 form .task-name{
   display: flex;
   flex-direction: column;
-  height: 17%;
+  height: 18%;
+  margin-left: 10px;
 }
 form > .task-name input{
   width: 80%;
@@ -69,27 +95,38 @@ form > .task-name input{
   padding: 5px;
 }
 form .title{
-  align-items: center;
   font-weight: bold;
-  background: #0B3C5D;
+  align-items: flex-start;
   height: 7%;
-  padding-left: 10px;
+}
+form .title > div{
+  background: #0B3C5D;
+  width: 100%;
+  padding: 2px 0px 2px 10px;
+}
+.failure svg{
+  height: 30px;
+  width: 30px;
+}
+.success svg{
+  height: 29px;
+  width: 26px;
 }
 form .date{
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   height: 12%;
+  margin-left: 10px;
 }
 form .date div:first-child{
   width: 30%;
-  margin-left: 10px;
 }
-form .date > div:last-child{
+form .date > .input-container{
   width: 70%;
   justify-content: space-between;
   display: flex;
 }
-form .date div .change-button{
+form .date .input-container .change-button{
   border: 1px black solid;
   border-radius: 10%;
   display: flex;
@@ -97,9 +134,6 @@ form .date div .change-button{
   margin-right: 15px;
   width: 50%;
   background: #ff0000;
-}
-.change_button{
-  width: auto;
 }
 form .date-picker {
   height: 0%;
@@ -115,16 +149,21 @@ form .expand{
 form .time {
   align-items: flex-start;
   margin-left: 10px;
+  flex-wrap: wrap;
+  height: 12%;
 }
-
-form .time div:first-child{
+form .time .input-container{
+  width: 100%;
+  display: flex;
+}
+form .time .input-container > div:first-child{
   width: 30%;
 }
 form .button-container{
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 15%;
+  height: 10%;
 }
 form .button-container div{
   border: 1px black solid;
@@ -147,6 +186,12 @@ form .button-container div{
       padding: 0px;
       width: 700px;
       max-height: 520px;
+    }
+    .main-menu-container{
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
     }
     .body-container1{
       height:100%;
@@ -231,6 +276,9 @@ form .button-container div{
       margin: 0 auto;
       width: 70%;
       font-size: 32px;
+    }
+    form .validion-message{
+      font-size: 27px;
     }
     .add-button{
       font-size: 35px;

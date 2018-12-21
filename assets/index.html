@@ -12,9 +12,9 @@
     <div class="main-menu-container" data-main-menu-container>
       <nav>
         <ul>
-          <li>Home</li>
-          <li><a href={{getPreviousMonthLink month year username}}>Previous month</a></li>
-          <li> <a href={{getNextMonthLink month year username}}>Next month</a></li>
+          <li data-main-menu-home-button>Home</li>
+          <li><a href={{getPreviousMonthLink month year}}>Previous month</a></li>
+          <li> <a href={{getNextMonthLink month year}}>Next month</a></li>
           <li>Usage statistics</li>
           <li>Future tasks</li>
           <li><a href="../logout">Logout</a></li>
@@ -27,21 +27,47 @@
         <div class="month">
           {{monthString}}
         </div>
-        <div class="task-name">
+        <div class="task-name" data-task-form-user-input-status-box>
         <label for="taskName">Task Name:</label>
-        <input type="text" name="taskName" value="" id="taskName">
+        <input type="text" name="taskName" value="" id="taskName" maxlength="200" required>
+        <div class="success validion-message">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve" width="96px" height="96px">
+          <g id="surface1_4_">
+            <path style="fill:#4CAF50;" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/>
+            <path style="fill:#CCFF90;" d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"/>
+          </g>
+          </svg>Valid
+        </div>
+        <div class="failure validion-message">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="-1041.36" r="8" transform="matrix(1 0 0-1 0-1030.36)" opacity=".98" fill="#da4453"/><path d="m-26.309 18.07c-1.18 0-2.135.968-2.135 2.129v12.82c0 1.176.948 2.129 2.135 2.129 1.183 0 2.135-.968 2.135-2.129v-12.82c0-1.176-.946-2.129-2.135-2.129zm0 21.348c-1.18 0-2.135.954-2.135 2.135 0 1.18.954 2.135 2.135 2.135 1.181 0 2.135-.954 2.135-2.135 0-1.18-.952-2.135-2.135-2.135z" transform="matrix(.30056 0 0 .30056 18.902 1.728)" fill="#fff" stroke="#fff"/></svg>Task Name can't be left blank
+        </div>
         </div>
 
-          <div class="title">Start</div>
+          <div class="title">
+  <div class="">
+    Start
+  </div>
+            </div>
           <div class="date">
             <div class="">
               Date:
             </div>
-            <div class="">
-              <input name="startDate" data-task-form-date readonly value="">
+            <div class="input-container">
+              <input name="startDate" data-task-form-date readonly value="" required min="1" max={{maximumPossibleDays month year}}>
               <div class="change-button" data-task-form-change-button data-container-index="0" >
                 Change
               </div>
+            </div>
+            <div class="success validion-message">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve" width="96px" height="96px">
+              <g id="surface1_4_">
+                <path style="fill:#4CAF50;" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/>
+                <path style="fill:#CCFF90;" d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"/>
+              </g>
+              </svg>Valid
+            </div>
+            <div class="failure validion-message">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="-1041.36" r="8" transform="matrix(1 0 0-1 0-1030.36)" opacity=".98" fill="#da4453"/><path d="m-26.309 18.07c-1.18 0-2.135.968-2.135 2.129v12.82c0 1.176.948 2.129 2.135 2.129 1.183 0 2.135-.968 2.135-2.129v-12.82c0-1.176-.946-2.129-2.135-2.129zm0 21.348c-1.18 0-2.135.954-2.135 2.135 0 1.18.954 2.135 2.135 2.135 1.181 0 2.135-.954 2.135-2.135 0-1.18-.952-2.135-2.135-2.135z" transform="matrix(.30056 0 0 .30056 18.902 1.728)" fill="#fff" stroke="#fff"/></svg>Please pick a date with the change button
             </div>
           </div>
 
@@ -64,27 +90,57 @@
             </table>
           </div>
 
-        <div class="time">
-          <div class="">Time:</div>
-          <input type="number" name="startTimeHours" value="" maxlength="2"> : <input type="number" name="startTimeMinutes" value="" maxlength="2">
+        <div class="time" data-task-form-user-input-status-box>
+          <div class="input-container">
+            <div class="">Time:</div>
+            <input type="number" name="startTimeHours" value="" min="1" max="24" step="1" required> : <input type="number" name="startTimeMinutes" value="" min="1" max="60" step="1" required>
+          </div>
+
+            <div class="success validion-message">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve" width="96px" height="96px">
+              <g id="surface1_4_">
+              	<path style="fill:#4CAF50;" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/>
+              	<path style="fill:#CCFF90;" d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"/>
+              </g>
+              </svg>Valid
+            </div>
+            <div class="failure validion-message">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="-1041.36" r="8" transform="matrix(1 0 0-1 0-1030.36)" opacity=".98" fill="#da4453"/><path d="m-26.309 18.07c-1.18 0-2.135.968-2.135 2.129v12.82c0 1.176.948 2.129 2.135 2.129 1.183 0 2.135-.968 2.135-2.129v-12.82c0-1.176-.946-2.129-2.135-2.129zm0 21.348c-1.18 0-2.135.954-2.135 2.135 0 1.18.954 2.135 2.135 2.135 1.181 0 2.135-.954 2.135-2.135 0-1.18-.952-2.135-2.135-2.135z" transform="matrix(.30056 0 0 .30056 18.902 1.728)" fill="#fff" stroke="#fff"/></svg>Time must be specified in 24-hour format
+            </div>
+
         </div>
 
 
 
-          <div class="title">End of Task</div>
+          <div class="title">
+<div class="">
+  End of Task
+</div>
+            </div>
           <div class="date">
             <div class="">
               Date:
             </div>
-            <div class="">
-              <input name="endDate" data-task-form-date readonly value="">
+            <div class="input-container">
+              <input name="endDate" data-task-form-date readonly value="" required min="1" max={{maximumPossibleDays month year}}>
               <div class="change-button" data-task-form-change-button data-container-index="1" >
                 Change
               </div>
             </div>
+            <div class="success validion-message">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve" width="96px" height="96px">
+              <g id="surface1_4_">
+                <path style="fill:#4CAF50;" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/>
+                <path style="fill:#CCFF90;" d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"/>
+              </g>
+              </svg>Valid
+            </div>
+            <div class="failure validion-message">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="-1041.36" r="8" transform="matrix(1 0 0-1 0-1030.36)" opacity=".98" fill="#da4453"/><path d="m-26.309 18.07c-1.18 0-2.135.968-2.135 2.129v12.82c0 1.176.948 2.129 2.135 2.129 1.183 0 2.135-.968 2.135-2.129v-12.82c0-1.176-.946-2.129-2.135-2.129zm0 21.348c-1.18 0-2.135.954-2.135 2.135 0 1.18.954 2.135 2.135 2.135 1.181 0 2.135-.954 2.135-2.135 0-1.18-.952-2.135-2.135-2.135z" transform="matrix(.30056 0 0 .30056 18.902 1.728)" fill="#fff" stroke="#fff"/></svg>Please pick a date with the change button
+            </div>
           </div>
 
-          <div class="date-picker" data-task-form-calendar-container data-container-index="1" >
+          <div class="date-picker" data-task-form-calendar-container data-container-index="1">
             <table>
               <thead>
                 <tr>
@@ -103,12 +159,22 @@
             </table>
           </div>
 
-    <div class="time">
-          <div class="">
-            Time:
-          </div>
-
-          <input type="number" name="endTimeHours" value="" maxlength="2"> : <input type="number" name="endTimeMinutes" value="" maxlength="2">
+    <div class="time" data-task-form-user-input-status-box>
+        <div class="input-container">
+          <div class="">Time:</div>
+          <input type="number" name="endTimeHours" value="" maxlength="2" required> : <input type="number" name="endTimeMinutes" value="" maxlength="2" required>
+        </div>
+        <div class="success validion-message">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve" width="96px" height="96px">
+          <g id="surface1_4_">
+            <path style="fill:#4CAF50;" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/>
+            <path style="fill:#CCFF90;" d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"/>
+          </g>
+          </svg>Valid
+        </div>
+        <div class="failure validion-message">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="-1041.36" r="8" transform="matrix(1 0 0-1 0-1030.36)" opacity=".98" fill="#da4453"/><path d="m-26.309 18.07c-1.18 0-2.135.968-2.135 2.129v12.82c0 1.176.948 2.129 2.135 2.129 1.183 0 2.135-.968 2.135-2.129v-12.82c0-1.176-.946-2.129-2.135-2.129zm0 21.348c-1.18 0-2.135.954-2.135 2.135 0 1.18.954 2.135 2.135 2.135 1.181 0 2.135-.954 2.135-2.135 0-1.18-.952-2.135-2.135-2.135z" transform="matrix(.30056 0 0 .30056 18.902 1.728)" fill="#fff" stroke="#fff"/></svg>Time must be specified in 24-hour format
+        </div>
     </div>
 
         <input type="hidden" name="username" value={{username}}>

@@ -73,10 +73,14 @@ module.exports = function () {
           }
   })
 //gives us more control if we want to change links
-  Handlebars.registerHelper("getPreviousMonthLink", function (month, year, username) {
+  Handlebars.registerHelper("getPreviousMonthLink", function (month, year) {
           return `./${month-1}-${year}.html`;
   });
-  Handlebars.registerHelper("getNextMonthLink", function (month, year, username) {
+  Handlebars.registerHelper("getNextMonthLink", function (month, year) {
           return `./${month+1}-${year}.html`;
+  });
+  Handlebars.registerHelper("maximumPossibleDays", function (month, year) {
+          +month;
+          return new Date(year, month+1, 0).getDate();
   });
 };

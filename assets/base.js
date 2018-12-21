@@ -63,7 +63,7 @@ Base.prototype.addMainMenuButtonHandler =  function () {
 Base.prototype.addHomeButtonHandler =  function () {
     this.homeButton.addEventListener("click", (event) => {
           this.mainMenu.classList.remove("stretch");
-    })
+    });
 }
 
 /*Using a arrow function because it would be cleaner than bind.

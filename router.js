@@ -16,10 +16,11 @@ const getDayTaskArray =  /^\/(\w+)\/dayTaskList\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0
 const postAddTask = /^\/addTask$/;
 const deleteRemoveTask = /^\/removeTask$/;
 const putEditTask = /^\/editTask$/;
-const loginPageStaticFiles = /^\/login(-(buttonControls|form|main))?\.(css|js)$/;
+const loginPageStaticFiles = /^\/login(-(buttonControls|form|main|validationFunctions))?\.(css|js)$/;
 const postProcessRegistration = /\/processRegistration/;
 const postProcessLogin = /\/processLogin/;
 const getProcessLogout = /\/logout/;
+const postIsUsernameValid = /\/isUsernameValid/;
 
 module.exports.requestHandler = function (req, res) {
         let path = req.url;
@@ -65,6 +66,9 @@ module.exports.requestHandler = function (req, res) {
         }
         else if(postProcessLogin.test(path)){
           require("./controller/postProcessLogin.js")(req, res);
+        }
+        else if(postIsUsernameValid.test(path)){
+          require("./controller/postIsUsernameValid.js")(req, res);
         }
       }
 

@@ -56,7 +56,7 @@ body{
   background: #262228;
   height:100%;
   width: 100%;
-  font-size: 30px;
+  font-size: 25px;
   color: white;
 }
 .expand{
@@ -93,8 +93,8 @@ form{
   flex-direction: column;
   justify-content: space-between;
 }
-form *{
-  height: 20%;
+form > *{
+  height: 30%;
   display: block;
   margin: 0px 10px;
 }
@@ -103,7 +103,10 @@ form input{
   height: 50px;
   margin: 0 auto;
   width: 100%;
-  font-size: 28px;
+  font-size: 25px;
+}
+form .relative-container{
+  position: relative; /*suprise suprise*/
 }
 
 /*The below especially targets the submit button via specificity. For now I tend to not use an id
@@ -124,6 +127,50 @@ form .hideRepeat{
 form label {
   margin-bottom: 10px;
 }
+form > div{
+  position: relative;
+}
+form .validation-message{
+  position: absolute;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  opacity: 0;
+}
+form .showFailure .failure{
+  opacity: 1;
+}
+form .showSuccess .success{
+  opacity: 1;
+}
+form .svg-container {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+form .text-container {
+  width: 80%;
+}
+form .validation-message > .div{
+
+}
+form .failure svg{
+  width: 70%;
+  height: 70%;
+}
+form .success svg{
+  width: 60%;
+  height: 60%;
+  padding-top: 3px;
+}
+form .failure{
+  color: red;
+}
+form .success{
+  color: green;
+}
 .submit{
   background: #007849;
   display: flex;
@@ -132,7 +179,7 @@ form label {
   border: 1px solid black;
 }
 .info{
-  font-size: 25px;
+  font-size: 20px;
   color: #FFCE00;
   padding: 20px;
   border: 2px dashed red;
@@ -170,6 +217,9 @@ form label {
     width: 45%;
     font-size: 30px;
     border-left: 5px black solid;
+  }
+  form .validation-message{
+    font-size: 25px;
   }
   form > * {
     margin: 0px 20px;

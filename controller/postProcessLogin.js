@@ -49,7 +49,7 @@ module.exports = function (req, res) {
           }
 
           else {
-              res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username of password was incorrect; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
+              res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username or password was incorrect; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
               res.end();
           }
       });

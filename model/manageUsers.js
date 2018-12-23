@@ -47,3 +47,24 @@ module.exports.validateUserCredentials = function (username, password, fn) {
           });
       });
 }
+
+module.exports.doesTheUsernameExist = function (username, fn) {
+      sharedDB.getSharedDBInstance(function (db) {
+          db.collection("users", function (err, collection) {
+              if(err){
+                fn(err);
+                return;
+              }
+              //covered query so it is extra efficient
+              collection.findOne({username},{projection:{_id:0, password:0}}, function (err, result) {
+                if(err){
+                  fn(err);
+                  return;
+                }
+                //if its null its false, if its an object (user exists) it is true
+                fn(null, !!result)
+              });
+
+          });
+      });
+}

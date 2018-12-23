@@ -5,7 +5,7 @@
     get the resource as well as its location */
 
     const [,baseURL] = window.location.href.match(/(^[\w:]+\/\/[\w:]+)\//);
-    const checkUsernameURL = `${baseURL}/isUsernameValid`
+    const checkUsernameURL = `${baseURL}/doesUserExist`
 
      function validatePassword(passwordElement) {
           if(passwordElement.validity.valid){
@@ -23,7 +23,7 @@
 
      function validateRepeatPassword(passwordElement, repeatPasswordElement) {
 
-       if(!passwordElement.validity.valid){
+       if(!repeatPasswordElement.validity.valid){
          return {isValid: false, message: "Passwords have to be at least 4 characters long"}
        }
        else if(passwordElement.value !== repeatPasswordElement.value){
@@ -45,8 +45,8 @@
            let obj  = JSON.parse(this.responseText);
            //accessing properties on objects that do not exist does not throw an error
            if(!obj.error){
-             const isValid = obj.data
-             fn(isValid);
+             const userExists = obj.data
+             fn(userExists);
            }
            else{
              console.log(`${obj.error} : ${obj.message}`);

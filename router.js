@@ -20,7 +20,7 @@ const loginPageStaticFiles = /^\/login(-(buttonControls|form|main|validationFunc
 const postProcessRegistration = /\/processRegistration/;
 const postProcessLogin = /\/processLogin/;
 const getProcessLogout = /\/logout/;
-const postIsUsernameValid = /\/isUsernameValid/;
+const postDoesUserExist = /\/doesUserExist/;
 
 module.exports.requestHandler = function (req, res) {
         let path = req.url;
@@ -67,8 +67,8 @@ module.exports.requestHandler = function (req, res) {
         else if(postProcessLogin.test(path)){
           require("./controller/postProcessLogin.js")(req, res);
         }
-        else if(postIsUsernameValid.test(path)){
-          require("./controller/postIsUsernameValid.js")(req, res);
+        else if(postDoesUserExist.test(path)){
+          require("./controller/postDoesUserExist.js")(req, res);
         }
       }
 

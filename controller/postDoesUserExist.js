@@ -28,12 +28,12 @@ module.exports = function (req, res) {
             }
             //if the username is already taken, it is not a valid username
             if(exists){
-              let output = {error: null, data: false};
+              let output = {error: null, data: true};
               res.writeHead(200, {"Content-Type": "application/json"});
               res.end(JSON.stringify(output));
             }
             else{
-              let output = {error: null, data: true};
+              let output = {error: null, data: false};
               res.writeHead(200, {"Content-Type": "application/json"});
               res.end(JSON.stringify(output));
             }

@@ -13,12 +13,14 @@
       form.repeatPasswordContainer.classList.remove("hideRepeat");
       form.enableRepeatPasswordField();
       form.isRegistrationMode = true;
+      form.ensureCorrectUsernameValidityOnModeChange();
   });
 
   buttonControls.addLoginButtonHandler(function () {
       form.formElement.action = "processLogin";
       form.repeatPasswordContainer.classList.add("hideRepeat");
       form.isRegistrationMode = false;
+      form.ensureCorrectUsernameValidityOnModeChange();
   });
   buttonControls.addStartButtonHandler(function () {
       form.formContainer.classList.add("expand");
@@ -44,27 +46,12 @@
         form.showFailureMessage(repeatPasswordElement, message);
     }
   });
-  form.addUsernameValidityCheckerOnBlur(function (usernameElement) {
+  form.addUsernameOnBlurHandler(function (usernameElement) {
     //no need to send a GET for an empty string
     if(usernameElement.value){
-      sendGETWithProspectiveUsername(usernameElement.value, function (isValid) {
-        if(form.isRegistrationMode){
-          if(isValid){
-            form.showSuccessMessage(usernameElement);
-          }
-          else{
-            form.showFailureMessage(usernameElement, "Username taken please try another");
-          }
-        }
-        else{
-          //this means he is logging in and the user exists (if the username is not taken it is valid)
-          if(!isValid){
-            form.showSuccessMessage(usernameElement);
-          }
-          else{
-            form.showFailureMessage(usernameElement, "User does not exist");
-          }
-        }
+      sendGETWithProspectiveUsername(usernameElement.value, function (userExists) {
+        form.doesTheUserExist = userExists;
+        form.showUsernameValidityMessageFromInternalState();
       });
     }
     else{

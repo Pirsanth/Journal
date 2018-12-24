@@ -21,9 +21,12 @@
           }
      }
 
-     function validateRepeatPassword(passwordElement, repeatPasswordElement) {
 
-       if(!repeatPasswordElement.validity.valid){
+     function validateRepeatPassword(passwordElement, repeatPasswordElement) {
+       if(!repeatPasswordElement.value){
+         return {isValid: false, message: "Required"}
+       }
+       else if(!repeatPasswordElement.validity.valid){
          return {isValid: false, message: "Passwords have to be at least 4 characters long"}
        }
        else if(passwordElement.value !== repeatPasswordElement.value){

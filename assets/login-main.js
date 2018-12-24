@@ -13,13 +13,16 @@
       form.repeatPasswordContainer.classList.remove("hideRepeat");
       form.enableRepeatPasswordField();
       form.isRegistrationMode = true;
+      form.changeUsernameIsValidValidityMessage();
       form.ensureCorrectUsernameValidityOnModeChange();
   });
 
   buttonControls.addLoginButtonHandler(function () {
       form.formElement.action = "processLogin";
       form.repeatPasswordContainer.classList.add("hideRepeat");
+      form.disableRepeatPasswordField();
       form.isRegistrationMode = false;
+      form.changeUsernameIsValidValidityMessage();
       form.ensureCorrectUsernameValidityOnModeChange();
   });
   buttonControls.addStartButtonHandler(function () {
@@ -31,6 +34,13 @@
 
     if(isValid){
       form.showSuccessMessage(passwordElement);
+      form.updateRepeatPasswordValidityInCaseTheyNowDoNotMatch(function (repeatPasswordElement) {
+        //only runs if repeatPassword AND passwordElement is valid (not empty and >4 characters)
+        //we do not need to worry about password matching if they are not valid in the first place or if repeatPassword is not filled in yet
+
+        repeatPasswordElement.focus();
+        repeatPasswordElement.blur();
+      });
     }
     else{
       form.showFailureMessage(passwordElement, message);
@@ -41,7 +51,7 @@
 
     if(isValid){
         form.showSuccessMessage(repeatPasswordElement);
-    }
+      }
     else{
         form.showFailureMessage(repeatPasswordElement, message);
     }
@@ -58,5 +68,5 @@
       form.showFailureMessage(usernameElement, "Required");
     }
   });
-
+  form.addSubmitEventHandler();
 })(window);

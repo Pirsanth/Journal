@@ -23,8 +23,8 @@
   }
 
   Form.prototype.removeInfoBox = function () {
-    this.formElement.removeChild(infoBox);
-    infoBox = null;
+    this.formElement.removeChild(this.infoBox);
+    this.infoBox = null;
   }
   Form.prototype.addOffsetToHiddenInput = function () {
     let date = new Date();
@@ -91,7 +91,7 @@
     }
   }
   Form.prototype.changeUsernameIsValidValidityMessage = function () {
-    const validMessageElement = validusernameElement.nextElementSibling.lastElementChild;
+    const validMessageElement = usernameElement.nextElementSibling.lastElementChild;
 
     if(this.isRegistrationMode){
       validMessageElement.textContent = "Username is available"
@@ -100,7 +100,57 @@
       validMessageElement.textContent = "Username is valid"
     }
   }
+  Form.prototype.addSubmitEventHandler = function () {
+    this.formElement.addEventListener("submit", (e) => {;
+      this.showRelevantValidityMessages();
 
+      if(!this.areAllFormFieldsValid()){
+        e.preventDefault();
+      }
+    })
+  }
+  //no point reinventing the wheel so I choose to reuse the onblur handlers
+  Form.prototype.showRelevantValidityMessages = function () {
+    usernameElement.focus();
+    usernameElement.blur();
+
+    passwordElement.focus();
+    passwordElement.blur();
+
+    if(this.isRegistrationMode){
+      repeatPasswordElement.focus();
+      repeatPasswordElement.blur();
+    }
+  }
+  //I feel like the validation functions I wrote check the DOM more than the simple contains method would. SInce the DOM is slow, chose to use ClassList.contains()
+Form.prototype.areAllFormFieldsValid = function () {
+  if(doesTheContainerHaveShowFailure(usernameElement)){
+    return false;
+  }
+  else if(doesTheContainerHaveShowFailure(passwordElement)){
+    return false;
+  }
+  else if(this.isRegistrationMode){
+    if(doesTheContainerHaveShowFailure(repeatPasswordElement)){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+  else{
+    return true;
+  }
+}
+//we do not need the this binding inside the function, so there is no need to attach it to the prototype object
+function doesTheContainerHaveShowFailure(element) {
+    return element.parentElement.parentElement.classList.contains("showFailure")
+}
+Form.prototype.updateRepeatPasswordValidityInCaseTheyNowDoNotMatch = function (fn) {
+    if(repeatPasswordElement.validity.valid){
+      fn(repeatPasswordElement);
+    }
+}
 
   App.Form = Form;
 

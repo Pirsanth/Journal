@@ -144,6 +144,12 @@ form .showFailure .failure{
 form .showSuccess .success{
   opacity: 1;
 }
+form .showFailure input{
+  border: 3px red solid;
+}
+form .showSuccess input{
+  border: 2px green solid;
+}
 form .svg-container {
   width: 20%;
   display: flex;
@@ -152,9 +158,6 @@ form .svg-container {
 }
 form .text-container {
   width: 80%;
-}
-form .validation-message > .div{
-
 }
 form .failure svg{
   width: 70%;
@@ -219,6 +222,9 @@ form .success{
     border-left: 5px black solid;
   }
   form .validation-message{
+    font-size: 25px;
+  }
+  .info{
     font-size: 25px;
   }
   form > * {

@@ -74,13 +74,24 @@ form > div.showSuccess .success{
 form > div.showSuccess input{
   border: 1px green solid;
 }
-form .validion-message{
+form .validation-message{
   position: absolute;
   bottom: 0px;
   display: flex;
   align-items: center;
   opacity: 0;
   font-size: 15px;
+  width: 100%;
+}
+form .validation-message .svg-container{
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+form .validation-message .text-container{
+  width: 80%;
+  font-weight: bold;
 }
 form .task-name{
   display: flex;
@@ -118,7 +129,7 @@ form .date{
   height: 12%;
   margin-left: 10px;
 }
-form .date div:first-child{
+form .date .date-label{
   width: 30%;
 }
 form .date > .input-container{
@@ -277,8 +288,14 @@ form .button-container div{
       width: 70%;
       font-size: 32px;
     }
-    form .validion-message{
+    form .validation-message{
       font-size: 27px;
+    }
+    form .validation-message .svg-container{
+      width: 8%;
+    }
+    form .validation-message .text-container{
+      width: 82%;
     }
     .add-button{
       font-size: 35px;

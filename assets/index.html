@@ -64,10 +64,8 @@
               Date:
             </div>
             <div class="input-container">
-              <input name="startDate" data-task-form-date readonly value="" required min="1" max={{maximumPossibleDays month year}}>
-              <div class="change-button" data-task-form-change-button data-container-index="0" >
-                Change
-              </div>
+              <input name="startDate" data-task-form-date readonly value="" required min="1" max={{maximumPossibleDays month year}} tabindex="-1">
+              <button type="button" name="button" class="change-button" data-task-form-change-button data-container-index="0" tabindex="0">Change</button>
             </div>
             <div class="success validation-message">
               <div class="svg-container">
@@ -154,10 +152,8 @@
               Date:
             </div>
             <div class="input-container">
-              <input name="endDate" data-task-form-date readonly value="" required min="1" max={{maximumPossibleDays month year}}>
-              <div class="change-button" data-task-form-change-button data-container-index="1" >
-                Change
-              </div>
+              <input name="endDate" data-task-form-date readonly value="" required min="1" max={{maximumPossibleDays month year}} tabindex="-1">
+              <button type="button" name="button" class="change-button" data-task-form-change-button data-container-index="1" tabindex="0">Change</button>
             </div>
             <div class="success validation-message">
               <div class="svg-container">
@@ -235,12 +231,8 @@
         <input type="hidden" name="month" value={{month}}>
         <input type="hidden" name="year" value={{year}}>
     <div class="button-container">
-    <div class="" data-task-form-submit-button>
-      Submit
-    </div>
-    <div class="" data-task-form-cancel-button>
-      Cancel
-    </div>
+    <button type="button" name="button" data-task-form-submit-button tabindex="0">Submit</button>
+    <button type="button" name="button" data-task-form-cancel-button tabindex="0">Cancel</button>
     </div>
       </form>
     </div>

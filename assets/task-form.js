@@ -34,12 +34,13 @@
     this.changeButtonNodeList.forEach(function (element, x) {
           element.addEventListener("click", (event) => {
                   //removing a class that does not exist does not throw an Error
-                  this.calendarContainerNodeList.forEach(function (element) {
-                    element.classList.remove("expand");
-                  });
+                  this.ensureDatePickersAreCollapesed();
 
                   let index = event.target.dataset.containerIndex;
                   this.calendarContainerNodeList[index].classList.add("expand");
+                  if(index == 1){
+                    this.calendarContainerNodeList[index].scrollIntoView();
+                  }
           });
     }, this);
   }
@@ -92,13 +93,11 @@
       this.container.classList.toggle("slide");
   }
   TaskForm.prototype.getUserData = function () {
-      let obj = {};
-
-      for(let i=7; i<10; i++){
-        obj[this.form.elements[i].name] = this.form.elements[i].value;
-        //this is fine because the the output of the name property is a string
-      }
-      return obj
+      let collection = this.form.elements;
+      let obj = {username: collection["username"].value,
+                 month: collection["month"].value,
+                 year: collection["year"].value};
+      return obj;
   }
   TaskForm.prototype.prefillFormWithObject = function ({taskName, startDateClient, endDateClient}) {
       let collection = this.form.elements;
@@ -155,7 +154,7 @@
   }
   TaskForm.prototype.isDateInputValid = function (dateInputElement) {
         const {value, min, max} = dateInputElement;
-        if((+value > +min) && (+value < +max)){
+        if((+value >= +min) && (+value <= +max)){
           return true;
         }
         else{
@@ -192,7 +191,7 @@
         if(!this.isDateInputValid(dateInputElement)){
             overallValidity = false;
           }
-      });
+      }, this);
       return overallValidity;
   }
   /*not ignoring the date status box with this on submit. You do not want to mention valid input with
@@ -224,6 +223,15 @@
           this.removeValidationMessages(statusBox);
     }, this);
   }
+  TaskForm.prototype.giveTaskNameInputFocus = function () {
+    this.form.elements["taskName"].focus();
+  }
+  TaskForm.prototype.ensureDatePickersAreCollapesed = function () {
+    this.calendarContainerNodeList.forEach(function (element) {
+      element.classList.remove("expand");
+    });
+  }
+
   function makeQueryString(formData) {
       let queryString = "";
 

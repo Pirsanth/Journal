@@ -31,6 +31,7 @@
       taskForm.toggleVisibility();
       taskForm.preFillDates(taskDate)
       taskForm.setInternalState("POST");
+      taskForm.giveTaskNameInputFocus();
     });
     base.addMainMenuButtonHandler();
     base.addHomeButtonHandler();
@@ -69,6 +70,7 @@
           taskForm.toggleVisibility();
           taskForm.clearInternalStateAndForm();
           taskForm.clearAllValidationMessages();
+          taskForm.ensureDatePickersAreCollapesed();
 
           //we can't reuse index because we cannot assume that the task has been added on the same date as is selected in the base calendar
           let baseDayIndex = base.getActiveDayIndex();
@@ -93,6 +95,7 @@
           taskForm.toggleVisibility();
           taskForm.clearInternalStateAndForm();
           taskForm.clearAllValidationMessages();
+          taskForm.ensureDatePickersAreCollapesed();
 
           /*the if statement will always be true in this case. Indeed I could just the dayIndex
             because it would be equal to baseDayIndex. I have however decided to repeat myself
@@ -109,6 +112,7 @@
       taskForm.toggleVisibility();
       taskForm.clearInternalStateAndForm();
       taskForm.clearAllValidationMessages();
+      taskForm.ensureDatePickersAreCollapesed();
     });
 
 })(window)

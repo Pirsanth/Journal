@@ -145,6 +145,7 @@ form .date .input-container .change-button{
   margin-right: 15px;
   width: 50%;
   background: #ff0000;
+  color: #ffffff;
 }
 form .date-picker {
   height: 0%;
@@ -176,7 +177,7 @@ form .button-container{
   align-items: center;
   height: 10%;
 }
-form .button-container div{
+form .button-container button{
   border: 1px black solid;
   display: flex;
   border-radius: 5%;
@@ -185,6 +186,7 @@ form .button-container div{
   height: 67%;
   width: 40%;
   background: #008000;
+  color: #ffffff;
 }
 @media screen and (min-width: 375px) and (max-width: 760px){
   .tasklist{

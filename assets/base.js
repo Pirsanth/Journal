@@ -7,8 +7,8 @@ const NEW_TASK_BUTTON_SELECTOR = '[data-base-new-task-button]';
 const TASK_LIST_SELECTOR = '[data-base-task-list]';
 const MAIN_MENU_BUTTON_SELECTOR = '[data-base-main-menu-button]';
 const MAIN_MENU_CONTAINER_SELECTOR = '[data-main-menu-container]';
-const CALENDAR_CONTAINER_SELECTOR = '[data-base-calendar]'
-const HOME_BUTTON_SELECTOR = "[data-main-menu-home-button]"
+const CALENDAR_CONTAINER_SELECTOR = '[data-base-calendar]';
+const HOME_BUTTON_SELECTOR = "[data-main-menu-home-button]";
 
 function Base() {
     this.new_task_button = document.querySelector(NEW_TASK_BUTTON_SELECTOR);

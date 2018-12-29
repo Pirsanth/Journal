@@ -149,14 +149,21 @@ form .date .input-container .change-button{
 }
 form .date-picker {
   height: 0%;
+  overflow: hidden;
   transition-property: height;
   transition-duration: 1s;
   transition-timing-function: ease-in-out;
-  overflow: hidden;
 }
-form .expand{
+form .expand0{
   height: 50%;
   margin-bottom: 20px;
+}
+form .expand1{
+  height: 50%;
+  margin-bottom: 20px;
+  transition-property: height;
+  transition-duration: 0s;
+  transition-timing-function: ease-in-out;
 }
 form .time {
   align-items: flex-start;

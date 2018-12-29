@@ -31,26 +31,27 @@
   }
 
   TaskForm.prototype.addChangeDateButtonHandler = function () {
-    this.changeButtonNodeList.forEach(function (element, x) {
+    this.changeButtonNodeList.forEach(function (element, index) {
           element.addEventListener("click", (event) => {
                   //removing a class that does not exist does not throw an Error
                   this.ensureDatePickersAreCollapesed();
-
-                  let index = event.target.dataset.containerIndex;
-                  this.calendarContainerNodeList[index].classList.add("expand");
+                  this.calendarContainerNodeList[index].classList.add(`expand${index}`);
                   if(index == 1){
-                    this.calendarContainerNodeList[index].scrollIntoView();
+                   setTimeout(() => {
+                    this.calendarContainerNodeList[index].scrollIntoView({
+                      behavior: 'smooth'
+                    });
+                  },400);
                   }
           });
     }, this);
   }
   TaskForm.prototype.addCalendarClickHandler = function () {
-      this.calendarContainerNodeList.forEach(function (element) {
+      this.calendarContainerNodeList.forEach(function (element, index) {
             element.addEventListener("click", (event) => {
                   if(event.target.tagName === "TD" && event.target.dataset.clickable !== undefined){
-                      let {containerIndex} = element.dataset;
-                      this.calendarContainerNodeList[containerIndex].classList.remove("expand");
-                      this.dateInputNodeList[containerIndex].value = event.target.textContent;
+                      element.classList.remove(`expand${index}`);
+                      this.dateInputNodeList[index].value = event.target.textContent;
                       element.previousElementSibling.classList.remove("showFailure");
                   }
             });

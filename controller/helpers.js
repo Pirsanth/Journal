@@ -1,7 +1,8 @@
 const PARSE_ISO_STRING_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
 const ENTIRE_ISO_STRING_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
 
-module.exports = {sendError, consumeReadStream, parseISOStringToDate, getHomePageURI, validateTaskObject}
+
+module.exports = {sendError, consumeReadStream, parseISOStringToDate, getHomePageURI, validateTaskObject};
 
 function sendError(res, code, message) {
     res.writeHead(code, {"Content-Type": "application/json"});

@@ -1,26 +1,44 @@
 const sharedDB = require("./sharedDbInstance.js");
+const crypto = require('crypto');
 
+module.exports.addNewUser = function (username, password, fn) {
+  crypto.randomBytes(16, function (err, saltyBuffer) {
+    if(err){
+      fn(err);
+      return
+    }
+    //its easier for me to visualise bytes as hexadecimal
+    const salt = saltyBuffer.toString("hex");
 
-module.exports.addNewUser = function (userObject, fn) {
+    crypto.pbkdf2(password, salt, 1000, 32, "sha256", function (err, hashPasswordBuffer) {
+      if(err){
+        fn(err);
+        return;
+      }
+      const hashedPassword = hashPasswordBuffer.toString("hex");
+      const userObject = {username, hashedPassword, salt};
+
       sharedDB.getSharedDBInstance(function (db) {
-          db.collection("users", function (err, collection) {
-              if(err){
-                fn(err);
-                return;
-              }
-              collection.insertOne(userObject, function (err, result) {
-                if(err){
-                  fn(err);
-                  return;
-                }
-                fn(null, result);
-              });
-
+        db.collection("users", function (err, collection) {
+          if(err){
+            fn(err);
+            return;
+          }
+          collection.insertOne(userObject, function (err, result) {
+            if(err){
+              fn(err);
+              return;
+            }
+            fn(null, result);
           });
+        });
       });
+    });
+  });
+
 }
 
-module.exports.validateUserCredentials = function (username, password, fn) {
+module.exports.validateUserCredentials = function (username, probablePassword, fn) {
       sharedDB.getSharedDBInstance(function (db) {
           db.collection("users", function (err, collection) {
               if(err){
@@ -28,19 +46,20 @@ module.exports.validateUserCredentials = function (username, password, fn) {
                 return;
               }
               //it is only indexed on username
-              collection.findOne({username}, function (err, result) {
+              collection.findOne({username}, function (err, userObject) {
                 if(err){
                   fn(err);
                   return;
                 }
-                if(!result){
+                if(!userObject){
                   fn(null, false);
-                }
-                else if(result.password === password){
-                  fn(null, true);
                 }
                 else{
-                  fn(null, false);
+                  //do not want to waste resources hashing the given probablePassword if the user does not exist
+                  crypto.pbkdf2(probablePassword, userObject.salt, 1000, 32, "sha256", function (err, keyBuffer) {
+                      let hashedProbablePassword = keyBuffer.toString("hex");
+                      fn(null, hashedProbablePassword === userObject.hashedPassword);
+                  });
                 }
               });
 

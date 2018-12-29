@@ -4,7 +4,7 @@ const jsFile = /^\.js$/;
 const {sendError} = require("./helpers.js");
 
 module.exports = function(path, res) {
-
+  //as you are reading it, its getting sent to the client chunk by chunk
   let readStream = fs.createReadStream( "assets/" + path, "utf-8");
 
   let type = getContentType(path);

@@ -1,7 +1,7 @@
 const {sendError, consumeReadStream, getHomePageURI} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
 const {validateUserCredentials} = require("../model/manageUsers.js");
-const {createSessionAndReturnId} = require("../model/manageSessions.js");
+const {createSessionAndReturnIdAndDigest} = require("../model/manageSessions.js");
 /*I clear the sessionId cookie on invalid username/password and invalid form data to ensure that the error else if block in controller/getLoginPage is
  run (and the error message is shown on the login page) instead of the if(sessionIdRegex.test(cookiesString) && offsetRegex.test(cookiesString)) block. If you are
  logged in, (with a valid sessionId cookie) accessing the
@@ -25,7 +25,7 @@ module.exports = function (req, res) {
       });
 
       if(!validateLoginForm(formData)){
-        res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Form sent to server was invalid; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
+        res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Form sent to server was invalid; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly", "digest=; Path=/; HttpOnly"]});
         res.end();
         return;
       }
@@ -37,19 +37,19 @@ module.exports = function (req, res) {
             }
 
             if(isValid){
-                createSessionAndReturnId(formData.username, function (err, sessionId) {
+                createSessionAndReturnIdAndDigest(formData.username, function (err, sessionId, digest) {
                   if(err){
                     sendError(res, 500, "Error thrown while creating session");
                     return;
                   }
 
-                  res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}; Path=/; HttpOnly`, `offset=${formData.offset}; Path=/login.html; HttpOnly`], "Location": getHomePageURI(formData.username, formData.offset)});
+                  res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}; Path=/; HttpOnly`, `offset=${formData.offset}; Path=/login.html; HttpOnly`, `digest=${digest}; Path=/; HttpOnly`], "Location": getHomePageURI(formData.username, formData.offset)});
                   res.end();
                 });
           }
 
           else {
-              res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username or password was incorrect; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
+              res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username or password was incorrect; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly", "digest=; Path=/; HttpOnly"]});
               res.end();
           }
       });

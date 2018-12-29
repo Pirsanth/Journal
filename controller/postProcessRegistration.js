@@ -1,7 +1,7 @@
 const {sendError, consumeReadStream, getHomePageURI} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
 const {addNewUser} = require("../model/manageUsers.js");
-const {createSessionAndReturnId} = require("../model/manageSessions.js");
+const {createSessionAndReturnIdAndDigest} = require("../model/manageSessions.js");
 
 
 module.exports = function (req, res) {
@@ -10,7 +10,7 @@ module.exports = function (req, res) {
           sendError(res, 500, "There was an error thrown while reading the POST stream");
           return;
         }
-        
+
         let query = new Query(streamContents);
         let formData = {};
         query.forEach(function (value, key) {
@@ -18,15 +18,15 @@ module.exports = function (req, res) {
         });
 
         if(!validateRegistrationForm(formData)){
-          res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Form sent to server was invalid; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
+          res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Form sent to server was invalid; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly", "digest=; Path=/; HttpOnly"]});
           res.end();
           return;
         }
 
-        addNewUser({"username": formData.username, "password": formData.password}, function (err, returnObj) {
+          addNewUser(formData.username, formData.password, function (err, returnObj) {
             if(err){
               if(err.code === 11000){
-                res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username already in use please select another; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly"]});
+                res.writeHead(302, {"Location": "login.html", "Set-Cookie": ["errorMessage=Username already in use please select another; Path=/login.html; HttpOnly", "sessionId=; Path=/; HttpOnly", "digest=; Path=/; HttpOnly"]});
                 res.end();
                 return;
               }
@@ -36,17 +36,19 @@ module.exports = function (req, res) {
               }
             }
 
-            createSessionAndReturnId(formData.username, function (err, sessionId) {
+            createSessionAndReturnIdAndDigest(formData.username, function (err, sessionId, digest) {
               if(err){
                 sendError(res, 500, "Error thrown while creating session");
                 return;
               }
 
-              res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}; Path=/; HttpOnly`, `offset=${formData.offset}; Path=/login.html; HttpOnly`], "Location": getHomePageURI(formData.username, formData.offset)});
+              res.writeHead(302, {"Set-Cookie": [`sessionId=${sessionId}; Path=/; HttpOnly`, `offset=${formData.offset}; Path=/login.html; HttpOnly`, `digest=${digest}; Path=/; HttpOnly`], "Location": getHomePageURI(formData.username, formData.offset)});
               res.end();
             });
 
-        });
+          });
+
+
 
     });
 }

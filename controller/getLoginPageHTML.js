@@ -39,10 +39,10 @@ module.exports  = function (req, res) {
                     return;
                   }
                   /*Clearing the sessionId cookie because the the session is invalid*/
-                  res.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": "sessionId=; Path=/; HttpOnly"});
+                  res.writeHead(200, {"Content-Type": "text/html", "Set-Cookie": ["sessionId=; Path=/; HttpOnly", "digest=; Path=/; HttpOnly"]});
                   res.end(page);
                 });
-              })
+              });
             }
         });
     }

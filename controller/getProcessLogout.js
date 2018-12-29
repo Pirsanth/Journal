@@ -16,7 +16,8 @@ module.exports = function (req, res) {
         if(wasDeleted){
           res.writeHead(302, {"Location": "./login.html", "Set-Cookie":
                               ["errorMessage=Successfully logged out; Path=/login.html; HttpOnly",
-                              "sessionId=; Path=/; HttpOnly"]});
+                              "sessionId=; Path=/; HttpOnly",
+                              "digest=; Path=/; HttpOnly"]});
           res.end();
         }
         else{

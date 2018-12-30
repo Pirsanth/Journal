@@ -23,7 +23,7 @@
     this.submitButton = document.querySelector(SUBMIT_BUTTON);
     this.cancelButton = document.querySelector(CANCEL_BUTTON);
     this.userInputStatusBoxNodeList = document.querySelectorAll(USER_STATUS_BOX);
-
+    this.clickableDatesInEndDateCalendar = this.calendarContainerNodeList[1].querySelectorAll("td[data-clickable]");
     //using these variables to store the state of the form instead of a data- attributes because the DOM is slow
     this.formMethod;
     this.dayIndex;
@@ -34,29 +34,97 @@
     this.changeButtonNodeList.forEach(function (element, index) {
           element.addEventListener("click", (event) => {
                   //removing a class that does not exist does not throw an Error
-                  this.ensureDatePickersAreCollapesed();
-                  this.calendarContainerNodeList[index].classList.add(`expand${index}`);
-                  if(index == 1){
-                   setTimeout(() => {
-                    this.calendarContainerNodeList[index].scrollIntoView({
-                      behavior: 'smooth'
-                    });
-                  },400);
+                  if(isStartDateChangeButton(index)){
+                    this.ensureDatePickersAreCollapesed();
+                    this.calendarContainerNodeList[index].classList.add(`expand${index}`);
+                  }
+                  else {
+                    this.ensureDatePickersAreCollapesed();
+                    this.calendarContainerNodeList[index].querySelectorAll("td");
+                    this.calendarContainerNodeList[index].classList.add(`expand${index}`);
+                    setTimeout(() => {
+                      this.calendarContainerNodeList[index].scrollIntoView({behavior: 'smooth'});
+                    },400);
                   }
           });
     }, this);
   }
+
+  function isStartDateChangeButton (index) {
+    return index === 0;
+  }
+  TaskForm.prototype.ensureDatePickersAreCollapesed = function () {
+    this.calendarContainerNodeList.forEach(function (element, index) {
+      element.classList.remove(`expand${index}`);
+    });
+  }
   TaskForm.prototype.addCalendarClickHandler = function () {
       this.calendarContainerNodeList.forEach(function (element, index) {
             element.addEventListener("click", (event) => {
-                  if(event.target.tagName === "TD" && event.target.dataset.clickable !== undefined){
+                  const clickedElement = event.target;
+
+                  if(clickedElement.tagName === "TD" && clickedElement.dataset.clickable !== undefined){
+                    if(isStartDateCalendar(index)){
                       element.classList.remove(`expand${index}`);
-                      this.dateInputNodeList[index].value = event.target.textContent;
+                      this.dateInputNodeList[index].value = clickedElement.textContent;
                       element.previousElementSibling.classList.remove("showFailure");
+                      this.resetEndDateCalendarColour();
+                      this.makeDatesInThePastRedForEndDateCalendar();
+                      if(this.isStartDateGreaterThanEndDate()){
+                        this.clearEndDateInputs();
+                      }
+                    }
+                    else{
+                      //if startDate is empty, an endDate can be chosen
+                      if(this.isDesirededEndDateGreaterThanStartDate(clickedElement)){
+                        element.classList.remove(`expand${index}`);
+                        this.dateInputNodeList[index].value = clickedElement.textContent;
+                        element.previousElementSibling.classList.remove("showFailure");
+                      }
+                    }
                   }
             });
 
       }, this);
+  }
+  TaskForm.prototype.resetEndDateCalendarColour = function () {
+    this.clickableDatesInEndDateCalendar.forEach(function (element) {
+        element.style.background = "";
+    })
+  }
+  TaskForm.prototype.makeDatesInThePastRedForEndDateCalendar = function () {
+    //choose a simple for loop because you cannot break using forEach
+    const startDate = this.dateInputNodeList[0].value
+    if(isStartDateFieldEmpty(startDate)){
+        return;
+    }
+    const startDateIndex = getStartDateIndex(startDate);
+    const clickableElements = this.clickableDatesInEndDateCalendar;
+
+    for(let i = 0; i<startDateIndex; i++){
+      clickableElements[i].style.background = "#a40000";
+    }
+  }
+  function getStartDateIndex(startDateString) {
+    return +startDateString - 1;
+  }
+  function isStartDateFieldEmpty(startDateString) {
+    return !startDateString;
+  }
+  function isStartDateCalendar (index) {
+    return index === 0;
+  }
+  TaskForm.prototype.isStartDateGreaterThanEndDate = function () {
+    return +this.dateInputNodeList[0].value > +this.dateInputNodeList[1].value
+  }
+  TaskForm.prototype.clearEndDateInputs = function () {
+    let collection = this.form.elements;
+    collection["endDate"].value = "";
+    collection["endTimeHours"].value = "";
+    collection["endTimeMinutes"].value = "";
+  }
+  TaskForm.prototype.isDesirededEndDateGreaterThanStartDate = function(clickedElement){
+    return +clickedElement.textContent >= +this.dateInputNodeList[0].value;
   }
   //decided not to place the validation code as a callback, there is no need as it does not depend on the other modules
   TaskForm.prototype.addSubmitButtonHandler = function (POSTfunction, PUTfunction) {
@@ -139,9 +207,19 @@
                   this.showErrorValidationMessage(statusBox);
                 }
             }
-          }, true);
-
+          },true);
       }, this);
+  }
+  TaskForm.prototype.areTheUserInputElementsValid = function (statusBox) {
+    let htmlCollection = statusBox.getElementsByTagName("INPUT"), overallValidity = true;
+
+    for(let i=0; i<htmlCollection.length; i++){
+      if(!htmlCollection[i].validity.valid){
+        overallValidity = false;
+        break;
+      }
+    }
+    return overallValidity;
   }
   TaskForm.prototype.showReadOnlyInputValidityOnClick = function () {
       this.dateInputNodeList.forEach(function (dateInputElement) {
@@ -174,17 +252,7 @@
     statusBox.classList.remove("showFailure");
     statusBox.classList.remove("showSuccess");
   }
-  TaskForm.prototype.areTheUserInputElementsValid = function (statusBox) {
-    let htmlCollection = statusBox.getElementsByTagName("INPUT"), overallValidity = true;
 
-    for(let i=0; i<htmlCollection.length; i++){
-      if(!htmlCollection[i].validity.valid){
-        overallValidity = false;
-        break;
-      }
-    }
-    return overallValidity;
-  }
   TaskForm.prototype.areAllTheReadOnlyInputsValid = function () {
       let overallValidity = true;
       //there is no need for break as there are only 2 date inputs to test. Using forEach because it is preetier
@@ -227,11 +295,7 @@
   TaskForm.prototype.giveTaskNameInputFocus = function () {
     this.form.elements["taskName"].focus();
   }
-  TaskForm.prototype.ensureDatePickersAreCollapesed = function () {
-    this.calendarContainerNodeList.forEach(function (element) {
-      element.classList.remove("expand");
-    });
-  }
+
 
   function makeQueryString(formData) {
       let queryString = "";

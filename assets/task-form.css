@@ -42,6 +42,9 @@ form table td {
   border: 1px black solid;
   text-align: center;
 }
+form table td[data-clickable] {
+  background: #0B3C5D;
+}
 form > .month{
   justify-content: center;
   align-items: center;

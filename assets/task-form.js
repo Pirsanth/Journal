@@ -11,7 +11,7 @@
   const SUBMIT_BUTTON = '[data-task-form-submit-button]';
   const CANCEL_BUTTON = '[data-task-form-cancel-button]';
   const USER_STATUS_BOX = "[data-task-form-user-input-status-box]";
-
+  const USER_INPUT_FAILURE_MESSAGE = '[data-failure-message]';
 
   function TaskForm () {
     //container refers to the entire div that slides down whereas form refers to the form element
@@ -24,6 +24,7 @@
     this.cancelButton = document.querySelector(CANCEL_BUTTON);
     this.userInputStatusBoxNodeList = document.querySelectorAll(USER_STATUS_BOX);
     this.clickableDatesInEndDateCalendar = this.calendarContainerNodeList[1].querySelectorAll("td[data-clickable]");
+    this.userInputFailureMessages = document.querySelectorAll(USER_INPUT_FAILURE_MESSAGE);
     //using these variables to store the state of the form instead of a data- attributes because the DOM is slow
     this.formMethod;
     this.dayIndex;
@@ -129,7 +130,7 @@
   //decided not to place the validation code as a callback, there is no need as it does not depend on the other modules
   TaskForm.prototype.addSubmitButtonHandler = function (POSTfunction, PUTfunction) {
     this.submitButton.addEventListener("click", (event) => {
-            if(this.form.checkValidity() && this.areAllTheReadOnlyInputsValid()){
+            if((this.form.checkValidity() && this.areAllTheReadOnlyInputsValid()) && this.isTheEndDateAfterTheStartDate){
             const method = this.formMethod;
             this.formMethod = "";
 
@@ -194,6 +195,7 @@
   /*Refactored the code below into more descriptive functions. Allowing access to said functions via
     passing in this (the taskform instance) to forEach and using an arrow function in the event handler
     callback*/
+    /*
   TaskForm.prototype.showUserInputValidityOnBlur = function () {
       //the blur event does not bubble hence we deal with it in the capture phase
       this.userInputStatusBoxNodeList.forEach(function (statusBox) {
@@ -221,12 +223,130 @@
     }
     return overallValidity;
   }
+  */
+  TaskForm.prototype.showUserInputValidityOnBlur = function () {
+    const taskNameStatusBox = this.userInputStatusBoxNodeList[0],
+          startDateStatusBox = this.userInputStatusBoxNodeList[1],
+          endDateStatusBox = this.userInputStatusBoxNodeList[2];
+
+    taskNameStatusBox.addEventListener("blur",(event) => {
+      const {taskName} = this.form.elements;
+
+      if(taskName.validity.valid){
+        showSuccessValidationMessage(taskNameStatusBox);
+      }
+      else{
+        showErrorValidationMessage(taskNameStatusBox);
+      }
+
+    }, true);
+
+    startDateStatusBox.addEventListener("blur", (event) => {
+      setTimeout(() => {
+        if(hasFocusLeftDateStatusBox(startDateStatusBox)){
+            let {isValid, message} = this.checkValidityOfStartDateStatusBox();
+
+            if(isValid){
+              showSuccessValidationMessage(startDateStatusBox);
+              let {isValid, message} = this.checkValidityOfEndDateStatusBox();
+              if(message === "The end time must be after the start time"){
+                showErrorValidationMessage(endDateStatusBox, message, this.userInputFailureMessages[2]);
+              }
+            }
+            else{
+              showErrorValidationMessage(startDateStatusBox, message, this.userInputFailureMessages[1]);
+            }
+        }
+
+      }, 0);
+    }, true);
+
+    endDateStatusBox.addEventListener("blur", (event) => {
+      setTimeout(() => {
+        if(hasFocusLeftDateStatusBox(endDateStatusBox)){
+          let {isValid, message} = this.checkValidityOfEndDateStatusBox();
+
+          if(isValid){
+            showSuccessValidationMessage(endDateStatusBox);
+          }
+          else{
+            showErrorValidationMessage(endDateStatusBox, message, this.userInputFailureMessages[2]);
+          }
+        }
+
+      }, 0);
+    }, true);
+
+  }
+  function hasFocusLeftDateStatusBox(dateStatusBox) {
+      return !dateStatusBox.contains(document.activeElement);
+  }
+  TaskForm.prototype.checkValidityOfEndDateStatusBox = function () {
+    let {endTimeHours, endTimeMinutes, endDate} = this.form.elements;
+
+    if(!endTimeHours.value || !endTimeMinutes.value){
+      return {isValid: false, message: "One or more inputs is empty"};
+    }
+    else if(!endTimeHours.validity.valid || !endTimeMinutes.validity.valid){
+      return {isValid: false, message: "Time must be specified in 24-hour format"};
+    }
+    else{
+      if(this.areAllTheStartDateInputsFilledInAndValid && endDate.value){
+        if(this.isTheEndDateAfterTheStartDate()){
+          return {isValid: true};
+        }
+        else{
+          return {isValid: false, message: "The end time must be after the start time"};
+        }
+      }
+      else{
+        return {isValid: true}
+      }
+    }
+  }
+  TaskForm.prototype.isTheEndDateAfterTheStartDate = function () {
+     const {startDate, startTimeHours, startTimeMinutes,
+            endDate, endTimeHours, endTimeMinutes, month, year}= this.form.elements;
+     const startDateObj = new Date(year.value, +(month.value)-1, startDate.value, startTimeHours.value, startTimeMinutes.value);
+     const endDateObj = new Date(year.value, +(month.value)-1, endDate.value, endTimeHours.value, endTimeMinutes.value);
+
+     return endDateObj > startDateObj;
+  }
+  TaskForm.prototype.areAllTheStartDateInputsFilledInAndValid = function () {
+    let {startDate} = this.form;
+    return this.checkValidityOfStartDateStatusBox().isValid && startDate.value;
+  }
+  TaskForm.prototype.checkValidityOfStartDateStatusBox =  function () {
+
+    let {startTimeHours, startTimeMinutes} = this.form.elements;
+
+    if(!startTimeHours.value || !startTimeMinutes.value){
+      return {isValid: false, message: "One or more inputs is empty"};
+    }
+    else if(!startTimeHours.validity.valid || !startTimeMinutes.validity.valid){
+      return {isValid: false, message: "Time must be specified in 24-hour format"};
+    }
+    else {
+      return {isValid: true};
+    }
+
+  /*  let htmlCollection = statusBox.getElementsByTagName("INPUT"), overallValidity = true;
+
+    for(let i=0; i<htmlCollection.length; i++){
+      if(!htmlCollection[i].validity.valid){
+        overallValidity = false;
+        break;
+      }
+    }
+    return overallValidity;
+*/
+  }
   TaskForm.prototype.showReadOnlyInputValidityOnClick = function () {
       this.dateInputNodeList.forEach(function (dateInputElement) {
         dateInputElement.addEventListener("click", (event) => {
           if(!this.isDateInputValid(dateInputElement)){
             let statusBox =  dateInputElement.parentElement.parentElement;
-            this.showErrorValidationMessage(statusBox);
+            showErrorValidationMessage(statusBox);
           }
         })
       }, this)
@@ -240,11 +360,14 @@
           return false;
         }
   }
-  TaskForm.prototype.showErrorValidationMessage = function (statusBox) {
+  function showErrorValidationMessage (statusBox, message, messageContainer) {
+      if(message && messageContainer){
+        messageContainer.textContent = message;
+      }
       statusBox.classList.remove("showSuccess");
       statusBox.classList.add("showFailure");
   }
-  TaskForm.prototype.showSuccessValidationMessage = function (statusBox) {
+  function showSuccessValidationMessage (statusBox) {
     statusBox.classList.remove("showFailure");
     statusBox.classList.add("showSuccess");
   }
@@ -266,19 +389,19 @@
   /*not ignoring the date status box with this on submit. You do not want to mention valid input with
     obvious things like selecting from a calendar*/
   TaskForm.prototype.showAppropriateValidationMessages = function () {
-      this.userInputStatusBoxNodeList.forEach(function (statusBox) {
-        if(this.areTheUserInputElementsValid(statusBox)){
-          this.showSuccessValidationMessage(statusBox);
-        }
-        else{
-          this.showErrorValidationMessage(statusBox);
-        }
-      }, this);
+      const {taskName, startTimeHours, endTimeHours} = this.form.elements;
+
+      taskName.focus();
+      taskName.blur();
+      startTimeHours.focus();
+      startTimeHours.blur();
+      endTimeHours.focus();
+      endTimeHours.blur();
 
       this.dateInputNodeList.forEach(function (dateInputElement) {
         if(!this.isDateInputValid(dateInputElement)){
             let statusBox = dateInputElement.parentElement.parentElement;
-            this.showErrorValidationMessage(statusBox);
+            showErrorValidationMessage(statusBox);
           }
       }, this);
   }

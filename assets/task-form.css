@@ -202,6 +202,13 @@ form .button-container button{
   .tasklist{
     font-size: 25px;
   }
+  .tasklist .time{
+    width: 25%;
+  }
+  .tasklist .name{
+    width: 58%;
+  }
+
 }
 @media screen and (min-width: 761px){
     body{
@@ -246,18 +253,43 @@ form .button-container button{
     }
     .tasklist .time{
       width: 100%;
-      display: flex;
-      justify-content: space-around;
       height: 25%;
+      flex-direction: row;
+      font-size: 20px;
+    }
+    .tasklist .time > div{
+      padding: 5px;
+    }
+    .tasklist .time .start{
+      border: 0px;
+      border-right: 1px solid black;
+    }
+    .tasklist .time .later{
+      font-size: 17px;
+    }
+    .tasklist .time .end{
+      border: 0px;
+      border-left: 1px solid black;
     }
     .tasklist .name{
       width: 100%;
+      border: 0px;
     }
     .tasklist .edit{
       width: 100%;
       height: auto;
       display: flex;
-      height: 25%;
+      font-size: 20px;
+    }
+    .tasklist .edit > div{
+      padding: 5px;
+      width: 50%;
+      border: 1px solid black;
+    }
+    .tasklist .edit div:first-child{
+      border: 0px;
+      border: 1px solid black;
+      border-right: 0px;
     }
     .task-form-container{
       left: 0px;
@@ -294,6 +326,12 @@ form .button-container button{
     }
     .tasklist{
       font-size: 28px;
+    }
+    .tasklist .time{
+      font-size: 28px;
+    }
+    .tasklist .time .later{
+      font-size: 24px;
     }
     .task-form-container form {
       margin: 0 auto;

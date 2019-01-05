@@ -1,7 +1,7 @@
 (function (window) {
     let Application = window.Application || {};
 
-    const TASK_LIST_HANDLEBARS_STRING = '{{#each this}}<li><div class="time"><div>{{currentTimeString startDateClient}}</div><div>{{currentTimeString endDateClient}}</div></div><div class="name">{{taskName}}</div><div class="edit"><div class="" data-type="edit" data-array-index={{@index}}>Edit</div><div class="" data-type="delete" data-array-index={{@index}}>Remove</div></div></li>{{/each}}';
+    const TASK_LIST_HANDLEBARS_STRING = '{{#each this}}<li><div class="time"><div class="start">{{currentTimeString startDateClient}}</div><div class="later">{{getLaterString startDateClient endDateClient}}</div><div class="end">{{currentTimeString endDateClient}}</div></div><div class="name">{{taskName}}</div><div class="edit"><div class="" data-type="edit" data-array-index={{@index}}>Edit</div><div class="" data-type="delete" data-array-index={{@index}}>Remove</div></div></li>{{/each}}';
     const ISO_STRING_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
     let HANDLEBARS_COMPILED_FN = null;
 
@@ -29,7 +29,7 @@
           return HANDLEBARS_COMPILED_FN(tasksArray);
       }
       else{
-        return "<li>No tasks added yet</li>"
+        return '<li class="empty">No tasks added yet</li>'
       }
     }
     ViewAndModel.prototype.initializeHandlebars = function () {
@@ -39,6 +39,16 @@
 
         minutes = (minutes<10 && minutes>=0)? `0${minutes}`: minutes;
         return `${hours}:${minutes}`
+      });
+      Handlebars.registerHelper("getLaterString", function (startDateClient, endDateClient) {
+        var diff = endDateClient.getDate() - startDateClient.getDate();
+
+        if(diff){
+          return `${diff} days later`;
+        }
+        else{
+          return "Same day"
+        }
       });
 
       HANDLEBARS_COMPILED_FN = Handlebars.compile(TASK_LIST_HANDLEBARS_STRING);

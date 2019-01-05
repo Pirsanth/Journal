@@ -31,6 +31,7 @@
       taskForm.toggleVisibility();
       taskForm.preFillDates(taskDate)
       taskForm.setInternalState("POST");
+      taskForm.makeDatesInThePastRedForEndDateCalendar();
       taskForm.giveTaskNameInputFocus();
     });
     base.addMainMenuButtonHandler();

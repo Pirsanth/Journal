@@ -1,4 +1,4 @@
-const streamTaskObjects = require("../model/streamTaskObjects.js");
+const {streamTaskObjects} = require("../model/manageTasks.js");
 const {sendError} = require("./helpers.js");
 const {validateSession} = require("../model/manageSessions.js");
 

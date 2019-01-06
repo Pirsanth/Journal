@@ -1,6 +1,6 @@
 const {sendError, consumeReadStream} = require("./helpers.js");
 const {URLSearchParams: Query} = require("url");
-const insertTaskIntoDatabase = require("../model/insertTaskObject.js");
+const {insertTaskObject: insertTaskIntoDatabase} = require("../model/manageTasks.js");
 const {validateSession} = require("../model/manageSessions.js");
 
 module.exports = function (req, res) {

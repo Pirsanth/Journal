@@ -1,5 +1,5 @@
 const {sendError, consumeReadStream, parseISOStringToDate, validateTaskObject} = require("./helpers.js");
-const replaceAndReturnOldTaskObject = require("../model/replaceAndReturnOldTaskObject.js");
+const {replaceAndReturnOldTaskObject} = require("../model/manageTasks.js");
 const {validateSession} = require("../model/manageSessions.js");
 
 module.exports = function (req, res) {

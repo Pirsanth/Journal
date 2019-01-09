@@ -3,6 +3,7 @@
 
     const TASK_LIST_HANDLEBARS_STRING = '{{#each this}}<li><div class="time"><div class="start">{{currentTimeString startDateClient}}</div><div class="later">{{getLaterString startDateClient endDateClient}}</div><div class="end">{{currentTimeString endDateClient}}</div></div><div class="name">{{taskName}}</div><div class="edit"><div class="" data-type="edit" data-array-index={{@index}}>Edit</div><div class="" data-type="delete" data-array-index={{@index}}>Remove</div></div></li>{{/each}}';
     const ISO_STRING_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
+    const Handlebars = require("handlebars");
     let HANDLEBARS_COMPILED_FN = null;
 
     function ViewAndModel({username, month, year}) {

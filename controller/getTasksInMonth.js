@@ -4,7 +4,6 @@ const {validateSession} = require("../model/manageSessions.js");
 
 module.exports = function (req, username, month, year, offset, res) {
       validateSession(req, function (err, isValid, sessionUsername) {
-        console.log("called");
           if(isValid){
               if(username === sessionUsername){
                 month = +month; //explicitly converting the string to a number is needed otherwise the month+1 expression is interpreted as string concatenation

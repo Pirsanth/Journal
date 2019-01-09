@@ -2,8 +2,11 @@
 const fs = require("fs");
 const handlebars = require("handlebars");
 
-const cssFile = /^\/(\w+)\/((styles|task-form|normalize)\.css)$/;
-const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main|viewAndModel|handlebars-v4\.0\.11)\.js)$/;
+//const cssFile = /^\/(\w+)\/((styles|task-form|normalize)\.css)$/;
+//const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main|viewAndModel|handlebars-v4\.0\.11)\.js)$/;
+const cssFile = /^\/((homePage|loginPage)\.min\.css)$/;
+const jsFile = /^\/((homePage|loginPage)\.min\.js)$/;
+const mapFiles = /^\/((homePage|loginPage)\.min\.(js|css)\.map)$/;
 const getHomePageHTML = /^\/(\w+)\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).html$/;
 const getLoginPageHTML = /^\/login\.html/;
 const getTasksInMonth = /^\/(\w+)\/tasksInMonth\/([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})\.json\?offset=(-?\d{0,3})$/;
@@ -26,12 +29,17 @@ module.exports.requestHandler = function (req, res) {
         let path = req.url;
 
       if(req.method === "GET"){
-          if(jsFile.test(path)|| cssFile.test(path)){
-            let fileRequested = path.match(jsFile)? path.match(jsFile)[2]: path.match(cssFile)[2];
-            require("./controller/serveStaticFile.js")(fileRequested, res);
+          if(jsFile.test(path)){
+            let fileRequested = path.match(jsFile)[1];
+            require("./controller/serveStaticFile.js")(fileRequested, "js", res);
           }
-          else if(loginPageStaticFiles.test(path)){
-            require("./controller/serveStaticFile.js")(path.substring(1), res);
+          else if(cssFile.test(path)){
+            let fileRequested = path.match(cssFile)[1];
+            require("./controller/serveStaticFile.js")(fileRequested, "css", res);
+          }
+          else if(mapFiles.test(path)){
+            let fileRequested = path.match(mapFiles)[1];
+            require("./controller/serveStaticFile.js")(fileRequested, "map", res);
           }
           else if(getHomePageHTML.test(path)){
             let match = path.match(getHomePageHTML);

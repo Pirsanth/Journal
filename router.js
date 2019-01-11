@@ -9,7 +9,7 @@ const getHomePageHTML = /^\/(\w+)\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).html$
 const getLoginPageHTML = /^\/login\.html/;
 const getTasksInMonth = /^\/(\w+)\/tasksInMonth\/([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})\.json\?offset=(-?\d{0,3})$/;
 //the month should be index from 0 as well because the month index in JS  (for Date objects) starts from 0
-const getDayTaskArray =  /^\/(\w+)\/dayTaskList\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3}))\/((1|2)?[0-9]|30)\.json$/;
+
 //\w means a-z, A-Z, 0-9, including the _ (underscore) character.
 //@ and !, etc. does not work
 // the + is for 1 or more
@@ -24,7 +24,11 @@ const postDoesUserExist = /\/doesUserExist/;
 
 module.exports.requestHandler = function (req, res) {
         let path = req.url;
-
+      //my meager attempt at preventing regexDOS attacks
+      if(req.url.length > 52){
+        sendError(res, 414, "The requested URI is longer than the server is willing to interpret");
+        return;
+      }
       if(req.method === "GET"){
           if(jsFile.test(path)){
             let fileRequested = path.match(jsFile)[1];

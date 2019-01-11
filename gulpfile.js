@@ -89,18 +89,22 @@ gulp.task("build", gulp.series(gulp.parallel("build:homePageJS", "build:homePage
           );
 
 gulp.task("serve", function (cb) {
-  nodemon({"ignore": "./*", nodeArgs: ["--inspect"], stdout: false }).on("stdout", function (childBuffer) {
-      const childLog = childBuffer.toString();
+  nodemon({"ignore": "./*", nodeArgs: ["--inspect"], stdout: false })
+      .on("stdout", function (childBuffer) {
+          const childLog = childBuffer.toString();
 
-      console.log(childLog);
+          console.log(childLog);
 
-      if(childLog.includes("Connection to mongodb established and the http server has been started on port 8080")){
-        bs.init({proxy: "http://localhost:8080/login.html",
-                port: 3000});
-        cb();
-      }
+          if(childLog.includes("Connection to mongodb established and the http server has been started on port 8080")){
+            bs.init({proxy: "http://localhost:8080/login.html",
+                    port: 3000});
+            cb();
+          }
 
-  })
+      })
+      .on("stderr", function (childBuffer) {
+        console.log(childBuffer.toString());
+      });
 });
 
 gulp.task("default", gulp.series("build", "serve"));

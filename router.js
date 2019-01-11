@@ -1,25 +1,22 @@
-
 const fs = require("fs");
 const handlebars = require("handlebars");
+const {sendError} = require("./controller/helpers.js");
 
-//const cssFile = /^\/(\w+)\/((styles|task-form|normalize)\.css)$/;
-//const jsFile = /^\/(\w+)\/((base|task-form|ajaxCommunication|main|viewAndModel|handlebars-v4\.0\.11)\.js)$/;
 const cssFile = /^\/((homePage|loginPage)\.min\.css)$/;
 const jsFile = /^\/((homePage|loginPage)\.min\.js)$/;
 const mapFiles = /^\/((homePage|loginPage)\.min\.(js|css)\.map)$/;
 const getHomePageHTML = /^\/(\w+)\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})).html$/;
 const getLoginPageHTML = /^\/login\.html/;
 const getTasksInMonth = /^\/(\w+)\/tasksInMonth\/([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3})\.json\?offset=(-?\d{0,3})$/;
-//the day should be indexed from 0 because because in db dateArray starts from 0
 //the month should be index from 0 as well because the month index in JS  (for Date objects) starts from 0
 const getDayTaskArray =  /^\/(\w+)\/dayTaskList\/(([0-9]|1[0-2])-(19[0-9]{2}|2[0-9]{3}))\/((1|2)?[0-9]|30)\.json$/;
 //\w means a-z, A-Z, 0-9, including the _ (underscore) character.
 //@ and !, etc. does not work
 // the + is for 1 or more
+
 const postAddTask = /^\/addTask$/;
 const deleteRemoveTask = /^\/removeTask$/;
 const putEditTask = /^\/editTask$/;
-const loginPageStaticFiles = /^\/login(-(buttonControls|form|main|validationFunctions))?\.(css|js)$/;
 const postProcessRegistration = /\/processRegistration/;
 const postProcessLogin = /\/processLogin/;
 const getProcessLogout = /\/logout/;
@@ -63,6 +60,9 @@ module.exports.requestHandler = function (req, res) {
             res.writeHead(200, {"Content-Type": "text/html"});
             res.end();
           }
+          else{
+            sendError(res, 404, "Requested resource not found");
+          }
       }
 
       else if(req.method === "POST"){
@@ -78,11 +78,17 @@ module.exports.requestHandler = function (req, res) {
         else if(postDoesUserExist.test(path)){
           require("./controller/postDoesUserExist.js")(req, res);
         }
+        else{
+          sendError(res, 404, "Requested resource not found");
+        }
       }
 
       else if(req.method === "DELETE"){
         if(deleteRemoveTask.test(path)){
           require("./controller/deleteRemoveTask.js")(req, res);
+        }
+        else{
+          sendError(res, 404, "Requested resource not found");
         }
       }
 
@@ -90,5 +96,11 @@ module.exports.requestHandler = function (req, res) {
         if(putEditTask.test(path)){
           require("./controller/putEditTask.js")(req, res);
         }
+        else{
+          sendError(res, 404, "Requested resource not found");
+        }
+      }
+      else{
+        sendError(res, 404, "Requested resource not found");
       }
 }

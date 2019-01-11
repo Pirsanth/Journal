@@ -1,6 +1,8 @@
 let mongo = require("mongodb");
 let MongoClient = mongo.MongoClient;
-const connectionString = "mongodb://localhost/journal";
+const connectionString = (!process.env["MONGODB_CONNECTION_STRING"])? "mongodb://localhost/journal" :
+                          process.env["MONGODB_CONNECTION_STRING"];
+console.log(`MongoDB connection string recieved is ${connectionString}`);
 
 let db = null;
 

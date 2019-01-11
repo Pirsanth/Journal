@@ -1,6 +1,10 @@
 let http = require("http");
 let requestHandlerFunction = require("./router.js").requestHandler;
+const serverPort = (!process.env["NODE_SERVER_PORT_NUMBER"])? 8080 :
+                     process.env["NODE_SERVER_PORT_NUMBER"];
+
 const startConnectionPool = require("./model/sharedDbInstance.js").initializeConnectionPool(function (err) {
+
     if(err){
       console.log("Node could not connect to mongodb. Server will not start. Please try again")
       return;
@@ -19,8 +23,8 @@ const startConnectionPool = require("./model/sharedDbInstance.js").initializeCon
           return;
         }
         let server = http.createServer(requestHandlerFunction);
-        server.listen(8080);
-        console.log("Connection to mongodb established and the http server has been started on port 8080");
+        server.listen(serverPort);
+        console.log(`Connection to mongodb established and the http server has been started on port ${serverPort}`);
       });
 
     });

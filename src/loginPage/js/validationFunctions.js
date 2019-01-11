@@ -1,10 +1,7 @@
 (function (window) {
     let App = (window.App)? window.App : window.App = {};
 
-    /*these would be UTLs because they would include the protocol and thus describe HOW to
-    get the resource as well as its location */
-    const [,baseURL] = window.location.href.match(/(^[\w:]+\/\/[\w:]+)\//);
-    const checkUsernameURL = `${baseURL}/doesUserExist`
+    const checkUsernameURL = `./doesUserExist`
 
      function validatePassword(passwordElement) {
           if(passwordElement.validity.valid){

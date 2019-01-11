@@ -16,7 +16,7 @@
     ajaxCommunication.getModel(function (responseText) {
         //put into a try catch block later
         //the dates have already been sorted on the server so we can just push it onto the index of the array one after the other
-
+          console.log("Task objects successfully received from the server");
           let arrayOfTasksInMonth = JSON.parse(responseText);
           viewAndModel.parseAndAddToModel(arrayOfTasksInMonth);
           //only after we processed the tasks from the server can the task list be shown

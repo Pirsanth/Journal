@@ -7,20 +7,19 @@
   let GET_MODEL_URL;
   let DELETE_TASK_URL;
   let PUT_TASK_URL;
-  const hrefRegex = /(^[\w:]+\/\/[\w:]+)\//;
 
   function AjaxCommunication({username, month, year}) {
       this.username = username;
       this.month = month;
       this.year = year;
 
-      let [,hrefExcludingPath] = window.location.href.match(hrefRegex);
+      let relativeURIWithoutUsername = ".."
 
-      let getModelURLWithoutQueryString = `${hrefExcludingPath}/${username}/tasksInMonth/${month}-${year}.json?`;
+      let getModelURLWithoutQueryString = `./tasksInMonth/${month}-${year}.json?`;
       GET_MODEL_URL = this.addTimezonOffsetToQueryString(getModelURLWithoutQueryString);
-      POST_TASK_URL = `${hrefExcludingPath}/addTask`;
-      DELETE_TASK_URL = `${hrefExcludingPath}/removeTask`;
-      PUT_TASK_URL = `${hrefExcludingPath}/editTask`;
+      POST_TASK_URL = `${relativeURIWithoutUsername}/addTask`;
+      DELETE_TASK_URL = `${relativeURIWithoutUsername}/removeTask`;
+      PUT_TASK_URL = `${relativeURIWithoutUsername}/editTask`;
   }
   AjaxCommunication.prototype.addTimezonOffsetToQueryString = function (queryString) {
       let date = new Date(),

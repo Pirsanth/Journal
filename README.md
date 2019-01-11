@@ -27,15 +27,15 @@ A bullet point summary of the project:
 
 ___
 ## Quick start
->Use `set MONGODB_CONNECTION_STRING` (on windows) to pass the mongodb connection string to the Node server. (beware of spaces around the =). Default: "mongodb://localhost/journal"
+>Use **`set MONGODB_CONNECTION_STRING`** (on windows) to pass the mongodb connection string to the Node server. (beware of spaces around the =). Default: "mongodb://localhost/journal"
 
->Similar to the above use `set NODE_SERVER_PORT_NUMBER` on a windows machine to change the port the Node server will listen on. Default: 8080. Note: this should be a number.
+>Similar to the above use **`set NODE_SERVER_PORT_NUMBER`** on a windows machine to change the port the Node server will listen on. Default: 8080. Note: this should be a number.
 
-> Run `gulp serve` to start the server. After the server has connected to the database, a browser window or tab  will be opened pointing to the login page.
+> Run **`gulp serve`** to start the server. After the server has connected to the database, a browser window or tab  will be opened pointing to the login page.
 
->Run `gulp build` to build the minified and bundled JS and CSS files in dist
+>Run **`gulp build`** to build the minified and bundled JS and CSS files in dist
 
->Run `gulp` to first build the minified and bundled JS and CSS files then start the server and finally open the browser to the login page.
+>Run **`gulp`** to first build the minified and bundled JS and CSS files then start the server and finally open the browser to the login page.
 
 ___
 ## Checklist
